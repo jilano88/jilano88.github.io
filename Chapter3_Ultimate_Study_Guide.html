@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter Three Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --surface-2:#f3f2ee;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-muted:#898781;
+  --border:rgba(11,11,11,0.10); --grid:#e1e0d9;
+  --accent:#2a78d6; --accent-soft:#e8f0fb;
+  --g1:#2a78d6; --g2:#eb6834; --g3:#1baf7a; --g4:#eda100; --g5:#e87ba4; --g6:#008300; --g7:#4a3aa7; --g8:#6b5344;
+  --seq1:#cde2fb; --seq2:#9ec5f4; --seq3:#6da7ec; --seq4:#3987e5; --seq5:#184f95;
+  --good:#0ca30c; --warn:#c98500; --crit:#d03b3b;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+    --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+    --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+    --accent:#3987e5; --accent-soft:#122840;
+    --g1:#3987e5; --g2:#d95926; --g3:#199e70; --g4:#c98500; --g5:#d55181; --g6:#1fae1f; --g7:#9085e9; --g8:#a1846b;
+    --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+    --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+  --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+  --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+  --accent:#3987e5; --accent-soft:#122840;
+  --g1:#3987e5; --g2:#d95926; --g3:#199e70; --g4:#c98500; --g5:#d55181; --g6:#1fae1f; --g7:#9085e9; --g8:#a1846b;
+  --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+  --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--page); color:var(--ink); font-family:var(--font-body);
+  min-height:100vh; line-height:1.5;
+}
+.app{display:grid; grid-template-columns:232px 1fr; min-height:100vh;}
+@media (max-width:860px){ .app{grid-template-columns:1fr;} .rail{position:sticky; top:0; z-index:20;} }
+
+/* ---- Rail ---- */
+.rail{
+  background:var(--surface); border-right:1px solid var(--border);
+  padding:18px 12px 24px; display:flex; flex-direction:column; gap:2px;
+}
+.rail-brand{
+  font-family:var(--font-display); font-weight:700; font-size:1.18rem;
+  padding:4px 10px 14px; letter-spacing:.2px;
+}
+.rail-brand small{display:block; font-family:var(--font-body); font-weight:600; font-size:.68rem;
+  text-transform:uppercase; letter-spacing:.09em; color:var(--ink-muted); margin-top:3px;}
+.rail-btn{
+  display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:9px;
+  border:none; background:none; color:var(--ink-2); font:inherit; font-size:.87rem; font-weight:600;
+  text-align:left; cursor:pointer; width:100%;
+}
+.rail-btn:hover{background:var(--surface-2); color:var(--ink);}
+.rail-btn.active{background:var(--accent-soft); color:var(--accent);}
+.rail-ico{width:19px; text-align:center; flex-shrink:0; font-size:1.02rem;}
+.rail-foot{margin-top:auto; padding:14px 10px 2px; font-size:.72rem; color:var(--ink-muted); border-top:1px solid var(--border); margin-top:14px;}
+
+/* ---- Main ---- */
+.main{padding:26px 30px 70px; max-width:1080px;}
+@media (max-width:640px){ .main{padding:18px 16px 60px;} }
+.view{display:none;}
+.view.active{display:block;}
+.view-head{margin-bottom:22px;}
+.eyebrow{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin:0 0 6px;}
+h1.title{font-family:var(--font-display); font-weight:700; font-size:2rem; margin:0 0 8px; text-wrap:balance;}
+.dek{color:var(--ink-2); font-size:1rem; max-width:64ch; margin:0;}
+
+.card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px;}
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:760px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} }
+
+h2.sec{font-family:var(--font-display); font-weight:600; font-size:1.3rem; margin:30px 0 12px;}
+h2.sec:first-child{margin-top:0;}
+h3.sub{font-family:var(--font-display); font-weight:600; font-size:1.06rem; margin:0 0 8px;}
+p{margin:0 0 10px;}
+.muted{color:var(--ink-2);}
+code, .mono{font-family:var(--font-mono);}
+
+/* buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:9px;
+  border:1px solid var(--border); background:var(--surface); color:var(--ink); font:inherit; font-weight:600;
+  font-size:.86rem; cursor:pointer;
+}
+.btn:hover{background:var(--surface-2);}
+.btn.primary{background:var(--accent); color:#fff; border-color:transparent;}
+.btn.primary:hover{filter:brightness(1.06);}
+.btn:focus-visible, .rail-btn:focus-visible, input:focus-visible, .chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+/* checklist */
+.check-row{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-top:1px solid var(--grid);}
+.check-row:first-child{border-top:none;}
+.check-row input{margin-top:3px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer; flex-shrink:0;}
+.check-row label{cursor:pointer; font-size:.92rem;}
+.check-row.done label{color:var(--ink-muted); text-decoration:line-through;}
+
+/* progress */
+.pbar-outer{background:var(--surface-2); border-radius:8px; height:9px; overflow:hidden;}
+.pbar-inner{background:var(--accent); height:100%; width:0%; transition:width .3s ease;}
+
+/* pills */
+.pill{display:inline-block; padding:5px 12px; border-radius:999px; font-size:.78rem; font-weight:600; background:var(--surface-2); border:1px solid var(--border);}
+
+/* Home hero + competency map */
+.hero{
+  background:linear-gradient(135deg, var(--accent-soft), var(--surface));
+  border:1px solid var(--border); border-radius:16px; padding:26px 26px;
+  display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:24px;
+}
+@media (max-width:700px){ .hero{flex-direction:column; align-items:flex-start;} }
+.hero-stat{text-align:right;}
+@media (max-width:700px){ .hero-stat{text-align:left;} }
+.hero-stat .num{font-family:var(--font-display); font-size:2.3rem; font-weight:700; color:var(--accent); line-height:1;}
+.hero-stat .lbl{font-size:.75rem; color:var(--ink-2); text-transform:uppercase; letter-spacing:.06em; margin-top:3px;}
+
+.quizband{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:24px;
+}
+
+.comp-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px;
+  display:flex; gap:12px; align-items:flex-start; cursor:pointer; transition:border-color .15s;
+}
+.comp-card:hover{border-color:var(--accent);}
+.comp-num{
+  font-family:var(--font-display); font-weight:700; font-size:1.15rem; color:var(--accent);
+  width:28px; flex-shrink:0;
+}
+.comp-card.done .comp-num{color:var(--good);}
+.comp-body b{display:block; font-size:.9rem; margin-bottom:2px;}
+.comp-body span{font-size:.8rem; color:var(--ink-2);}
+
+/* nav cards on home */
+.nav-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;
+  cursor:pointer; text-align:left; display:flex; flex-direction:column; gap:6px;
+}
+.nav-card:hover{border-color:var(--accent);}
+.nav-card .ico{font-size:1.4rem;}
+.nav-card b{font-family:var(--font-display); font-size:1.02rem; font-weight:600;}
+.nav-card span{font-size:.8rem; color:var(--ink-2);}
+
+/* comparison cards */
+.type-card{border-radius:14px; overflow:hidden; border:1px solid var(--border);}
+.type-head{padding:14px 18px; color:#fff;}
+.type-head b{font-family:var(--font-display); font-size:1.1rem; display:block;}
+.type-head span{font-size:.76rem; opacity:.9;}
+.type-body{padding:14px 18px; background:var(--surface); font-size:.83rem;}
+.type-body h4{margin:10px 0 4px; font-size:.76rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted);}
+.type-body h4:first-child{margin-top:0;}
+.type-body ul{margin:0; padding-left:18px;}
+.type-body li{margin-bottom:3px;}
+
+.callout{border-radius:12px; padding:14px 18px; border:1px solid; font-size:.86rem;}
+.callout.warn{background:color-mix(in srgb, var(--warn) 12%, var(--surface)); border-color:var(--warn); color:var(--ink);}
+.callout.info{background:var(--accent-soft); border-color:var(--accent); color:var(--ink);}
+.callout.crit{background:color-mix(in srgb, var(--crit) 10%, var(--surface)); border-color:var(--crit); color:var(--ink);}
+
+/* tables */
+table.cmp{width:100%; border-collapse:collapse; font-size:.85rem;}
+table.cmp th{text-align:left; padding:8px 10px; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); border-bottom:1px solid var(--border);}
+table.cmp td{padding:9px 10px; border-bottom:1px solid var(--grid); vertical-align:top;}
+table.cmp tr:last-child td{border-bottom:none;}
+.overflow-x{overflow-x:auto;}
+.num-mono{font-family:var(--font-mono); font-weight:700;}
+.scroll-table{max-height:420px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+.scroll-table table.cmp{margin:0;}
+.scroll-table th{position:sticky; top:0; background:var(--surface); z-index:1;}
+
+/* flashcard drill */
+.drill-wrap{max-width:560px; margin:0 auto;}
+.drill-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:34px 26px;
+  min-height:180px; display:flex; align-items:center; justify-content:center; text-align:center;
+  cursor:pointer; font-size:1.05rem; font-weight:600; position:relative;
+}
+.drill-card .tag{position:absolute; top:14px; left:16px; font-size:.68rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink-muted);}
+.drill-card .hint{position:absolute; bottom:12px; font-size:.72rem; color:var(--ink-muted); font-weight:400;}
+.drill-controls{display:flex; justify-content:space-between; align-items:center; margin-top:16px; gap:10px;}
+.drill-progress{font-size:.8rem; color:var(--ink-2); font-weight:600;}
+.drill-score{display:flex; gap:14px; font-size:.82rem;}
+.drill-score b{font-family:var(--font-display);}
+.btn.wrong{border-color:var(--crit); color:var(--crit);}
+.btn.right{border-color:var(--good); color:var(--good);}
+
+/* disorder cards */
+.disorder-card{border-radius:14px; overflow:hidden; border:1px solid var(--border); background:var(--surface);}
+.disorder-head{padding:12px 18px; color:#fff; display:flex; justify-content:space-between; align-items:center;}
+.disorder-head b{font-family:var(--font-display); font-size:1.05rem;}
+.disorder-body{padding:14px 18px; font-size:.86rem;}
+.disorder-body h4{margin:10px 0 3px; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted);}
+.disorder-body h4:first-child{margin-top:0;}
+.disorder-body p{margin:0 0 4px;}
+
+.footnote{font-size:.76rem; color:var(--ink-muted); margin-top:6px;}
+::selection{background:var(--accent); color:#fff;}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail">
+    <div class="rail-brand">Chapter Three<small>Field Guide</small></div>
+    <button class="rail-btn" data-view="home"><span class="rail-ico">🏠</span>Home</button>
+    <button class="rail-btn" data-view="movement"><span class="rail-ico">🔄</span>Joint Movement</button>
+    <button class="rail-btn" data-view="joints"><span class="rail-ico">🦴</span>Key Joints</button>
+    <button class="rail-btn" data-view="proprioception"><span class="rail-ico">🧠</span>Proprioception</button>
+    <button class="rail-btn" data-view="conformation"><span class="rail-ico">📐</span>Conformation</button>
+    <button class="rail-btn" data-view="gait"><span class="rail-ico">🐕‍🦺</span>Gait Analysis</button>
+    <button class="rail-btn" data-view="disorders"><span class="rail-ico">⚕️</span>Limb Disorders</button>
+    <button class="rail-btn" data-view="drills"><span class="rail-ico">🃏</span>Flashcard Drill</button>
+    <button class="rail-btn" data-view="review"><span class="rail-ico">🎯</span>Full Review</button>
+    <div class="rail-foot">NWSAM Ch.3 · built from your live coursework &amp; quiz history</div>
+  </nav>
+  <main class="main" id="main"></main>
+</div>
+<script>
+/* ============================= DATA ============================= */
+
+const COMPETENCIES = [
+  {id:"c1", label:"Define muscle actions using the correct terms", view:"movement", hint:"Flexion, extension, abduction, adduction, rotation..."},
+  {id:"c2", label:"Identify attachment points for muscle groups", view:"joints", hint:"Key Joints and Their Attributes chart"},
+  {id:"c3", label:"Explain how muscle actions produce types of movement", view:"movement", hint:"Joint type predicts available movement"},
+  {id:"c4", label:"Describe the gaits of a dog", view:"gait", hint:"6 gait types, 4 phases of the stride"},
+  {id:"c5", label:"Demonstrate conformation traits on a dog", view:"conformation", hint:"Balance, angulation, the 6-step assessment"},
+  {id:"c6", label:"Suggest ways of helping problems through massage", view:"disorders", hint:"5 common limb disorders + scope of practice"}
+];
+
+/* ---- Joint Movement ---- */
+const MOVEMENT_DEFS = [
+  {name:"Flexion", color:"var(--g1)", body:"Movement in the sagittal plane that DECREASES the joint angle — closes the joint, brings two bones closer together. Has nothing to do with muscle tissue being \"flexed\"; certain muscles contract to flex a joint, opposing muscles contract to extend it."},
+  {name:"Extension", color:"var(--g2)", body:"Movement in the sagittal plane that INCREASES the joint angle — opens the joint, moves two bones apart."},
+  {name:"Abduction", color:"var(--g3)", body:"Movement in the transverse plane, taking the limb LATERAL or away from the midline — like raising your arm to the side. Occurs at the hip and shoulder."},
+  {name:"Adduction", color:"var(--g4)", body:"Movement in the transverse plane, taking the limb MEDIAL or toward the midline — like placing your hand over your heart. Occurs at the hip and shoulder."},
+  {name:"Lateral Flexion", color:"var(--g5)", body:"Flexion to ONE side, specific to the axial skeleton (spine and skull) — unilateral, unlike ordinary flexion where both sides move together. Should not be confused with flexion above."},
+  {name:"Rotation", color:"var(--g6)", body:"Movement around the joint's circumference, creating a rolling motion. Limited in quadrupeds. Internal (medial) = cranial aspect turns TOWARD midline (checking your watch). External (lateral) = cranial aspect turns AWAY from midline (hitch-hiking)."},
+  {name:"Circumduction", color:"var(--g7)", body:"A joint performing flexion, extension, abduction, adduction, and rotation together — tracing a complete circle, as opposed to a rotation of less than 360°."}
+];
+const MOVEMENT_CHART = [
+  ["Flexion","Decreasing joint angle"],["Extension","Increasing joint angle"],
+  ["Abduction","Movement away from body midline"],["Adduction","Movement toward body midline"],
+  ["Rotation","Rotation about an axis"],["Circumduction","A complete circle — flexion + extension + abduction + adduction + rotation combined"]
+];
+const BODY_REGIONS = [
+  {region:"Head &amp; Neck", color:"var(--g1)", body:"Most mobile part of the axial skeleton. Greatest flexion/extension at the atlanto-occipital joint (\"yes\" movement); greatest rotation at the atlantoaxial joint (\"no\" movement). Jaw: Depression = opening, Elevation = closing. The nuchal ligament runs skull-to-withers, continuous with the supraspinous ligament to the sacrum."},
+  {region:"Shoulder &amp; Forelimb", color:"var(--g2)", body:"No clavicle or shoulder girdle — a \"hammock\" of soft tissue supports the scapula between the front legs. Primary: flexion, extension. Lesser range: abduction, adduction, internal/external rotation. Elbows/wrists/digits: primarily flexion/extension."},
+  {region:"Trunk", color:"var(--g3)", body:"Spine: flexion, extension, some lateral flexion, minimal rotation. Abdominal muscles drive back flexion. Ribs move at vertebral/sternal joints (rib heads = \"modified ball and socket\"); inhalation expands/lifts, exhalation contracts/lowers."},
+  {region:"Hindquarters", color:"var(--g4)", body:"Hip (coxofemoral): flexion, extension, abduction, adduction, internal/external rotation, PLUS circumduction. Deep pelvic muscles prevent hyperflexion/hyperextension and store proprioceptive information. Stifle, hock, pastern: flexion/extension only."}
+];
+
+/* ---- Key Joints ---- */
+const KEY_JOINTS = [
+  ["Atlanto-occipital","Cervical (Occiput–C1)","Condyloid","Flexion (nose toward chest); Extension (head/neck upward) — the \"yes\" joint"],
+  ["Atlanto-axial","Cervical (C1–C2)","Pivot","Rotation (twisting head/neck) — the \"no\" joint"],
+  ["Intervertebral (cervical)","C2–C7","Modified hinge","Flexion; Extension; Lateral flexion (small facet joints allow this)"],
+  ["Intervertebral (thoracic)","Thoracic","Modified hinge","Flexion (curled); Extension (play bow); Lateral flexion (chasing tail); Rotation (rolling over)"],
+  ["Intervertebral (lumbar)","Lumbar","Modified hinge","Flexion; Extension; Lateral flexion; Rotation"],
+  ["Intervertebral (coccygeal)","Tail","Modified hinge","Flexion (tucked); Extension (over back); Lateral flexion (wagging); Rotation (minimal)"],
+  ["Costovertebral","Ribs &amp; Thoracic Vertebra","Modified ball and socket","Circumduction (expand/compress ribs during respiration)"],
+  ["Sacroiliac","Sacrum &amp; Ilium","Gliding","Flexion; Extension (undefined plane)"],
+  ["Scapulohumeral","Shoulder","Ball and socket","Flexion; Extension; Abduction; Adduction; Rotation"],
+  ["Humeroradial / Humeroulnar","Elbow","Hinge","Flexion; Extension"],
+  ["Antebrachiocarpal (Carpus)","Wrist","Hinge","Flexion; Extension"],
+  ["Metacarpophalangeal","Metacarpals &amp; Digits","Gliding","Movement in non-descript planes"],
+  ["Coxofemoral","Hip","Ball and socket","Flexion; Extension; Abduction; Adduction; Rotation"],
+  ["Femorotibial / Femoropatellar","Stifle (Knee)","Hinge","Flexion; Extension"],
+  ["Tarsus","Hock (Ankle)","Hinge","Flexion; Extension"],
+  ["Metatarsophalangeal","Distal Hock &amp; Digits","Gliding","Movement in non-descript planes"]
+];
+const JOINT_TYPE_PATTERN = [
+  ["Hinge","Elbow, wrist/carpus, hock, stifle","Flexion/Extension only"],
+  ["Ball-and-socket","Shoulder, hip (ribs = \"modified\")","Full range incl. rotation ± circumduction"],
+  ["Gliding","Metacarpo-/metatarsophalangeal, sacroiliac","Non-descript/undefined planes"],
+  ["Pivot","Atlantoaxial","Rotation only (\"no\")"],
+  ["Condyloid","Atlanto-occipital","Flexion/Extension (\"yes\")"],
+  ["Modified hinge","Intervertebral joints generally","Flexion/Extension + some lateral flexion/rotation"]
+];
+
+/* ---- Proprioception ---- */
+const PROPRIO = [
+  {name:"Golgi Tendon Organ", color:"var(--g2)", body:"Located at the musculotendinous junction. Measures speed of contraction and load; triggers the muscle to shut down under overload — an exhausted marathoner's legs giving out near the finish."},
+  {name:"Muscle Spindle Fibers", color:"var(--g1)", body:"Located throughout the muscle belly, perpendicular to the fibers. Acts like a \"trigger wire\" — contracts the muscle forcefully in response to a sudden/heavy stimulus, e.g. the bicep when a surprisingly heavy object lands in your hand."},
+  {name:"Connective Tissue Matrix", color:"var(--g3)", body:"The fluid between cells — a dynamic mix of proteins and lipids in water and salts that responds to pressure by creating an electromagnetic wave. Conductive, nutritive, central to the fascial network, facilitates brain-to-body communication."}
+];
+
+/* ---- Conformation ---- */
+const BALANCE_NUMBERS = [["Weight distribution","60% forequarter / 40% hindquarter"],["Shoulder angulation","30–45° (measured on the vertical)"],["Pelvic angulation","30–45° (measured on the horizontal)"]];
+const ASSESS_STEPS = [
+  "Look at the animal standing squarely on level ground.",
+  "View from the side for overall appearance — stand back, use a \"soft eye\" (slightly unfocused).",
+  "Note anything that stands out or seems out of sync (large head, protruding hip/shoulder).",
+  "View from the front and back.",
+  "Mentally divide the body into 3 equal parts: head/neck/shoulder — withers through barrel to the stifle — stifle back.",
+  "Check overall balance, left/right symmetry, and that forelimb joints fall in a line (side view); in the hind limb, a line from the point of hip should bisect the paw."
+];
+const ASSEMBLY_FAULTS = [
+  ["Front (Easty-Westy)","Feet turn away from each other — common in the Basset Hound"],
+  ["Front (knuckled)","Knuckled-over pasterns/carpals; elbows sticking out (common in the Bulldog)"],
+  ["Rear (cow-hocked)","Hocks incline toward each other — uneven stress on the hock"],
+  ["Rear (bowed)","Hocks bow outward — also uneven stress on the hock"],
+  ["Rear (sickle hock)","Viewed from the side — legs trail out behind while moving"]
+];
+
+/* ---- Gait ---- */
+const STRIDE_PHASES = [["Swing","The leg flexes and swings forward"],["Contact","The leg makes contact with the ground"],["Support","The leg is weight-bearing"],["Thrust","The leg pushes away from the ground — cycle begins again"]];
+const GAIT_QUALITIES = [["Rhythm (Cadence)","Consistent, regular, clear distinction between footfalls. \"Impulsion initiates rhythm, and rhythm maintains impulsion.\""],["Impulsion","Thrust/energy in forward motion — NOT the same as speed. Implies a willingness to move with power."],["Balance","Dynamic control of weight-bearing without disrupting rhythm or footfall pattern."]];
+const GAIT_TYPES = [
+  ["Walk","4-beat","Regular, even; legs move laterally starting with a hind leg. Balanced on a triangular 3-leg support while the 4th swings."],
+  ["Amble","4-beat (irregular)","Fast walk; dog rocks side to side; legs on each side move nearly simultaneously. Often transitional between walk and trot."],
+  ["Pace","2-beat lateral (usually a fault)","Trot-like, but SAME-SIDE legs move as a pair; visible side-to-side rock. A fault except in select breeds (e.g. Old English Sheepdog); may indicate back stiffness."],
+  ["Trot","2-beat, diagonal","Front and hind leg on OPPOSITE sides move together. Regular marching beat, brief suspension. Variants: hackney trot (high flexion, high head carriage) and flying trot (fast, extended, \"floating\")."],
+  ["Canter","3-beat","Two legs move independently, two move as a diagonal pair; named by \"lead\" (e.g. right-hind-initiated = left lead)."],
+  ["Gallop","4-beat","Like the walk in beat count, but footfall pattern resembles the canter's, with the diagonal pair breaking into 2 separate contacts. Has a moment of suspension."]
+];
+const GAIT_ANALYSIS_STEPS = [
+  "Have a handler walk the dog several times over a flat, non-skid surface; repeat at the trot.",
+  "Observe coming toward you, from the side, and going away — fluidity, reach/drive, foot placement, straightness, symmetry, joint flexibility, head/neck movement.",
+  "Observe at a walk then trot on a circle — left/right symmetry, whether the back follows the bend, whether the inside hind leg steps forward underneath.",
+  "Observe at a walk on a figure eight — fluid direction change, body bending through the turn, coordinated movement, no foot crossing."
+];
+const GAIT_FAULTS = ["Moving stiffly (no bend through back, poor tracking)","Change of rhythm throughout the gait","Loss of power behind (common with cow-hocked dogs)","Moving crookedly through any part of the body","Crossing the hind legs (common when hocks bow out)","Paddling or crossing in front (common with Easty-Westy/toed-out)","Joint laxity at the pasterns or hip, resulting in sloppy movement"];
+
+/* ---- Disorders ---- */
+const DISORDERS = [
+  {name:"Hip Dysplasia", color:"var(--g2)", what:"Irregular formation of the coxofemoral (hip) joint — socket too shallow, or excessive laxity. Hypermobility wears cartilage edges → degenerative process. Usually hip, occasionally elbow.", symptoms:"Reluctance for normal activity; difficulty getting up/down; running with both hind limbs together; discomfort-related attitude change; pain climbing/jumping; pain on backward hind-limb ROM testing.", massage:"Not recommended while symptomatic until after a vet exam; valuable in post-op rehab and ongoing flexibility/strength therapy."},
+  {name:"Osteochondrosis (OCD)", color:"var(--g4)", what:"Articular cartilage or growth plate develops \"pocks\"/decreased mineralization. Most often shoulder or stifle, but can occur in any joint.", symptoms:"Chronic or transient lameness; often silent until trauma reveals the weak spot; cartilage frays/cracks in later stages; may worsen with BOTH rest and increased exercise.", massage:"Best treated surgically; massage valuable in rehab and ongoing fitness/flexibility therapy."},
+  {name:"Patellar Luxation", color:"var(--g1)", what:"The patella tracks incorrectly, moving lateral or medial to the femur's trochlear groove. Commonly co-occurs with hip dysplasia — each can worsen the other.", symptoms:"Variable severity — early/mild is occasional, self-correcting hind-leg carrying; worsens to progressively less weight-bearing.", massage:"Not recommended while symptomatic pre-vet-exam; both hind limbs should be checked even if only one is symptomatic (usually bilateral)."},
+  {name:"ACL Injuries", color:"var(--g5)", what:"The knee's anterior cruciate ligament tears or ruptures → instability, inflammation, joint deterioration. Caused by trauma, repetitive stress, or poor conformation.", symptoms:"Lameness ranging from severe to asymptomatic; undetected tears lead to degenerative joint conditions; may improve with rest but arthritis develops in later years.", massage:"Surgical stabilization usually successful; post-op massage beneficial but must be coordinated with the vet to protect joint stability."},
+  {name:"Arthritis, Strain, or Sprains", color:"var(--g7)", what:"Arthritis of any joint; strain in a tendon (causing tendonitis); sprains of other soft tissue elements.", symptoms:"Pain and/or heat present along with swelling — must be vet-diagnosed before massage in that case.", massage:"Massage benefits arthritic cases but should adhere to a prescriptive plan."}
+];
+
+/* ---- Weak-spot flashcards ---- */
+const WEAKSPOT_CARDS = [
+  {tag:"Flexion vs. Lateral Flexion", q:"How is lateral flexion different from ordinary flexion?", a:"Ordinary flexion closes the joint angle in the sagittal plane and is bilateral (both sides move together). Lateral flexion bends to ONE side, is specific to the axial skeleton (spine/skull), and is technically unilateral — the course explicitly warns not to confuse the two."},
+  {tag:"Abduction vs. Adduction", q:"Which direction is abduction, and which is adduction?", a:"Abduction = AWAY from the midline (raising an arm out to the side — \"ab\" = away). Adduction = TOWARD the midline (hand over heart — \"ad\" = add/toward)."},
+  {tag:"Atlanto-occipital vs. Atlantoaxial", q:"Which C-spine joint is the \"yes\" joint and which is the \"no\" joint?", a:"Atlanto-occipital (skull–C1) = \"yes\" — flexion/extension (nodding). Atlantoaxial (C1–C2) = \"no\" — rotation (shaking the head). Easy to mix up which does which."},
+  {tag:"Conformation vs. Posture", q:"What's the key difference between conformation and posture?", a:"Conformation = the fixed, born-with structure (essentially unchangeable). Posture = a chosen, changeable stance influenced by conformation + environment/behavior/injury. Poor movement isn't always a conformation problem — it could be postural, behavioral, or injury-related instead."},
+  {tag:"Shoulder vs. Pelvic Angulation", q:"Both use the same 30–45° ideal range — so what's the actual difference between shoulder and pelvic angulation measurement?", a:"Shoulder angulation is measured VERTICALLY, from T2 along the scapular spine to the ground. Pelvic angulation is measured HORIZONTALLY, from the point of haunch through the point of buttock, compared to the back's horizon line."},
+  {tag:"Trot vs. Pace", q:"What's the single most commonly tested gait distinction?", a:"Trot moves DIAGONAL leg pairs together (correct, 2-beat). Pace moves SAME-SIDE leg pairs together (generally a fault, except in breeds like the Old English Sheepdog). Both can look similar to an untrained eye."},
+  {tag:"Amble vs. Pace", q:"Both involve side-to-side rocking — how do amble and pace actually differ?", a:"Amble is a 4-beat (irregular) fast WALK — often a normal transitional gait between walk and trot, not usually a fault. Pace is a 2-beat lateral variant of the TROT, and is generally classed as a fault."},
+  {tag:"Canter vs. Gallop", q:"How do canter and gallop differ, even though both can look similar at speed?", a:"Canter is a true 3-beat gait (one diagonal pair + 2 independent beats). Gallop is 4-beat — footfall resembles the canter's, but the diagonal pair breaks into 2 separate contacts, plus a moment of suspension."},
+  {tag:"Cow-hocked vs. bowed hocks", q:"Cow-hocked and hocks-that-bow-out are opposite deviations — which gait fault does each cause?", a:"Cow-hocked (hocks turn IN, toward each other) → loss of power behind. Hocks that bow OUT → crossing the hind legs. Easty-Westy/toed-out (front) → paddling or crossing in front."},
+  {tag:"GTO vs. MSF (again)", q:"In the proprioception context, which of the three components measures LOAD at the tendon, and which reacts to a SUDDEN stimulus in the muscle belly?", a:"Golgi Tendon Organ = load/tension at the musculotendinous junction, inhibitory (shuts the muscle down). Muscle Spindle Fibers = sudden-stimulus trigger wire within the muscle belly, excitatory (forces rapid contraction)."},
+  {tag:"Joint type → movement", q:"If a joint is classified as \"hinge,\" what movements should you expect — and what's a hinge-joint example?", a:"Flexion/Extension ONLY (one plane). Examples: elbow, wrist/carpus, hock, stifle. Compare to ball-and-socket (shoulder, hip), which gets the full range including rotation."},
+  {tag:"Overlapping limb disorders", q:"Which two of the 5 limb disorders are explicitly linked, each able to worsen the other?", a:"Hip Dysplasia and Patellar Luxation — the text says \"the two can contribute to the progression of one another.\""},
+  {tag:"Scope of practice", q:"What's the practitioner's actual job when it comes to the 5 limb disorders — diagnose, treat, or something else?", a:"Recognize and differentiate — never diagnose or treat. If you suspect injury or disease, it's your responsibility to suggest the owner seek veterinary counsel. Massage supports recovery but is never a substitute for veterinary care."},
+  {tag:"Rhythm vs. Impulsion", q:"The course explicitly warns against confusing impulsion with what?", a:"Speed. Impulsion is thrust/energy and a willingness to move with power — not simply how fast the dog is moving. \"Impulsion initiates rhythm, and rhythm maintains impulsion.\""}
+];
+
+/* ---- Full review question bank ---- */
+const REVIEW_QUESTIONS = [
+  {q:"Flexion is movement that:", options:["Increases the joint angle","Decreases the joint angle","Occurs only at the shoulder","Is unrelated to the sagittal plane"], a:1},
+  {q:"Abduction takes the limb:", options:["Toward the midline","Away from the midline","Upward only","Into rotation"], a:1},
+  {q:"Lateral flexion is specific to:", options:["The limbs only","The axial skeleton (spine/skull)","The hip joint only","The digits"], a:1},
+  {q:"Internal (medial) rotation is best illustrated by:", options:["A hitch-hiking gesture","Checking your watch","Raising your arm to the side","Placing your hand over your heart"], a:1},
+  {q:"Circumduction combines which movements?", options:["Only flexion and extension","Flexion, extension, abduction, adduction, and rotation","Only rotation","Abduction and adduction only"], a:1},
+  {q:"The atlanto-occipital joint is nicknamed the:", options:["\"No\" joint","\"Yes\" joint","Pivot joint","Ball-and-socket joint"], a:1},
+  {q:"The atlantoaxial joint's movement type is:", options:["Hinge","Ball and socket","Pivot","Gliding"], a:2},
+  {q:"A hinge joint (like the elbow) allows:", options:["Full rotation","Flexion/Extension only","Circumduction","Gliding in any plane"], a:1},
+  {q:"Which joint is classified as ball-and-socket?", options:["Elbow","Hock","Coxofemoral (hip)","Carpus"], a:2},
+  {q:"The Golgi Tendon Organ is located:", options:["Within the muscle belly","At the musculotendinous junction","In the joint capsule","In the spinal cord"], a:1},
+  {q:"Muscle Spindle Fibers act as:", options:["An inhibitory shut-down switch","An excitatory \"trigger wire\"","A structural ligament","A type of synovial fluid"], a:1},
+  {q:"The three proprioceptive components covered are GTO, MSF, and:", options:["Nuchal ligament","Connective Tissue Matrix","Sarcomere","Epimysium"], a:1},
+  {q:"Conformation is best described as:", options:["A chosen, changeable stance","The fixed, born-with structure","Identical to posture","Only relevant to show dogs"], a:1},
+  {q:"Ideal balance is characterized by a weight distribution of about:", options:["50/50 front/hind","60/40 front/hind","70/30 front/hind","40/60 front/hind"], a:1},
+  {q:"Ideal shoulder and pelvic angulation both fall around:", options:["10–20°","30–45°","60–75°","90°"], a:1},
+  {q:"Shoulder angulation is measured:", options:["Horizontally","Vertically, from T2 to the ground","At the hock","Only in show dogs"], a:1},
+  {q:"\"Easty-Westy\" conformation describes:", options:["Hocks that bow outward","Feet that turn away from each other","Excessive shoulder slope","A sickle hock"], a:1},
+  {q:"Cow-hocked describes hocks that:", options:["Bow outward","Incline toward each other","Are perfectly straight","Are hyperextended"], a:1},
+  {q:"The four phases of the stride, in order, are:", options:["Contact, Swing, Thrust, Support","Swing, Contact, Support, Thrust","Support, Thrust, Swing, Contact","Thrust, Support, Contact, Swing"], a:1},
+  {q:"The trot moves which leg pairs together?", options:["Same-side pairs","Diagonal pairs","All four legs independently","Front legs only"], a:1},
+  {q:"The pace moves which leg pairs together?", options:["Diagonal pairs","Same-side pairs","No pairing — 4 independent beats","Front-hind alternating"], a:1},
+  {q:"Which gait is a true 3-beat gait?", options:["Walk","Trot","Canter","Gallop"], a:2},
+  {q:"Impulsion should not be confused with:", options:["Rhythm","Balance","Speed","Cadence"], a:2},
+  {q:"Cow-hocked dogs commonly show which gait fault?", options:["Paddling in front","Loss of power behind","Sickle hock only","Excessive reach"], a:1},
+  {q:"Hip Dysplasia and which other disorder are explicitly linked, each worsening the other?", options:["Osteochondrosis","Patellar Luxation","ACL Injury","Arthritis"], a:1},
+  {q:"Which limb disorder is described as \"best treated surgically\" in essentially all cases?", options:["Hip Dysplasia","Osteochondrosis (OCD)","Patellar Luxation","Arthritis"], a:1},
+  {q:"As a massage practitioner, your role regarding limb disorders is to:", options:["Diagnose and treat","Recognize and refer to a veterinarian","Ignore them entirely","Only address them post-surgery"], a:1},
+  {q:"A joint classified as \"gliding\" (e.g. metacarpophalangeal) allows movement:", options:["Only flexion/extension","In non-descript/undefined planes","Only rotation","No movement at all"], a:1}
+];
+
+/* ============================= STATE ============================= */
+const KEY = "ch3-field-guide-v1";
+let state = {};
+try{ state = JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ state = {}; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+if(!state.comp) state.comp = {};
+if(!state.reviewScore) state.reviewScore = {right:0, wrong:0};
+
+let currentView = "home";
+let drillIdx = 0, drillFlipped = false, drillOrder = [];
+let reviewIdx = 0, reviewOrder = [], reviewAnswered = false;
+let reviewPassComplete = false, passRight = 0, passWrong = 0, passMissed = [];
+
+/* ============================= HELPERS ============================= */
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function competencyDoneCount(){ return COMPETENCIES.filter(c=>state.comp[c.id]).length; }
+
+/* ============================= RENDER: HOME ============================= */
+function renderHome(){
+  const done = competencyDoneCount();
+  const navCards = [
+    ["movement","🔄","Joint Movement","Flexion, extension, abduction, adduction, rotation, circumduction"],
+    ["joints","🦴","Key Joints","16-joint chart — type predicts available movement"],
+    ["proprioception","🧠","Proprioception","GTO, Muscle Spindle Fibers, Connective Tissue Matrix"],
+    ["conformation","📐","Conformation","Balance, angulation, front/rear assembly, the 6-step assessment"],
+    ["gait","🐕‍🦺","Gait Analysis","4 phases of the stride, 6 gait types, the 4-step procedure"],
+    ["disorders","⚕️","Limb Disorders","5 common disorders — recognize, never diagnose"]
+  ];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Practicum-focused field guide</p>
+    <h1 class="title">Everything Chapter 3, one map.</h1>
+    <p class="dek">Built from your actual quiz history and the LMS's own practicum-readiness checklist. Start anywhere — the rail always gets you back.</p>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h3 class="sub" style="margin-bottom:4px;">Practicum readiness</h3>
+      <p class="muted" style="max-width:40ch;">The official 6-item competency checklist from the LMS's own "Practicum Readiness" page. Tap any item to jump to it.</p>
+    </div>
+    <div class="hero-stat">
+      <div class="num">${done}/${COMPETENCIES.length}</div>
+      <div class="lbl">competencies checked</div>
+    </div>
+  </div>
+
+  <div class="quizband">
+    <div>
+      <b style="font-family:var(--font-display); font-size:1rem;">Chapter Three Quiz: 40/40 (100%)</b>
+      <p class="muted" style="margin:2px 0 0; font-size:.85rem;">A perfect score — but conformation and gait assessment are hands-on/observational skills evaluated live at the practicum, not just quiz recall.</p>
+    </div>
+    <button class="btn primary" onclick="goto('drills')">Practice the drills →</button>
+  </div>
+
+  <div class="grid" style="gap:10px; margin-bottom:32px;">
+    ${COMPETENCIES.map(c => `
+      <div class="comp-card ${state.comp[c.id] ? 'done' : ''}" onclick="toggleCompFromCard('${c.id}', event)">
+        <div class="comp-num">${state.comp[c.id] ? '✓' : c.id.replace('c','')}</div>
+        <div class="comp-body" style="flex:1;">
+          <b>${esc(c.label)}</b>
+          <span>${esc(c.hint)}</span>
+        </div>
+        <input type="checkbox" ${state.comp[c.id] ? 'checked' : ''} onclick="event.stopPropagation(); toggleComp('${c.id}')" style="margin-top:4px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer;">
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Jump to a section</h2>
+  <div class="grid grid-3">
+    ${navCards.map(([v,ico,name,desc]) => `
+      <button class="nav-card" onclick="goto('${v}')">
+        <span class="ico">${ico}</span>
+        <b>${name}</b>
+        <span>${esc(desc)}</span>
+      </button>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Or jump straight to practice</h2>
+  <div class="grid grid-2">
+    <button class="nav-card" onclick="goto('drills')">
+      <span class="ico">🃏</span><b>Flashcard drill</b>
+      <span>${WEAKSPOT_CARDS.length} cards targeting this chapter's most confusable pairs</span>
+    </button>
+    <button class="nav-card" onclick="goto('review')">
+      <span class="ico">🎯</span><b>Full review quiz</b>
+      <span>${REVIEW_QUESTIONS.length} mixed questions across the whole chapter, 5 at a time</span>
+    </button>
+  </div>
+  `;
+}
+function toggleComp(id){ state.comp[id] = !state.comp[id]; save(); render(); }
+function toggleCompFromCard(id, ev){ if(ev.target.tagName==='INPUT') return; goto(COMPETENCIES.find(c=>c.id===id).view); }
+
+/* ============================= RENDER: MOVEMENT ============================= */
+function renderMovement(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #1, #3</p>
+    <h1 class="title">Joint Movement</h1>
+    <p class="dek">The core vocabulary — how each movement is defined, plus how the canine body moves region by region.</p>
+  </div>
+
+  <h2 class="sec">Movement Types</h2>
+  <div class="grid grid-2">
+    ${MOVEMENT_DEFS.map(m => `<div class="type-card"><div class="type-head" style="background:${m.color};"><b>${m.name}</b></div><div class="type-body"><p style="margin:0;">${m.body}</p></div></div>`).join("")}
+  </div>
+
+  <h2 class="sec">Joint Movement Chart</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Action</th><th>Description</th></tr></thead>
+    <tbody>${MOVEMENT_CHART.map(([a,d])=>`<tr><td><b>${a}</b></td><td>${d}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+
+  <h2 class="sec">Movements by Body Region</h2>
+  <div class="grid" style="gap:12px;">
+    ${BODY_REGIONS.map(r => `<div class="card"><h3 class="sub" style="color:${r.color};">${r.region}</h3><p style="margin:0;">${r.body}</p></div>`).join("")}
+  </div>
+  `;
+}
+
+/* ============================= RENDER: JOINTS ============================= */
+function renderJoints(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #2</p>
+    <h1 class="title">Key Joints</h1>
+    <p class="dek">16 joints from head to toe, with type and available movement. Pattern: joint TYPE predicts joint ACTION.</p>
+  </div>
+
+  <h2 class="sec">Joint Type → Movement Pattern</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Type</th><th>Examples</th><th>Movement it allows</th></tr></thead>
+    <tbody>${JOINT_TYPE_PATTERN.map(([t,ex,m])=>`<tr><td><b>${t}</b></td><td class="muted">${ex}</td><td>${m}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+
+  <h2 class="sec">Full Key Joints Chart</h2>
+  <div class="scroll-table">
+  <table class="cmp">
+    <thead><tr><th>Joint Name</th><th>Location</th><th>Type</th><th>Movements</th></tr></thead>
+    <tbody>${KEY_JOINTS.map(([n,loc,t,m])=>`<tr><td><b>${n}</b></td><td class="muted">${loc}</td><td>${t}</td><td>${m}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: PROPRIOCEPTION ============================= */
+function renderProprioception(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Why massage can change movement patterns</p>
+    <h1 class="title">Proprioception</h1>
+    <p class="dek">The neurological training method the body uses to learn patterns of movement — sometimes called muscle memory.</p>
+  </div>
+
+  <div class="grid grid-3">
+    ${PROPRIO.map(p => `<div class="type-card"><div class="type-head" style="background:${p.color};"><b>${p.name}</b></div><div class="type-body"><p style="margin:0;">${p.body}</p></div></div>`).join("")}
+  </div>
+
+  <div class="callout info" style="margin-top:16px;">
+    <b>Why this matters for massage:</b> "As massage practitioners it is possible to access these neural triggers to create change in or interrupt the muscle memory and replace existing proprioceptive information with better information."
+  </div>
+  `;
+}
+
+/* ============================= RENDER: CONFORMATION ============================= */
+function renderConformation(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #5</p>
+    <h1 class="title">Conformation</h1>
+    <p class="dek">Structure vs. posture, the balance numbers, front/rear assembly faults, and the 6-step assessment procedure.</p>
+  </div>
+
+  <div class="callout crit" style="margin-bottom:20px;">
+    <b>Conformation vs. Posture:</b> Conformation is the animal's fixed, born-with structure — essentially unchangeable. Posture is a chosen, changeable stance influenced by conformation AND environment/behavior/injury. Poor movement isn't always a conformation problem.
+  </div>
+
+  <h2 class="sec">Balance — the Numbers</h2>
+  <div class="grid grid-3">
+    ${BALANCE_NUMBERS.map(([n,d])=>`<div class="card" style="text-align:center;"><div class="num-mono" style="font-size:1.3rem; color:var(--accent);">${d}</div><p class="muted" style="margin:4px 0 0; font-size:.82rem;">${n}</p></div>`).join("")}
+  </div>
+
+  <h2 class="sec">Front &amp; Rear Assembly Faults</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Fault</th><th>Description</th></tr></thead>
+    <tbody>${ASSEMBLY_FAULTS.map(([n,d])=>`<tr><td><b>${n}</b></td><td>${d}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+  <p class="footnote">Foot shape: round ("cat") feet favor endurance; oval feet (elongated 3rd digit) favor speed/jumping while retaining endurance; some breeds have webbed feet for water/snow.</p>
+
+  <h2 class="sec">How to Assess Conformation</h2>
+  <div class="card">${ASSESS_STEPS.map((s,i)=>`<div class="check-row"><label><b style="font-family:var(--font-display); color:var(--accent);">${i+1}.</b> ${s}</label></div>`).join("")}</div>
+  `;
+}
+
+/* ============================= RENDER: GAIT ============================= */
+function renderGait(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #4 · highest practicum relevance</p>
+    <h1 class="title">Gait Analysis</h1>
+    <p class="dek">The 4 phases of the stride, quality markers, all 6 gait types, the 4-step observation procedure, and common faults.</p>
+  </div>
+
+  <h2 class="sec">Four Phases of the Stride</h2>
+  <div class="grid grid-4">
+    ${STRIDE_PHASES.map(([n,d],i)=>`<div class="card" style="padding:14px 16px;"><div class="num-mono" style="color:var(--accent); font-size:.9rem;">${i+1}</div><h3 class="sub" style="font-size:.95rem; margin:4px 0;">${n}</h3><p class="muted" style="margin:0; font-size:.8rem;">${d}</p></div>`).join("")}
+  </div>
+
+  <h2 class="sec">Quality Markers</h2>
+  <div class="card">${GAIT_QUALITIES.map(([n,d])=>`<div class="check-row"><label><b>${n}</b> — ${d}</label></div>`).join("")}</div>
+
+  <h2 class="sec">Types of Gaits</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Gait</th><th>Beats</th><th>Description</th></tr></thead>
+    <tbody>${GAIT_TYPES.map(([g,b,d])=>`<tr><td><b>${g}</b></td><td class="num-mono">${b}</td><td>${d}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+
+  <h2 class="sec">How to Perform a Gait Analysis</h2>
+  <div class="card">${GAIT_ANALYSIS_STEPS.map((s,i)=>`<div class="check-row"><label><b style="font-family:var(--font-display); color:var(--accent);">${i+1}.</b> ${s}</label></div>`).join("")}</div>
+
+  <h2 class="sec">Common Faults Seen in Gaits</h2>
+  <div class="card"><ul style="margin:0; padding-left:18px;">${GAIT_FAULTS.map(f=>`<li style="margin-bottom:6px;">${f}</li>`).join("")}</ul></div>
+  `;
+}
+
+/* ============================= RENDER: DISORDERS ============================= */
+function renderDisorders(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #6 · scope of practice</p>
+    <h1 class="title">Limb Disorders</h1>
+    <p class="dek">5 common conditions to recognize — never diagnose or treat.</p>
+  </div>
+
+  <div class="callout crit" style="margin-bottom:20px;">
+    <b>Scope of practice, verbatim:</b> "You should be prepared to recognize the presence of an injury, but never diagnose or treat one!" If you suspect injury or disease, it's your responsibility to suggest the owner seek veterinary counsel. Massage can be valuable in a recovery plan, but is never a substitute for veterinary care.
+  </div>
+
+  <div class="grid" style="gap:12px;">
+    ${DISORDERS.map(d => `
+      <div class="disorder-card">
+        <div class="disorder-head" style="background:${d.color};"><b>${d.name}</b></div>
+        <div class="disorder-body">
+          <h4>What it is</h4><p>${d.what}</p>
+          <h4>Symptoms</h4><p>${d.symptoms}</p>
+          <h4>Massage</h4><p>${d.massage}</p>
+        </div>
+      </div>
+    `).join("")}
+  </div>
+  `;
+}
+
+/* ============================= RENDER: DRILLS ============================= */
+function renderDrills(){
+  if(drillOrder.length===0) drillOrder = shuffle(WEAKSPOT_CARDS.map((_,i)=>i));
+  const cardIdx = drillOrder[drillIdx % drillOrder.length];
+  const card = WEAKSPOT_CARDS[cardIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Built from this chapter's confusable pairs</p>
+    <h1 class="title">Flashcard Drill</h1>
+    <p class="dek">${WEAKSPOT_CARDS.length} cards covering the terminology pairs most likely to get swapped. Tap the card to flip.</p>
+  </div>
+
+  <div class="drill-wrap">
+    <div class="drill-card" onclick="drillFlipped=!drillFlipped; render();">
+      <span class="tag">${esc(card.tag)}</span>
+      ${drillFlipped ? esc(card.a) : esc(card.q)}
+      <span class="hint">${drillFlipped ? 'tap to see question' : 'tap to reveal answer'}</span>
+    </div>
+    <div class="drill-controls">
+      <div class="drill-progress">Card ${(drillIdx % drillOrder.length)+1} / ${drillOrder.length}</div>
+      <button class="btn primary" onclick="drillIdx++; drillFlipped=false; if(drillIdx % drillOrder.length===0){ drillOrder=shuffle(WEAKSPOT_CARDS.map((_,i)=>i)); } render();">Next card →</button>
+    </div>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: FULL REVIEW ============================= */
+function startNewPass(questionIndices){
+  reviewOrder = shuffle(questionIndices);
+  reviewIdx = 0;
+  reviewAnswered = false;
+  window.__reviewPick = null;
+  reviewPassComplete = false;
+  passRight = 0; passWrong = 0; passMissed = [];
+}
+
+function renderReview(){
+  if(reviewOrder.length===0) startNewPass(REVIEW_QUESTIONS.map((_,i)=>i));
+  if(reviewPassComplete) return renderReviewSummary();
+
+  const qIdx = reviewOrder[reviewIdx];
+  const q = REVIEW_QUESTIONS[qIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">One pass through the deck, then a results screen</p>
+    <h1 class="title">Full Review</h1>
+    <p class="dek">${REVIEW_QUESTIONS.length} questions across every section. Finish the pass to see your score and what to re-drill.</p>
+  </div>
+
+  <div class="drill-wrap">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div class="drill-progress">Question ${reviewIdx+1} / ${reviewOrder.length}</div>
+      <div class="drill-score">
+        <span style="color:var(--good);"><b>${passRight}</b> right</span>
+        <span style="color:var(--crit);"><b>${passWrong}</b> wrong</span>
+      </div>
+    </div>
+    <div class="pbar-outer" style="margin-bottom:18px;"><div class="pbar-inner" style="width:${(reviewIdx/reviewOrder.length)*100}%;"></div></div>
+
+    <div class="card" style="padding:22px 24px;">
+      <h3 class="sub" style="margin-bottom:16px;">${esc(q.q)}</h3>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        ${q.options.map((opt,i) => {
+          let cls = "btn"; let style="text-align:left; justify-content:flex-start; width:100%;";
+          if(reviewAnswered){
+            if(i===q.a) cls += " right";
+            else if(i===window.__reviewPick) cls += " wrong";
+          }
+          return `<button class="${cls}" style="${style}" ${reviewAnswered?'disabled':''} onclick="answerReview(${i}, ${q.a})">${esc(opt)}</button>`;
+        }).join("")}
+      </div>
+    </div>
+
+    ${reviewAnswered ? `<div style="margin-top:14px; text-align:center;"><button class="btn primary" onclick="nextReview()">${reviewIdx+1 >= reviewOrder.length ? 'See results →' : 'Next question →'}</button></div>` : ""}
+  </div>
+  `;
+}
+
+function renderReviewSummary(){
+  const total = passRight + passWrong;
+  const pct = total ? Math.round((passRight/total)*100) : 0;
+  const lifetimeTotal = state.reviewScore.right + state.reviewScore.wrong;
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Round complete</p>
+    <h1 class="title">Results</h1>
+    <p class="dek">Here's how this round went. Missed ones are worth another pass before the quiz.</p>
+  </div>
+
+  <div class="card" style="text-align:center; padding:32px 26px; margin-bottom:22px;">
+    <div style="font-family:var(--font-display); font-size:2.6rem; font-weight:700; color:var(--accent); line-height:1;">${pct}%</div>
+    <p class="muted" style="margin-top:8px;">${passRight} correct / ${passWrong} missed out of ${total}</p>
+    ${lifetimeTotal ? `<p class="footnote" style="margin-top:6px;">Lifetime: ${state.reviewScore.right} right / ${state.reviewScore.wrong} wrong across all rounds</p>` : ""}
+  </div>
+
+  ${passMissed.length ? `
+    <h2 class="sec">Questions you missed this round</h2>
+    <div class="grid" style="gap:10px; margin-bottom:6px;">
+      ${passMissed.map(m => `
+        <div class="card" style="padding:14px 18px;">
+          <p style="margin:0 0 4px;"><b>${esc(m.q)}</b></p>
+          <p class="muted" style="margin:0;">Correct answer: ${esc(m.correct)}</p>
+        </div>
+      `).join("")}
+    </div>
+  ` : `<div class="callout info">Perfect round — no misses.</div>`}
+
+  <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+    ${passMissed.length ? `<button class="btn primary" onclick="startNewPass(passMissed.map(m=>m.qIdx)); render();">Practice missed questions (${passMissed.length}) →</button>` : ""}
+    <button class="btn ${passMissed.length ? '' : 'primary'}" onclick="startNewPass(REVIEW_QUESTIONS.map((_,i)=>i)); render();">Start a new full round →</button>
+  </div>
+  `;
+}
+
+function answerReview(picked, correct){
+  window.__reviewPick = picked;
+  reviewAnswered = true;
+  const qIdx = reviewOrder[reviewIdx];
+  if(picked===correct){
+    state.reviewScore.right++; passRight++;
+  } else {
+    state.reviewScore.wrong++; passWrong++;
+    passMissed.push({qIdx, q:REVIEW_QUESTIONS[qIdx].q, correct:REVIEW_QUESTIONS[qIdx].options[correct]});
+  }
+  save();
+  render();
+}
+
+function nextReview(){
+  reviewAnswered = false; window.__reviewPick = null;
+  if(reviewIdx+1 >= reviewOrder.length){
+    reviewPassComplete = true;
+  } else {
+    reviewIdx++;
+  }
+  render();
+}
+
+/* ============================= NAV / BOOT ============================= */
+function goto(view){ currentView = view; render(); window.scrollTo({top:0, behavior:"instant"}); }
+function render(){
+  document.querySelectorAll('.rail-btn').forEach(b => b.classList.toggle('active', b.dataset.view===currentView));
+  const renderers = {home:renderHome, movement:renderMovement, joints:renderJoints, proprioception:renderProprioception, conformation:renderConformation, gait:renderGait, disorders:renderDisorders, drills:renderDrills, review:renderReview};
+  document.getElementById('main').innerHTML = renderers[currentView]();
+}
+document.querySelectorAll('.rail-btn').forEach(b => b.addEventListener('click', () => goto(b.dataset.view)));
+render();
+
+</script>
+</body>
+</html>

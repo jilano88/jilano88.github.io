@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter One Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --surface-2:#f3f2ee;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-muted:#898781;
+  --border:rgba(11,11,11,0.10); --grid:#e1e0d9;
+  --accent:#2a78d6; --accent-soft:#e8f0fb;
+  --canine:#2a78d6; --feline:#eb6834; --calm:#1baf7a; --offense:#eda100; --stress:#e87ba4; --defense:#d03b3b; --handling:#4a3aa7;
+  --g1:#2a78d6; --g2:#eb6834; --g3:#1baf7a; --g4:#eda100; --g5:#e87ba4; --g6:#008300; --g7:#4a3aa7; --g8:#6b5344;
+  --seq1:#cde2fb; --seq2:#9ec5f4; --seq3:#6da7ec; --seq4:#3987e5; --seq5:#184f95;
+  --good:#0ca30c; --warn:#c98500; --crit:#d03b3b;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+    --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+    --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+    --accent:#3987e5; --accent-soft:#122840;
+    --canine:#3987e5; --feline:#d95926; --calm:#199e70; --offense:#c98500; --stress:#d55181; --defense:#e66767; --handling:#9085e9;
+    --g1:#3987e5; --g2:#d95926; --g3:#199e70; --g4:#c98500; --g5:#d55181; --g6:#1fae1f; --g7:#9085e9; --g8:#a1846b;
+    --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+    --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+  --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+  --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+  --accent:#3987e5; --accent-soft:#122840;
+  --canine:#3987e5; --feline:#d95926; --calm:#199e70; --offense:#c98500; --stress:#d55181; --defense:#e66767; --handling:#9085e9;
+  --g1:#3987e5; --g2:#d95926; --g3:#199e70; --g4:#c98500; --g5:#d55181; --g6:#1fae1f; --g7:#9085e9; --g8:#a1846b;
+  --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+  --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--page); color:var(--ink); font-family:var(--font-body);
+  min-height:100vh; line-height:1.5;
+}
+.app{display:grid; grid-template-columns:232px 1fr; min-height:100vh;}
+@media (max-width:860px){ .app{grid-template-columns:1fr;} .rail{position:sticky; top:0; z-index:20;} }
+
+/* ---- Rail ---- */
+.rail{
+  background:var(--surface); border-right:1px solid var(--border);
+  padding:18px 12px 24px; display:flex; flex-direction:column; gap:2px;
+}
+.rail-brand{
+  font-family:var(--font-display); font-weight:700; font-size:1.18rem;
+  padding:4px 10px 14px; letter-spacing:.2px;
+}
+.rail-brand small{display:block; font-family:var(--font-body); font-weight:600; font-size:.68rem;
+  text-transform:uppercase; letter-spacing:.09em; color:var(--ink-muted); margin-top:3px;}
+.rail-btn{
+  display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:9px;
+  border:none; background:none; color:var(--ink-2); font:inherit; font-size:.87rem; font-weight:600;
+  text-align:left; cursor:pointer; width:100%;
+}
+.rail-btn:hover{background:var(--surface-2); color:var(--ink);}
+.rail-btn.active{background:var(--accent-soft); color:var(--accent);}
+.rail-ico{width:19px; text-align:center; flex-shrink:0; font-size:1.02rem;}
+.rail-foot{margin-top:auto; padding:14px 10px 2px; font-size:.72rem; color:var(--ink-muted); border-top:1px solid var(--border); margin-top:14px;}
+
+/* ---- Main ---- */
+.main{padding:26px 30px 70px; max-width:1080px;}
+@media (max-width:640px){ .main{padding:18px 16px 60px;} }
+.view{display:none;}
+.view.active{display:block;}
+.view-head{margin-bottom:22px;}
+.eyebrow{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin:0 0 6px;}
+h1.title{font-family:var(--font-display); font-weight:700; font-size:2rem; margin:0 0 8px; text-wrap:balance;}
+.dek{color:var(--ink-2); font-size:1rem; max-width:64ch; margin:0;}
+
+.card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px;}
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:760px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} }
+
+h2.sec{font-family:var(--font-display); font-weight:600; font-size:1.3rem; margin:30px 0 12px;}
+h2.sec:first-child{margin-top:0;}
+h3.sub{font-family:var(--font-display); font-weight:600; font-size:1.06rem; margin:0 0 8px;}
+p{margin:0 0 10px;}
+.muted{color:var(--ink-2);}
+code, .mono{font-family:var(--font-mono);}
+
+/* buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:9px;
+  border:1px solid var(--border); background:var(--surface); color:var(--ink); font:inherit; font-weight:600;
+  font-size:.86rem; cursor:pointer;
+}
+.btn:hover{background:var(--surface-2);}
+.btn.primary{background:var(--accent); color:#fff; border-color:transparent;}
+.btn.primary:hover{filter:brightness(1.06);}
+.btn:focus-visible, .rail-btn:focus-visible, input:focus-visible, .chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+/* checklist */
+.check-row{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-top:1px solid var(--grid);}
+.check-row:first-child{border-top:none;}
+.check-row input{margin-top:3px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer; flex-shrink:0;}
+.check-row label{cursor:pointer; font-size:.92rem;}
+.check-row.done label{color:var(--ink-muted); text-decoration:line-through;}
+
+/* progress */
+.pbar-outer{background:var(--surface-2); border-radius:8px; height:9px; overflow:hidden;}
+.pbar-inner{background:var(--accent); height:100%; width:0%; transition:width .3s ease;}
+
+/* pills */
+.pill{display:inline-block; padding:3px 10px; border-radius:999px; font-size:.72rem; font-weight:700;}
+
+/* Home hero + competency map */
+.hero{
+  background:linear-gradient(135deg, var(--accent-soft), var(--surface));
+  border:1px solid var(--border); border-radius:16px; padding:26px 26px;
+  display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:24px;
+}
+@media (max-width:700px){ .hero{flex-direction:column; align-items:flex-start;} }
+.hero-stat{text-align:right;}
+@media (max-width:700px){ .hero-stat{text-align:left;} }
+.hero-stat .num{font-family:var(--font-display); font-size:2.3rem; font-weight:700; color:var(--accent); line-height:1;}
+.hero-stat .lbl{font-size:.75rem; color:var(--ink-2); text-transform:uppercase; letter-spacing:.06em; margin-top:3px;}
+
+.quizband{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:24px;
+}
+.quizband .qnum{font-family:var(--font-display); font-weight:700; font-size:1.5rem; color:var(--good);}
+
+.comp-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px;
+  display:flex; gap:12px; align-items:flex-start; cursor:pointer; transition:border-color .15s;
+}
+.comp-card:hover{border-color:var(--accent);}
+.comp-num{
+  font-family:var(--font-display); font-weight:700; font-size:1.15rem; color:var(--accent);
+  width:28px; flex-shrink:0;
+}
+.comp-card.done .comp-num{color:var(--good);}
+.comp-body b{display:block; font-size:.9rem; margin-bottom:2px;}
+.comp-body span{font-size:.8rem; color:var(--ink-2);}
+
+/* nav cards on home */
+.nav-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;
+  cursor:pointer; text-align:left; display:flex; flex-direction:column; gap:6px;
+}
+.nav-card:hover{border-color:var(--accent);}
+.nav-card .ico{font-size:1.4rem;}
+.nav-card b{font-family:var(--font-display); font-size:1.02rem; font-weight:600;}
+.nav-card span{font-size:.8rem; color:var(--ink-2);}
+
+/* comparison / stance cards */
+.type-card{border-radius:14px; overflow:hidden; border:1px solid var(--border);}
+.type-head{padding:14px 18px; color:#fff;}
+.type-head b{font-family:var(--font-display); font-size:1.1rem; display:block;}
+.type-head span{font-size:.76rem; opacity:.9;}
+.type-body{padding:14px 18px; background:var(--surface); font-size:.83rem;}
+.type-body h4{margin:10px 0 4px; font-size:.76rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted);}
+.type-body h4:first-child{margin-top:0;}
+.type-body ul{margin:0; padding-left:18px;}
+.type-body li{margin-bottom:3px;}
+
+.callout{border-radius:12px; padding:14px 18px; border:1px solid; font-size:.86rem;}
+.callout.warn{background:color-mix(in srgb, var(--warn) 12%, var(--surface)); border-color:var(--warn); color:var(--ink);}
+.callout.info{background:var(--accent-soft); border-color:var(--accent); color:var(--ink);}
+.callout.crit{background:color-mix(in srgb, var(--crit) 10%, var(--surface)); border-color:var(--crit); color:var(--ink);}
+
+/* comparison table */
+table.cmp{width:100%; border-collapse:collapse; font-size:.85rem;}
+table.cmp th{text-align:left; padding:8px 10px; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); border-bottom:1px solid var(--border);}
+table.cmp td{padding:9px 10px; border-bottom:1px solid var(--grid); vertical-align:top;}
+table.cmp tr:last-child td{border-bottom:none;}
+.fam-dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px;}
+.overflow-x{overflow-x:auto;}
+.num-mono{font-family:var(--font-mono); font-weight:700;}
+
+/* flashcard drill */
+.drill-wrap{max-width:560px; margin:0 auto;}
+.drill-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:34px 26px;
+  min-height:180px; display:flex; align-items:center; justify-content:center; text-align:center;
+  cursor:pointer; font-size:1.05rem; font-weight:600; position:relative;
+}
+.drill-card .tag{position:absolute; top:14px; left:16px; font-size:.68rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink-muted);}
+.drill-card .hint{position:absolute; bottom:12px; font-size:.72rem; color:var(--ink-muted); font-weight:400;}
+.drill-controls{display:flex; justify-content:space-between; align-items:center; margin-top:16px; gap:10px;}
+.drill-progress{font-size:.8rem; color:var(--ink-2); font-weight:600;}
+.drill-score{display:flex; gap:14px; font-size:.82rem;}
+.drill-score b{font-family:var(--font-display);}
+.btn.wrong{border-color:var(--crit); color:var(--crit);}
+.btn.right{border-color:var(--good); color:var(--good);}
+
+/* breed / discipline cards */
+.breed-card{border-radius:14px; overflow:hidden; border:1px solid var(--border); background:var(--surface);}
+.breed-head{padding:11px 16px; color:#fff;}
+.breed-head b{font-family:var(--font-display); font-size:1rem; display:block;}
+.breed-body{padding:12px 16px; font-size:.82rem;}
+.breed-body .ex{color:var(--ink-2); margin-bottom:6px;}
+
+.disc-card{border-radius:12px; padding:14px 16px; border:1px solid var(--border); background:var(--surface);}
+.disc-card b{font-family:var(--font-display); font-size:.98rem; display:block; margin-bottom:4px;}
+.disc-card p{font-size:.82rem; margin:0;}
+.disc-card .stat{font-family:var(--font-mono); font-size:.72rem; color:var(--accent); font-weight:700;}
+
+.footnote{font-size:.76rem; color:var(--ink-muted); margin-top:6px;}
+::selection{background:var(--accent); color:#fff;}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail">
+    <div class="rail-brand">Chapter One<small>Field Guide</small></div>
+    <button class="rail-btn" data-view="home"><span class="rail-ico">🏠</span>Home</button>
+    <button class="rail-btn" data-view="senses"><span class="rail-ico">👁️</span>Senses</button>
+    <button class="rail-btn" data-view="signals"><span class="rail-ico">🐾</span>Signals &amp; Stances</button>
+    <button class="rail-btn" data-view="handling"><span class="rail-ico">🤲</span>Handling</button>
+    <button class="rail-btn" data-view="training"><span class="rail-ico">🎓</span>Training &amp; Grooming</button>
+    <button class="rail-btn" data-view="breeds"><span class="rail-ico">🐕</span>Breeds &amp; Disciplines</button>
+    <button class="rail-btn" data-view="drills"><span class="rail-ico">🃏</span>Flashcard Drill</button>
+    <button class="rail-btn" data-view="review"><span class="rail-ico">🎯</span>Full Review</button>
+    <div class="rail-foot">NWSAM Ch.1 · built from your live coursework &amp; quiz history</div>
+  </nav>
+  <main class="main" id="main"></main>
+</div>
+<script>
+/* ============================= DATA ============================= */
+
+const COMPETENCIES = [
+  {id:"c1", label:"Demonstrate the proper way to safely handle a small animal", view:"handling", hint:"Approach → restrain → position, step by step"},
+  {id:"c2", label:"Define basic factors influencing small animal behavior", view:"signals", hint:"Pack dynamics, stress vs. displacement"},
+  {id:"c3", label:"Recognize basic canine body language", view:"signals", hint:"Offensive/defensive stances + feedback stream"},
+  {id:"c4", label:"Explain characteristics of major breed groups", view:"breeds", hint:"8 groups, quick reference"},
+  {id:"c5", label:"Discuss some of the common disciplines", view:"breeds", hint:"Agility, flyball, SAR, and more"}
+];
+
+const QUIZ = {score:"38/40", pct:"95%", grade:"A+"};
+
+/* ---- Senses ---- */
+const SENSE_COMPARE = [
+  {row:"Hearing range", human:"20 – 20,000 Hz", dog:"up to 40,000 Hz", cat:"up to 65,000 Hz"},
+  {row:"Field of vision", human:"180°", dog:"180° (broad-headed) – 270° (sight hounds)", cat:"280° binocular"},
+  {row:"Smell vs. human", human:"~5 million receptors", dog:"~200M+ receptors, several-hundred-x more sensitive (bloodhound ≈1000x)", cat:"~14x more sensitive"}
+];
+const CANINE_SENSE_FACTS = [
+  "Puppies are born blind; sight develops around day 9.",
+  "The dog's eye is flatter than a human's → more sensitive to light and movement.",
+  "Nictitating membrane (3rd eyelid) sweeps the eye clean like a windshield wiper.",
+  "Tapetum lucidum glows blue/green/gold normally — a red glow signals a damaged or unhealthy eye.",
+  "Dogs are partially color-blind: they have cone cells for blue and yellow only.",
+  "18+ muscles let a dog tilt, rotate, raise, and lower each ear independently.",
+  "Dogs locate a sound's source in 0.006 seconds and hear it from up to 4x farther away than humans.",
+  "Per this course's text: dogs (like humans) do NOT have a Jacobsen's organ — cats and many other animals do."
+];
+const FELINE_SENSE_FACTS = [
+  "Cat vision is superior at night, inferior in daylight, vs. humans — best focal view is 7–20 feet.",
+  "Cats don't need to blink regularly to lubricate their eyes — likely an advantage when hunting.",
+  "The feline iris closes to a tiny slit in bright light, or opens to 12mm for night vision.",
+  "Nictitating membrane closes from the side; partial closure can signal illness (though also visible when sleepy/content).",
+  "Siamese cats commonly have double-vision and adopt a squint to compensate.",
+  "White cats aren't inherently deaf — but white cats with odd-colored eyes are often deaf in the ear closest to the blue eye.",
+  "Jacobsen's organ (roof of the mouth) is used with a wrinkled muzzle + lowered chin + hanging tongue.",
+  "Kittens nurse from ONE specific teat, recognized by its unique scent trail."
+];
+const FELINE_TOUCH_TASTE = [
+  "Cat taste receptors (front/back/sides of tongue) do NOT respond to sweet or sugary tastes.",
+  "Taste is closely linked to smell — a congested/blocked nose often means little or no appetite.",
+  "~24 movable whiskers (vibrissae) in 4 rows per upper lip, plus cheeks, eye tufts, chin, inner \"wrists,\" and back of legs.",
+  "Whisker roots sit 3x deeper than ordinary hairs; whiskers are 2x+ thicker than ordinary hairs.",
+  "Whiskers form a \"basket shape\" around the muzzle when prey is too close for the eyes to focus.",
+  "Whisker body language: forward = inquisitive/friendly; flat against the face = defensive/aggressive."
+];
+
+/* ---- Signals & Stances ---- */
+const CANINE_OFFENSIVE = ["Corner of the mouth is forward","Ears forward, body forward and attentive","Hackles may be raised, standing up on the toes","Tail upright, may be held stiffly"];
+const CANINE_DEFENSIVE = ["Corners of the mouth drawn back","Ears back, body low to the ground or sulking","Hackles may be raised, nose may be wrinkled","Tail tucked between the legs or under the body"];
+const FELINE_OFFENSIVE = ["Facial whiskers forward, body upright and attentive","Hair fluffed out, ears erect","Pupils narrow into slits","Tail raised and waving","Escalating: ears go farther back, whiskers even more forward, tail twitches"];
+const FELINE_DEFENSIVE = ["Ears flat or sideways","Coat and whiskers bristle","Back is arched","Mouth open (hiss or spit)","Cringes close to the ground in submission","Pupils dilate"];
+
+const STRESS_SIGNALS = [
+  ["Panting","Normal when hot/excited/just exercised — otherwise, may signal stress."],
+  ["Shedding","Sudden, excessive shedding from skin tensing — often seen at the vet clinic."],
+  ["Vocalizations","Whining, excessive barking, or growling — usually signals conflict."],
+  ["Flight-or-Fight","Flees if possible; may fight if cornered or if flight has been discouraged before."],
+  ["Loss of Bowel or Bladder Control","—"],
+  ["Trembling / Shivering","Not associated with cold temperatures."]
+];
+const DISPLACEMENT_BEHAVIORS = [
+  ["Scratching","Done without irritation such as fleas."],
+  ["Yawning","Excessive, with added signs of restlessness — distinct from a relaxed/tired yawn."],
+  ["Pacing or Stalking","Often seen in dogs confined for prolonged periods; may run frantically in a pattern."],
+  ["Shaking the Body","Like shaking off after a bath — as if shaking off a bad feeling."]
+];
+const CALMING_SIGNALS = [
+  ["Moving Slowly in an Arc","Approaching on a curving line instead of nose-to-nose, avoiding head-on confrontation."],
+  ["Sniffing the Ground","Diverts attention from an escalating conflict."],
+  ["Tongue Flicking","Rapid flicks over the nose/lips signal no threat is intended."],
+  ["Blinking or Turning Away","Signals discomfort — but can ALSO be a stress indicator, per the text."],
+  ["Yawning","A request for reassurance between dogs — you can use it to signal calm to your own dog."],
+  ["Splitting Up","Going physically between two dogs (or a dog and person) to defuse tension."]
+];
+const FEEDBACK_POS = ["Dog stays nearby","Wagging tail with interest","Soft appearance to the eyes, or relaxed/sleepy eyes","Lying down, rolling onto back happily (without submissiveness)","Stretching and yawning","Falling asleep","Calm breathing, heavy sighs, or changes in breathing pattern"];
+const FEEDBACK_NEG = ["Dog attempts to leave the area or acts restless","Hard eyes, or a darting/nervous gaze","Whites of eyes exposed (\"whale-eye\")","Aggressive behaviors","Cowering or submissive gestures","Excessive yawning indicating stress or displacement behaviors"];
+
+/* ---- Handling ---- */
+const APPROACH_DOG = [
+  "Avoid direct eye contact with an unfamiliar dog — look above the eyes or divert your gaze slightly.",
+  "Approach near/at the shoulder, circling in — mimic how dogs approach each other.",
+  "Don't approach head-on or surprise a dog from the rear.",
+  "Discourage jumping/exuberance with gentle-but-firm downward pressure + a voice command (\"Down\"/\"Off\").",
+  "Let the dog make first contact — chat with the guardian or collect chart info while it assesses you.",
+  "If the dog approaches: one single pat, then return to what you were doing — don't over-engage yet.",
+  "Never lean over the dog's head or pat from above — it's threatening and encourages jumping/circling.",
+  "Pet behind the head, near the neck or shoulder, instead.",
+  "Stay within the dog's line-of-sight while working around it.",
+  "Once contact is established, keep one hand on the dog at all times."
+];
+const APPROACH_CAT_TOWEL = [
+  "Drape a blanket or towel over the cat's body — it will usually sink down and stay still once covered.",
+  "Place one hand over the cat's shoulders and hold firmly.",
+  "Fold the towel away from the head.",
+  "Wrap the cat in the blanket and transfer it to the work area.",
+  "As the cat relaxes, gradually remove more of the towel."
+];
+const APPROACH_CAT_CRATE = [
+  "Stand in the doorway (blocking escape) and let the cat come to you at the front of the cage.",
+  "Never reach in and pull the cat toward you — even gentle cats may sulk, scratch, or bite.",
+  "Waiting also avoids leaning into the cage, which strains your own back."
+];
+const POSITIONING_STANDING = ["Draw the dog's body against your own as you kneel beside it.","Place one arm around the neck and the other over the back and under the belly — mind your face placement to avoid being bitten."];
+const POSITIONING_SITTING = [
+  "First try any verbal/physical command the dog already knows, like \"Sit.\"",
+  "Failing a response, stroke down the back to the sacrum (do NOT press) and verbally ask — lifting the chin can help too.",
+  "If the dog resists, lift one hind leg off the ground and use your body weight to urge it to sit.",
+  "Alternatively, use your forearm behind and just above both hocks to press the legs into a sitting position."
+];
+
+/* ---- Training & Grooming ---- */
+const TRAINING_METHODS = [
+  {name:"Reward-and-Punishment", body:"Oldest, most common method for untrained house pets. Least reliable — rewards often given too rarely/inconsistently, and mistimed punishment risks the dog associating fear with the handler instead of the behavior."},
+  {name:"Reward-Only", body:"Modern trend — rewards good behavior and engineers situations to elicit it more often. \"Reward\" doesn't have to mean food: a pat or attention counts too. Ignoring bad behavior is itself a mild punishment."},
+  {name:"Cue/Association (Clicker)", body:"Uses a cue to associate a request with a behavior. Traces back to marine-mammal training (dolphins/orcas) at wild-animal shows, which spread into dog training."}
+];
+const TRAINING_RULES = [
+  "Consistency is the key to any training method — an unpredictable environment can't teach.",
+  "Every dog should know two commands regardless of method: stop on command, and return to guardian on command.",
+  "As a practitioner, don't judge a guardian's training choice, and don't introduce new commands inconsistently.",
+  "Give training advice only if it's solicited.",
+  "You always have the right to refuse to work on any dog.",
+  "Report suspected neglect or abuse to the proper authorities."
+];
+const GROOMING_EQUIPMENT = ["Comb (for feathers, long hair, or mats)","Bristle brush (to smooth the coat)","Towel or clean rag (eyes, ears, nose, feet)","Leash and collar"];
+const GROOMING_GOOD = ["Check the dog over regularly for signs of injury","Remove dirt and matted material from the coat gently","Wipe out eyes, nose, and ears","Check footpads for foreign objects, rawness, or injury","Check the mouth for injury, tooth cleanliness, and breath"];
+const GROOMING_POOR = ["Thick, matted hair","Caked mud and dirt","Untended dermatitis","Untended hot spots or seeping wounds","Excessive or dried eye/nose exudate","Untended injuries","Fetid odor from ears, footpads, or near the anal sacs"];
+
+/* ---- Breeds & Disciplines ---- */
+const BREED_GROUPS = [
+  {name:"Sporting", color:"var(--g1)", ex:"Setters, Pointers, Retrievers, Spaniels, Weimaraner, Vizsla", note:"Naturally active/alert, strong water & field instincts — need regular vigorous exercise."},
+  {name:"Hound", color:"var(--g2)", ex:"Beagle, Bloodhound, Greyhound, Afghan Hound, Dachshund, Basenji", note:"Scent hounds (trail by smell) vs. sight hounds a.k.a. gazehounds (hunt by sight) — two different hunting styles in one group."},
+  {name:"Herding", color:"var(--g3)", ex:"Border Collie, Australian/German Shepherd, Corgi, Old English Sheepdog", note:"Corgi is a member despite not being widely 'recognized' as a herding dog — its low build lets it nip cattle heels and dodge kicks."},
+  {name:"Terrier", color:"var(--g4)", ex:"Jack Russell (a.k.a. Parson Russell), Airedale, West Highland, Cairn", note:"Bred to hunt/kill vermin. Miniature Schnauzer lives here — Standard Schnauzer is Working Group."},
+  {name:"Toy", color:"var(--g5)", ex:"Chihuahua, Pomeranian, Shih Tzu, Pug, Italian Greyhound, Miniature Pinscher", note:"The ONLY group named for size, not activity/temperament."},
+  {name:"Non-Sporting", color:"var(--g6)", ex:"Bulldog, Dalmatian, Chow Chow, Poodle, Shiba Inu", note:"A varied collection by size/coat/personality. Poodle also appears in Toy — size variety determines group."},
+  {name:"Working", color:"var(--g7)", ex:"Akita, Great Dane, Rottweiler, Doberman Pinscher, Saint Bernard, Standard Schnauzer", note:"Bred for guarding, sledding, water rescue — size alone demands proper training."},
+  {name:"Toy vs. others cross-refs", color:"var(--g8)", ex:"Italian Greyhound (Toy, despite \"gazehound\" naming); Miniature Pinscher (Toy) vs. Doberman/plain Pinscher (Working)", note:"\"Pinscher\" spans two groups by size — a built-in quiz trap."}
+];
+const DISCIPLINES = [
+  {name:"Agility", stat:"~100×100 ft course", body:"Off-leash obstacle course for time + accuracy. No food/toy incentives; handler can't touch dog or obstacles. Began in Great Britain, imported to the US in 1977 (Crufts Dog Show)."},
+  {name:"Flyball", stat:"4 dogs/team · 51 ft lane", body:"Relay race over hurdles to retrieve a ball. Jump height = shortest dog's withers height − 4in (min 8in, max 16in). \"Fastest growing dog sport in North America\" per the course."},
+  {name:"Go-to-Ground", stat:"12ft novice / 30ft open tunnel", body:"Terriers hunt caged quarry (often rats) through a buried, dark tunnel ~9in wide. Timed from release to reaching the quarry."},
+  {name:"Herding", stat:"Sheep, cattle, guard roles", body:"Border Collies (sheep, \"obsessive gather/drive\"), Corgis (cattle, low build), Anatolian Shepherds (guard herds from predators) — three different herding roles."},
+  {name:"Lure Coursing", stat:"600yd (AKC) / 500yd (ASFA)", body:"Sight hounds chase a mechanical lure at 35–40 mph across a course mimicking rabbit movement. Practiced since ancient Egypt."},
+  {name:"Obedience & CGC", stat:"CGC est. 1989, AKC", body:"Off-leash obedience is \"the hallmark of a well-trained dog.\" Canine Good Citizen: <30-min evaluation, 10 objectives, all must pass."},
+  {name:"Schutzhund", stat:"1901 Germany / 1970 US", body:"German for \"protection dog.\" 3 aspects: Tracking, Obedience, Protection. Test developed for German Shepherds; parent club SV created it, VDH administers international rules."},
+  {name:"Search & Rescue", stat:"Go find → Recall → Refind", body:"Dog searches, returns to handler (recall), signals a trained indication, leads handler back to the subject (refind, cued \"Show Me\")."},
+  {name:"Military & Law Enforcement", stat:"Stubby · Chips · Smoky", body:"Historic war dogs (WWI's Stubby, WWII's Chips & Smoky). Modern police dogs deter by presence/growl as much as by force; drug/arson dogs alert by scratching or sitting."},
+  {name:"Assistance & Therapy Dogs", stat:"Guide · Hearing · Service · Therapy", body:"Assistance dog (umbrella) → Guide, Hearing, Service (incl. Medical Response). Therapy dog is a SEPARATE category — defined by temperament, not task-training."}
+];
+
+/* ---- Weak-spot flashcards (2 actual missed quiz Qs first) ---- */
+const WEAKSPOT_CARDS = [
+  {tag:"Missed on your quiz", q:"Which discipline is a game designed for a vermin-hunting terrier — agility, search and rescue, go-to-ground, or lure coursing?", a:"Go-to-Ground. (You answered lure coursing — that's the sight-hound discipline chasing a mechanical lure. Go-to-Ground is specifically terriers hunting caged quarry through a buried tunnel.)"},
+  {tag:"Missed on your quiz", q:"A cat has a range of vision of how many degrees — 90, 150, 200, or 280?", a:"280°. (You answered 200 — the text says: \"Placement of the eyes and ligaments within the eye provide the cat with an incredible 280 degree range of binocular vision.\")"},
+  {tag:"Yawning ×3", q:"Yawning has three different meanings in this chapter depending on context. Name all three.", a:"(1) Calming signal — a single, relaxed yawn requesting/offering reassurance between dogs. (2) Displacement behavior / stress sign — EXCESSIVE yawning plus restlessness. (3) Positive massage feedback — \"stretching and yawning\" as contentment. The qualifier \"excessive + restless\" is what flags it as stress."},
+  {tag:"Stance cues", q:"Hackles raised — is this diagnostic of an offensive or defensive canine stance?", a:"Neither alone. Hackles can be raised in BOTH the offensive and defensive checklists — you have to read the whole picture (ears, mouth corners, tail, body height) together."},
+  {tag:"Feline pupils", q:"In a cat, do NARROW pupils or DILATED pupils signal the offensive stance?", a:"Narrow (slit) pupils = offensive. Dilated pupils = defensive. Easy to assume dilated means calm — it's the opposite here."},
+  {tag:"Stress vs. displacement", q:"What's the relationship between \"stress signal\" and \"displacement behavior\" as this course defines them?", a:"Stress signal is the broad category (any discomfort-display behavior, including first-choice behaviors like running away or barking). Displacement behavior is a narrower subset — used only when the animal's first-choice behavior isn't available (e.g. pacing instead of fleeing when confined)."},
+  {tag:"Approaching a dog", q:"Should you make direct eye contact when approaching an unfamiliar dog?", a:"No — avoid it. Look above the eyes or divert your gaze slightly; direct eye contact can read as a challenge or threat."},
+  {tag:"Approaching a dog", q:"Once you've made contact with a dog you're about to massage, what should you keep doing throughout?", a:"Keep one hand on the dog at all times — it provides a sense of security and keeps the dog aware of your position."},
+  {tag:"Positioning caution", q:"Why should you never roll a dog over on its spine to switch sides during a massage?", a:"Older dogs or dogs with postural challenges (common massage candidates) risk spine, ligament, or nerve damage. Correct procedure: have the dog stand up, turn around, then lie back down on the other side."},
+  {tag:"Cat restraint", q:"What's the correct way to get a cat out of a kennel/crate for a session?", a:"Stand in the doorway and let the cat come to you. Reaching in and pulling it toward you is not well-accepted, even by gentle cats — it feels threatening."},
+  {tag:"Breed groups", q:"Which breed group is the ONLY one named for size rather than activity or temperament?", a:"Toy Group. Every other group (Sporting, Hound, Herding, Terrier, Working, Non-Sporting) is named for function or characteristic."},
+  {tag:"Breed groups", q:"The Corgi is bred to work cattle — so why is it a quiz trap for the Herding Group?", a:"The text explicitly calls it out as a breed \"not generally recognized as a herding dog due to its size and stature\" — despite being a genuine Herding Group member with a build (low-to-the-ground) specifically suited to nipping heels and dodging kicks."},
+  {tag:"Numbers", p:true, q:"Which came first: wolf ancestors diverging from other wolves, or dogs being domesticated from those ancestors? Give both numbers.", a:"Wolf ancestors diverged from other wolves ~100,000 years ago. Dogs were domesticated from those ancestors ~15,000 years ago (in East Asia, possibly China) — making dogs the first species domesticated by humans."},
+  {tag:"Numbers", q:"Lure coursing minimum course length — is it 600 or 500 yards for AKC vs. ASFA?", a:"AKC = 600 yards. ASFA (American Sighthound Field Association) = 500 yards. A classic swap trap."},
+  {tag:"Assistance dog taxonomy", q:"Is a therapy dog a type of assistance dog?", a:"No — the text explicitly says they are \"not to be confused.\" Assistance dog is its own umbrella (Guide, Hearing, Service/Medical Response). Therapy dog is a separate category defined by temperament, not task-training."},
+  {tag:"Sense numbers", q:"Rank human, dog, and cat hearing range from lowest to highest cycles/second.", a:"Human (20–20,000 Hz) < Dog (up to 40,000 Hz) < Cat (up to 65,000 Hz)."},
+  {tag:"Treats rule", q:"Is it okay to use a treat to open a conversation / first contact with a new animal?", a:"No — discouraged, since guardians may not want the calories and many pets have restrictive diets/allergies. A treat AFTER the massage is fine, but only with guardian permission."}
+];
+
+/* ---- Full review question bank ---- */
+const REVIEW_QUESTIONS = [
+  {q:"A cat has a range of vision of how many degrees?", options:["90","150","200","280"], a:3},
+  {q:"Which discipline is a game designed for a vermin-hunting terrier?", options:["Agility","Search and rescue","Go-to-ground","Lure coursing"], a:2},
+  {q:"Dog hearing range tops out around:", options:["20,000 Hz","40,000 Hz","65,000 Hz","100,000 Hz"], a:1},
+  {q:"Cat hearing range tops out around:", options:["20,000 Hz","40,000 Hz","65,000 Hz","10,000 Hz"], a:2},
+  {q:"A red glow from the tapetum lucidum in a dog's eye signals:", options:["Normal night vision","Partial color blindness","A damaged or unhealthy eye","Nothing of concern"], a:2},
+  {q:"Per this course's text, which animal has a Jacobsen's organ?", options:["Dogs only","Humans only","Cats (dogs and humans do not)","Both dogs and cats"], a:2},
+  {q:"Forward-pointing cat whiskers generally signal:", options:["Fear","Inquisitive/friendly","Aggression only","Nothing — whiskers are neutral"], a:1},
+  {q:"In canine stance-reading, hackles raised appears in:", options:["Only the offensive stance","Only the defensive stance","Both offensive and defensive stances","Neither stance"], a:2},
+  {q:"In feline stance-reading, narrow (slit) pupils signal:", options:["Defensive/fear","Offensive/interest","Illness","Sleepiness"], a:1},
+  {q:"\"Displacement behavior\" is best described as:", options:["A synonym for stress signal","A broader category than stress signal","A subset of stress signal, used when the first-choice behavior isn't available","Unrelated to stress"], a:2},
+  {q:"Excessive yawning with restlessness is generally read as:", options:["A calming signal","Positive massage feedback","A displacement/stress behavior","Boredom only"], a:2},
+  {q:"When approaching an unfamiliar dog, you should:", options:["Make direct eye contact to show confidence","Approach head-on","Avoid direct eye contact and approach near the shoulder","Approach from directly behind"], a:2},
+  {q:"The correct towel-restraint sequence for a cat starts with:", options:["Placing a hand on the shoulders first","Draping a blanket/towel over the body first","Pulling the cat toward you","Removing the towel immediately"], a:1},
+  {q:"To get a cat out of a kennel/crate, you should:", options:["Reach in and pull it toward you","Stand in the doorway and let it come to you","Tip the kennel over","Use a treat to lure it out"], a:1},
+  {q:"Is it okay to use a treat to open first contact with a new animal?", options:["Yes, always","No — discouraged; okay after the massage with permission","Only for cats","Only for dogs under 1 year old"], a:1},
+  {q:"To switch a dog to its other side during a massage, you should:", options:["Roll it over its spine","Have it stand, turn around, then lie back down","Never reposition a lying dog","Always use a leash to flip it"], a:1},
+  {q:"Typical small-animal massage session length is about:", options:["10-15 minutes","30-45 minutes","60-90 minutes","2+ hours"], a:1},
+  {q:"The key to successful dog training, regardless of method, is:", options:["Using food rewards exclusively","Consistency","Punishment timing","Clicker use"], a:1},
+  {q:"Every dog should know these two commands regardless of training method:", options:["Sit and stay","Stop on command, return to guardian on command","Heel and down","Speak and quiet"], a:1},
+  {q:"Which breed group is named for size rather than activity or temperament?", options:["Sporting","Toy","Working","Herding"], a:1},
+  {q:"The Corgi belongs to which breed group, despite not being widely 'recognized' as one?", options:["Terrier","Toy","Herding","Working"], a:2},
+  {q:"Miniature Schnauzer and Standard Schnauzer are in:", options:["Both the same group (Terrier)","Both the same group (Working)","Different groups (Terrier vs. Working)","Different groups (Toy vs. Non-Sporting)"], a:2},
+  {q:"Lure coursing's minimum course length is 600 yards for which organization?", options:["ASFA","AKC","VDH","GSDCA"], a:1},
+  {q:"Flyball jump height is calculated as:", options:["A fixed 12 inches for all dogs","Shortest team dog's withers height minus 4 inches","Tallest dog's height plus 4 inches","Set by the judge with no formula"], a:1},
+  {q:"Schutzhund's three training aspects are:", options:["Agility, Obedience, Speed","Tracking, Obedience, Protection","Scent, Bite work, Speed","Herding, Guarding, Tracking"], a:1},
+  {q:"A therapy dog is:", options:["A type of assistance dog","Not to be confused with an assistance dog — a separate category","Only trained for hearing impairment","The same as a service dog"], a:1},
+  {q:"Medical response dogs are a sub-type of:", options:["Guide dogs","Hearing dogs","Service dogs","Therapy dogs"], a:2},
+  {q:"Dogs were domesticated from wolf ancestors approximately how long ago?", options:["1,000 years","15,000 years","100,000 years","1 million years"], a:1}
+];
+
+/* ============================= STATE ============================= */
+const KEY = "ch1-field-guide-v1";
+let state = {};
+try{ state = JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ state = {}; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+if(!state.comp) state.comp = {};
+if(!state.reviewScore) state.reviewScore = {right:0, wrong:0};
+
+let currentView = "home";
+let drillIdx = 0, drillFlipped = false, drillOrder = [];
+let reviewIdx = 0, reviewOrder = [], reviewAnswered = false;
+let reviewPassComplete = false, passRight = 0, passWrong = 0, passMissed = [];
+
+/* ============================= HELPERS ============================= */
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function competencyDoneCount(){ return COMPETENCIES.filter(c=>state.comp[c.id]).length; }
+
+/* ============================= RENDER: HOME ============================= */
+function renderHome(){
+  const done = competencyDoneCount();
+  const navCards = [
+    ["senses","👁️","Senses","Canine vs. feline sight, hearing, smell, taste & touch"],
+    ["signals","🐾","Signals & Stances","Offensive/defensive stances, stress, displacement, calming signals"],
+    ["handling","🤲","Handling","Approaching, restraining, and positioning dogs & cats"],
+    ["training","🎓","Training & Grooming","3 training methods, key rules, grooming basics"],
+    ["breeds","🐕","Breeds & Disciplines","8 breed groups + 10 disciplines, quick reference"]
+  ];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Practicum-focused field guide</p>
+    <h1 class="title">Everything Chapter 1, one map.</h1>
+    <p class="dek">Built from your actual quiz history and the LMS's own practicum-readiness checklist. Start anywhere — the rail always gets you back.</p>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h3 class="sub" style="margin-bottom:4px;">Practicum readiness</h3>
+      <p class="muted" style="max-width:40ch;">The official 5-item competency checklist from the LMS's own "Practicum Readiness" page. Tap any item to jump to it.</p>
+    </div>
+    <div class="hero-stat">
+      <div class="num">${done}/${COMPETENCIES.length}</div>
+      <div class="lbl">competencies checked</div>
+    </div>
+  </div>
+
+  <div class="quizband">
+    <div>
+      <b style="font-family:var(--font-display); font-size:1rem;">Chapter One Quiz: ${QUIZ.score} (${QUIZ.pct}, ${QUIZ.grade})</b>
+      <p class="muted" style="margin:2px 0 0; font-size:.85rem;">Both missed questions are the first two cards in the flashcard drill.</p>
+    </div>
+    <button class="btn primary" onclick="goto('drills')">Review your misses →</button>
+  </div>
+
+  <div class="grid" style="gap:10px; margin-bottom:32px;">
+    ${COMPETENCIES.map(c => `
+      <div class="comp-card ${state.comp[c.id] ? 'done' : ''}" onclick="toggleCompFromCard('${c.id}', event)">
+        <div class="comp-num">${state.comp[c.id] ? '✓' : c.id.replace('c','')}</div>
+        <div class="comp-body" style="flex:1;">
+          <b>${esc(c.label)}</b>
+          <span>${esc(c.hint)}</span>
+        </div>
+        <input type="checkbox" ${state.comp[c.id] ? 'checked' : ''} onclick="event.stopPropagation(); toggleComp('${c.id}')" style="margin-top:4px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer;">
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Jump to a section</h2>
+  <div class="grid grid-3">
+    ${navCards.map(([v,ico,name,desc]) => `
+      <button class="nav-card" onclick="goto('${v}')">
+        <span class="ico">${ico}</span>
+        <b>${name}</b>
+        <span>${esc(desc)}</span>
+      </button>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Or jump straight to practice</h2>
+  <div class="grid grid-2">
+    <button class="nav-card" onclick="goto('drills')">
+      <span class="ico">🃏</span><b>Flashcard drill</b>
+      <span>${WEAKSPOT_CARDS.length} cards — starting with your 2 actual missed quiz questions</span>
+    </button>
+    <button class="nav-card" onclick="goto('review')">
+      <span class="ico">🎯</span><b>Full review quiz</b>
+      <span>${REVIEW_QUESTIONS.length} mixed questions across the whole chapter, 5 at a time</span>
+    </button>
+  </div>
+  `;
+}
+function toggleComp(id){ state.comp[id] = !state.comp[id]; save(); render(); }
+function toggleCompFromCard(id, ev){ if(ev.target.tagName==='INPUT') return; goto(COMPETENCIES.find(c=>c.id===id).view); }
+
+/* ============================= RENDER: SENSES ============================= */
+function renderSenses(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #2</p>
+    <h1 class="title">Senses</h1>
+    <p class="dek">Canine vs. feline sight, hearing, smell, taste, and touch — how they perceive the world you're about to work in.</p>
+  </div>
+
+  <h2 class="sec">Quick Comparison</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th></th><th>Human</th><th>Dog</th><th>Cat</th></tr></thead>
+    <tbody>
+      ${SENSE_COMPARE.map(r => `<tr><td><b>${r.row}</b></td><td>${r.human}</td><td class="num-mono">${r.dog}</td><td class="num-mono">${r.cat}</td></tr>`).join("")}
+    </tbody>
+  </table>
+  </div>
+  <div class="callout info" style="margin-top:12px;">
+    <b>Missed on your quiz:</b> a cat's binocular vision range is <b>280°</b> — the highest of the three.
+  </div>
+
+  <h2 class="sec">Canine-specific facts</h2>
+  <div class="card"><ul style="margin:0; padding-left:18px;">${CANINE_SENSE_FACTS.map(f=>`<li style="margin-bottom:6px;">${f}</li>`).join("")}</ul></div>
+
+  <h2 class="sec">Feline-specific facts (sight, hearing, smell)</h2>
+  <div class="card"><ul style="margin:0; padding-left:18px;">${FELINE_SENSE_FACTS.map(f=>`<li style="margin-bottom:6px;">${f}</li>`).join("")}</ul></div>
+
+  <h2 class="sec">Feline Taste &amp; Touch</h2>
+  <div class="card"><ul style="margin:0; padding-left:18px;">${FELINE_TOUCH_TASTE.map(f=>`<li style="margin-bottom:6px;">${f}</li>`).join("")}</ul></div>
+  `;
+}
+
+/* ============================= RENDER: SIGNALS ============================= */
+function renderSignals(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #2, #3</p>
+    <h1 class="title">Signals &amp; Stances</h1>
+    <p class="dek">Offensive vs. defensive stances, stress signals, displacement behaviors, calming signals, and the feedback stream you'll read during every massage.</p>
+  </div>
+
+  <div class="callout crit" style="margin-bottom:20px;">
+    <b>The single most-tested trap in this chapter:</b> <b>yawning</b> means three different things depending on context — (1) a calming signal (single, relaxed), (2) a displacement/stress behavior (excessive + restless), (3) positive massage feedback ("stretching and yawning" = content). Same behavior, opposite meanings — always read the qualifier, not just the action.
+  </div>
+
+  <h2 class="sec">Canine Stances</h2>
+  <div class="grid grid-2">
+    <div class="type-card">
+      <div class="type-head" style="background:var(--offense);"><b>Offensive</b><span>Interest — friendly, curious, or aggressive</span></div>
+      <div class="type-body"><ul>${CANINE_OFFENSIVE.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    </div>
+    <div class="type-card">
+      <div class="type-head" style="background:var(--defense);"><b>Defensive</b><span>Fear-based — generally needs intervention</span></div>
+      <div class="type-body"><ul>${CANINE_DEFENSIVE.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    </div>
+  </div>
+  <p class="footnote">Hackles raised can appear in BOTH stances — not diagnostic on its own. Read the whole picture (ears, mouth, tail, body height) together.</p>
+
+  <h2 class="sec">Feline Stances</h2>
+  <div class="grid grid-2">
+    <div class="type-card">
+      <div class="type-head" style="background:var(--offense);"><b>Offensive</b><span>Interest — excitement or aggression</span></div>
+      <div class="type-body"><ul>${FELINE_OFFENSIVE.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    </div>
+    <div class="type-card">
+      <div class="type-head" style="background:var(--defense);"><b>Defensive</b><span>Fear-based</span></div>
+      <div class="type-body"><ul>${FELINE_DEFENSIVE.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    </div>
+  </div>
+  <p class="footnote">Cat pupils: NARROW to slits = offensive; DILATE = defensive — easy to assume the opposite.</p>
+
+  <h2 class="sec">Stress Signals</h2>
+  <div class="card">${STRESS_SIGNALS.map(([n,d])=>`<div class="check-row"><label><b>${n}</b> — ${d}</label></div>`).join("")}</div>
+
+  <h2 class="sec">Displacement Behaviors</h2>
+  <div class="card">${DISPLACEMENT_BEHAVIORS.map(([n,d])=>`<div class="check-row"><label><b>${n}</b> — ${d}</label></div>`).join("")}</div>
+  <p class="footnote">A displacement behavior appears when the animal's first-choice behavior (e.g. escape) isn't available — it's a narrower subset of "stress signal," not a synonym.</p>
+
+  <h2 class="sec">Calming Signals <span class="muted" style="font-weight:400; font-size:.8rem;">(Turid Rugaas)</span></h2>
+  <div class="card">${CALMING_SIGNALS.map(([n,d])=>`<div class="check-row"><label><b>${n}</b> — ${d}</label></div>`).join("")}</div>
+
+  <h2 class="sec">The Feedback Stream — during a massage</h2>
+  <div class="grid grid-2">
+    <div class="type-card">
+      <div class="type-head" style="background:var(--good);"><b>Positive</b><span>Keep going</span></div>
+      <div class="type-body"><ul>${FEEDBACK_POS.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    </div>
+    <div class="type-card">
+      <div class="type-head" style="background:var(--defense);"><b>Negative</b><span>Adjust or pause</span></div>
+      <div class="type-body"><ul>${FEEDBACK_NEG.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    </div>
+  </div>
+  <p class="footnote">"Whale-eye" = whites of the eyes exposed = negative feedback. Rolling onto the back is positive ONLY if it's happy, not submissive.</p>
+  `;
+}
+
+/* ============================= RENDER: HANDLING ============================= */
+function renderHandling(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #1</p>
+    <h1 class="title">Handling</h1>
+    <p class="dek">Initial contact, approach procedures, restraint, and positioning — the walk-in-the-door-to-hands-on-table sequence.</p>
+  </div>
+
+  <h2 class="sec">Approaching a Dog</h2>
+  <div class="card">${APPROACH_DOG.map((s,i)=>`<div class="check-row"><label><b style="font-family:var(--font-display); color:var(--accent);">${i+1}.</b> ${s}</label></div>`).join("")}</div>
+
+  <h2 class="sec">Approaching a Cat</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3 class="sub">Towel/Blanket Restraint</h3>
+      ${APPROACH_CAT_TOWEL.map((s,i)=>`<div class="check-row"><label><b style="font-family:var(--font-display); color:var(--accent);">${i+1}.</b> ${s}</label></div>`).join("")}
+    </div>
+    <div class="card">
+      <h3 class="sub">Crate / Kennel Setting</h3>
+      ${APPROACH_CAT_CRATE.map(s=>`<div class="check-row"><label>${s}</label></div>`).join("")}
+    </div>
+  </div>
+
+  <div class="callout warn" style="margin-top:16px;">
+    <b>Treats rule:</b> don't use treats to open contact with a new animal — okay after the massage, only with guardian permission.
+  </div>
+
+  <h2 class="sec">Restraint Principles</h2>
+  <div class="card">
+    <p style="margin:0;">Minimize the working space and block line-of-sight to distractions (other animals, yards, food, toys) — but don't over-restrict, which causes anxiety. If using a table, secure it against a wall so the dog can't leap away or fall. Floor work demands good posture and back/core strength from you.</p>
+  </div>
+
+  <h2 class="sec">Positioning</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3 class="sub">Holding the Standing Dog</h3>
+      ${POSITIONING_STANDING.map((s,i)=>`<div class="check-row"><label><b style="font-family:var(--font-display); color:var(--accent);">${i+1}.</b> ${s}</label></div>`).join("")}
+    </div>
+    <div class="card">
+      <h3 class="sub">Helping the Dog Sit</h3>
+      ${POSITIONING_SITTING.map((s,i)=>`<div class="check-row"><label><b style="font-family:var(--font-display); color:var(--accent);">${i+1}.</b> ${s}</label></div>`).join("")}
+    </div>
+  </div>
+
+  <div class="callout crit" style="margin-top:16px;">
+    <b>Safety caution:</b> never roll a dog over on its spine to switch sides — have it stand, turn around, then lie back down instead. Older dogs or dogs with postural challenges risk spine, ligament, or nerve damage. Massage the dog's preferred/chosen side first.
+  </div>
+  <p class="footnote">Typical small-animal session: 30–45 minutes (vs. 60–90 for larger animals like horses) — small animals have shorter attention spans and need to move/shake/reposition during the session; that's normal processing, not a problem.</p>
+  `;
+}
+
+/* ============================= RENDER: TRAINING & GROOMING ============================= */
+function renderTraining(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Background &amp; professional-ethics</p>
+    <h1 class="title">Training &amp; Grooming</h1>
+    <p class="dek">Three training methods you'll see in the field, the professional rules around them, and grooming basics for assessing client care.</p>
+  </div>
+
+  <h2 class="sec">Training Methods</h2>
+  <div class="grid grid-3">
+    ${TRAINING_METHODS.map(m => `<div class="card"><h3 class="sub">${m.name}</h3><p style="margin:0;">${m.body}</p></div>`).join("")}
+  </div>
+
+  <h2 class="sec">Rules for You, the Practitioner</h2>
+  <div class="card">${TRAINING_RULES.map(r=>`<div class="check-row"><label>${r}</label></div>`).join("")}</div>
+
+  <h2 class="sec">Grooming</h2>
+  <div class="grid grid-3">
+    <div class="card"><h3 class="sub">Basic Equipment</h3><ul style="margin:0; padding-left:18px;">${GROOMING_EQUIPMENT.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    <div class="card"><h3 class="sub">Good Habits</h3><ul style="margin:0; padding-left:18px;">${GROOMING_GOOD.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    <div class="card"><h3 class="sub">Signs of Poor Grooming</h3><ul style="margin:0; padding-left:18px;">${GROOMING_POOR.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: BREEDS & DISCIPLINES ============================= */
+function renderBreeds(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #4, #5</p>
+    <h1 class="title">Breeds &amp; Disciplines</h1>
+    <p class="dek">8 breed groups (400+ recorded breeds) and 10 common disciplines — you don't need every breed, just the groups and a few examples of each.</p>
+  </div>
+
+  <h2 class="sec">8 Breed Groups</h2>
+  <div class="grid grid-2">
+    ${BREED_GROUPS.map(g => `
+      <div class="breed-card">
+        <div class="breed-head" style="background:${g.color};"><b>${g.name}</b></div>
+        <div class="breed-body">
+          <div class="ex">${g.ex}</div>
+          <p style="margin:0;">${g.note}</p>
+        </div>
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">10 Disciplines</h2>
+  <div class="grid grid-2">
+    ${DISCIPLINES.map(d => `
+      <div class="disc-card">
+        <b>${d.name}</b>
+        <div class="stat">${d.stat}</div>
+        <p style="margin-top:6px;">${d.body}</p>
+      </div>
+    `).join("")}
+  </div>
+  `;
+}
+
+/* ============================= RENDER: DRILLS ============================= */
+function renderDrills(){
+  if(drillOrder.length===0) drillOrder = shuffle(WEAKSPOT_CARDS.map((_,i)=>i));
+  const cardIdx = drillOrder[drillIdx % drillOrder.length];
+  const card = WEAKSPOT_CARDS[cardIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Built from your quiz history</p>
+    <h1 class="title">Flashcard Drill</h1>
+    <p class="dek">${WEAKSPOT_CARDS.length} cards, starting with the 2 questions you actually missed on the Chapter One Quiz. Tap the card to flip.</p>
+  </div>
+
+  <div class="drill-wrap">
+    <div class="drill-card" onclick="drillFlipped=!drillFlipped; render();">
+      <span class="tag">${esc(card.tag)}</span>
+      ${drillFlipped ? esc(card.a) : esc(card.q)}
+      <span class="hint">${drillFlipped ? 'tap to see question' : 'tap to reveal answer'}</span>
+    </div>
+    <div class="drill-controls">
+      <div class="drill-progress">Card ${(drillIdx % drillOrder.length)+1} / ${drillOrder.length}</div>
+      <button class="btn primary" onclick="drillIdx++; drillFlipped=false; if(drillIdx % drillOrder.length===0){ drillOrder=shuffle(WEAKSPOT_CARDS.map((_,i)=>i)); } render();">Next card →</button>
+    </div>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: FULL REVIEW ============================= */
+function startNewPass(questionIndices){
+  reviewOrder = shuffle(questionIndices);
+  reviewIdx = 0;
+  reviewAnswered = false;
+  window.__reviewPick = null;
+  reviewPassComplete = false;
+  passRight = 0; passWrong = 0; passMissed = [];
+}
+
+function renderReview(){
+  if(reviewOrder.length===0) startNewPass(REVIEW_QUESTIONS.map((_,i)=>i));
+  if(reviewPassComplete) return renderReviewSummary();
+
+  const qIdx = reviewOrder[reviewIdx];
+  const q = REVIEW_QUESTIONS[qIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">One pass through the deck, then a results screen</p>
+    <h1 class="title">Full Review</h1>
+    <p class="dek">${REVIEW_QUESTIONS.length} questions across every section. Finish the pass to see your score and what to re-drill.</p>
+  </div>
+
+  <div class="drill-wrap">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div class="drill-progress">Question ${reviewIdx+1} / ${reviewOrder.length}</div>
+      <div class="drill-score">
+        <span style="color:var(--good);"><b>${passRight}</b> right</span>
+        <span style="color:var(--crit);"><b>${passWrong}</b> wrong</span>
+      </div>
+    </div>
+    <div class="pbar-outer" style="margin-bottom:18px;"><div class="pbar-inner" style="width:${(reviewIdx/reviewOrder.length)*100}%;"></div></div>
+
+    <div class="card" style="padding:22px 24px;">
+      <h3 class="sub" style="margin-bottom:16px;">${esc(q.q)}</h3>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        ${q.options.map((opt,i) => {
+          let cls = "btn"; let style="text-align:left; justify-content:flex-start; width:100%;";
+          if(reviewAnswered){
+            if(i===q.a) cls += " right";
+            else if(i===window.__reviewPick) cls += " wrong";
+          }
+          return `<button class="${cls}" style="${style}" ${reviewAnswered?'disabled':''} onclick="answerReview(${i}, ${q.a})">${esc(opt)}</button>`;
+        }).join("")}
+      </div>
+    </div>
+
+    ${reviewAnswered ? `<div style="margin-top:14px; text-align:center;"><button class="btn primary" onclick="nextReview()">${reviewIdx+1 >= reviewOrder.length ? 'See results →' : 'Next question →'}</button></div>` : ""}
+  </div>
+  `;
+}
+
+function renderReviewSummary(){
+  const total = passRight + passWrong;
+  const pct = total ? Math.round((passRight/total)*100) : 0;
+  const lifetimeTotal = state.reviewScore.right + state.reviewScore.wrong;
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Round complete</p>
+    <h1 class="title">Results</h1>
+    <p class="dek">Here's how this round went. Missed ones are worth another pass before the quiz.</p>
+  </div>
+
+  <div class="card" style="text-align:center; padding:32px 26px; margin-bottom:22px;">
+    <div style="font-family:var(--font-display); font-size:2.6rem; font-weight:700; color:var(--accent); line-height:1;">${pct}%</div>
+    <p class="muted" style="margin-top:8px;">${passRight} correct / ${passWrong} missed out of ${total}</p>
+    ${lifetimeTotal ? `<p class="footnote" style="margin-top:6px;">Lifetime: ${state.reviewScore.right} right / ${state.reviewScore.wrong} wrong across all rounds</p>` : ""}
+  </div>
+
+  ${passMissed.length ? `
+    <h2 class="sec">Questions you missed this round</h2>
+    <div class="grid" style="gap:10px; margin-bottom:6px;">
+      ${passMissed.map(m => `
+        <div class="card" style="padding:14px 18px;">
+          <p style="margin:0 0 4px;"><b>${esc(m.q)}</b></p>
+          <p class="muted" style="margin:0;">Correct answer: ${esc(m.correct)}</p>
+        </div>
+      `).join("")}
+    </div>
+  ` : `<div class="callout info">Perfect round — no misses.</div>`}
+
+  <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+    ${passMissed.length ? `<button class="btn primary" onclick="startNewPass(passMissed.map(m=>m.qIdx)); render();">Practice missed questions (${passMissed.length}) →</button>` : ""}
+    <button class="btn ${passMissed.length ? '' : 'primary'}" onclick="startNewPass(REVIEW_QUESTIONS.map((_,i)=>i)); render();">Start a new full round →</button>
+  </div>
+  `;
+}
+
+function answerReview(picked, correct){
+  window.__reviewPick = picked;
+  reviewAnswered = true;
+  const qIdx = reviewOrder[reviewIdx];
+  if(picked===correct){
+    state.reviewScore.right++; passRight++;
+  } else {
+    state.reviewScore.wrong++; passWrong++;
+    passMissed.push({qIdx, q:REVIEW_QUESTIONS[qIdx].q, correct:REVIEW_QUESTIONS[qIdx].options[correct]});
+  }
+  save();
+  render();
+}
+
+function nextReview(){
+  reviewAnswered = false; window.__reviewPick = null;
+  if(reviewIdx+1 >= reviewOrder.length){
+    reviewPassComplete = true;
+  } else {
+    reviewIdx++;
+  }
+  render();
+}
+
+/* ============================= NAV / BOOT ============================= */
+function goto(view){ currentView = view; render(); window.scrollTo({top:0, behavior:"instant"}); }
+function render(){
+  document.querySelectorAll('.rail-btn').forEach(b => b.classList.toggle('active', b.dataset.view===currentView));
+  const renderers = {home:renderHome, senses:renderSenses, signals:renderSignals, handling:renderHandling, training:renderTraining, breeds:renderBreeds, drills:renderDrills, review:renderReview};
+  document.getElementById('main').innerHTML = renderers[currentView]();
+}
+document.querySelectorAll('.rail-btn').forEach(b => b.addEventListener('click', () => goto(b.dataset.view)));
+render();
+
+</script>
+</body>
+</html>

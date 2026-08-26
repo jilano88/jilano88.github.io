@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter Four Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --surface-2:#f3f2ee;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-muted:#898781;
+  --border:rgba(11,11,11,0.10); --grid:#e1e0d9;
+  --accent:#2a78d6; --accent-soft:#e8f0fb;
+  --eff:#2a78d6; --pet:#eb6834; --com:#1baf7a; --fri:#eda100; --tap:#e87ba4; --ner:#008300; --gym:#4a3aa7;
+  --maint:#1baf7a; --perf:#eb6834; --rehab:#4a3aa7;
+  --seq1:#cde2fb; --seq2:#9ec5f4; --seq3:#6da7ec; --seq4:#3987e5; --seq5:#184f95;
+  --good:#0ca30c; --warn:#c98500; --crit:#d03b3b;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+    --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+    --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+    --accent:#3987e5; --accent-soft:#122840;
+    --eff:#3987e5; --pet:#d95926; --com:#199e70; --fri:#c98500; --tap:#d55181; --ner:#1fae1f; --gym:#9085e9;
+    --maint:#199e70; --perf:#d95926; --rehab:#9085e9;
+    --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+    --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+  --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+  --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+  --accent:#3987e5; --accent-soft:#122840;
+  --eff:#3987e5; --pet:#d95926; --com:#199e70; --fri:#c98500; --tap:#d55181; --ner:#1fae1f; --gym:#9085e9;
+  --maint:#199e70; --perf:#d95926; --rehab:#9085e9;
+  --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+  --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--page); color:var(--ink); font-family:var(--font-body);
+  min-height:100vh; line-height:1.5;
+}
+.app{display:grid; grid-template-columns:232px 1fr; min-height:100vh;}
+@media (max-width:860px){ .app{grid-template-columns:1fr;} .rail{position:sticky; top:0; z-index:20;} }
+
+/* ---- Rail ---- */
+.rail{
+  background:var(--surface); border-right:1px solid var(--border);
+  padding:18px 12px 24px; display:flex; flex-direction:column; gap:2px;
+}
+.rail-brand{
+  font-family:var(--font-display); font-weight:700; font-size:1.18rem;
+  padding:4px 10px 14px; letter-spacing:.2px;
+}
+.rail-brand small{display:block; font-family:var(--font-body); font-weight:600; font-size:.68rem;
+  text-transform:uppercase; letter-spacing:.09em; color:var(--ink-muted); margin-top:3px;}
+.rail-btn{
+  display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:9px;
+  border:none; background:none; color:var(--ink-2); font:inherit; font-size:.87rem; font-weight:600;
+  text-align:left; cursor:pointer; width:100%;
+}
+.rail-btn:hover{background:var(--surface-2); color:var(--ink);}
+.rail-btn.active{background:var(--accent-soft); color:var(--accent);}
+.rail-ico{width:19px; text-align:center; flex-shrink:0; font-size:1.02rem;}
+.rail-foot{margin-top:auto; padding:14px 10px 2px; font-size:.72rem; color:var(--ink-muted); border-top:1px solid var(--border); margin-top:14px;}
+
+/* ---- Main ---- */
+.main{padding:26px 30px 70px; max-width:1080px;}
+@media (max-width:640px){ .main{padding:18px 16px 60px;} }
+.view{display:none;}
+.view.active{display:block;}
+.view-head{margin-bottom:22px;}
+.eyebrow{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin:0 0 6px;}
+h1.title{font-family:var(--font-display); font-weight:700; font-size:2rem; margin:0 0 8px; text-wrap:balance;}
+.dek{color:var(--ink-2); font-size:1rem; max-width:62ch; margin:0;}
+
+.card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px;}
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+@media (max-width:760px){ .grid-2,.grid-3{grid-template-columns:1fr;} }
+
+h2.sec{font-family:var(--font-display); font-weight:600; font-size:1.3rem; margin:30px 0 12px;}
+h2.sec:first-child{margin-top:0;}
+h3.sub{font-family:var(--font-display); font-weight:600; font-size:1.06rem; margin:0 0 8px;}
+p{margin:0 0 10px;}
+.muted{color:var(--ink-2);}
+code, .mono{font-family:var(--font-mono);}
+
+/* buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:9px;
+  border:1px solid var(--border); background:var(--surface); color:var(--ink); font:inherit; font-weight:600;
+  font-size:.86rem; cursor:pointer;
+}
+.btn:hover{background:var(--surface-2);}
+.btn.primary{background:var(--accent); color:#fff; border-color:transparent;}
+.btn.primary:hover{filter:brightness(1.06);}
+.btn:focus-visible, .rail-btn:focus-visible, input:focus-visible, .chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+/* checklist */
+.check-row{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-top:1px solid var(--grid);}
+.check-row:first-child{border-top:none;}
+.check-row input{margin-top:3px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer; flex-shrink:0;}
+.check-row label{cursor:pointer; font-size:.92rem;}
+.check-row.done label{color:var(--ink-muted); text-decoration:line-through;}
+
+/* progress */
+.pbar-outer{background:var(--surface-2); border-radius:8px; height:9px; overflow:hidden;}
+.pbar-inner{background:var(--accent); height:100%; width:0%; transition:width .3s ease;}
+
+/* pills */
+.pill{display:inline-block; padding:3px 10px; border-radius:999px; font-size:.72rem; font-weight:700;}
+
+/* Home hero + competency map */
+.hero{
+  background:linear-gradient(135deg, var(--accent-soft), var(--surface));
+  border:1px solid var(--border); border-radius:16px; padding:26px 26px;
+  display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:24px;
+}
+@media (max-width:700px){ .hero{flex-direction:column; align-items:flex-start;} }
+.hero-stat{text-align:right;}
+@media (max-width:700px){ .hero-stat{text-align:left;} }
+.hero-stat .num{font-family:var(--font-display); font-size:2.3rem; font-weight:700; color:var(--accent); line-height:1;}
+.hero-stat .lbl{font-size:.75rem; color:var(--ink-2); text-transform:uppercase; letter-spacing:.06em; margin-top:3px;}
+
+.comp-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px;
+  display:flex; gap:12px; align-items:flex-start; cursor:pointer; transition:border-color .15s;
+}
+.comp-card:hover{border-color:var(--accent);}
+.comp-num{
+  font-family:var(--font-display); font-weight:700; font-size:1.15rem; color:var(--accent);
+  width:28px; flex-shrink:0;
+}
+.comp-card.done .comp-num{color:var(--good);}
+.comp-body b{display:block; font-size:.9rem; margin-bottom:2px;}
+.comp-body span{font-size:.8rem; color:var(--ink-2);}
+
+/* nav cards on home */
+.nav-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;
+  cursor:pointer; text-align:left; display:flex; flex-direction:column; gap:6px;
+}
+.nav-card:hover{border-color:var(--accent);}
+.nav-card .ico{font-size:1.4rem;}
+.nav-card b{font-family:var(--font-display); font-size:1.02rem; font-weight:600;}
+.nav-card span{font-size:.8rem; color:var(--ink-2);}
+
+/* Five stages flow */
+.stage-flow{display:flex; gap:4px; overflow-x:auto; padding-bottom:6px;}
+.stage-chip{
+  flex:1; min-width:130px; border-radius:12px; padding:14px 14px; cursor:pointer; border:2px solid transparent;
+  color:#fff; font-weight:700; font-family:var(--font-display); font-size:.98rem;
+  display:flex; flex-direction:column; gap:4px; transition:transform .15s;
+}
+.stage-chip span{font-family:var(--font-body); font-weight:600; font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; opacity:.85;}
+.stage-chip:hover{transform:translateY(-2px);}
+.stage-chip.active{border-color:var(--ink);}
+.stage-detail{margin-top:16px; padding:18px 20px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2);}
+
+/* symbol cheat sheet */
+.sym-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px;}
+.sym-cell{background:var(--surface-2); border-radius:9px; padding:10px 12px; display:flex; align-items:center; gap:10px;}
+.sym-glyph{font-family:var(--font-mono); font-weight:700; font-size:1.05rem; min-width:34px; color:var(--accent);}
+.sym-mean{font-size:.78rem; color:var(--ink-2);}
+
+/* SOAP cards */
+.soap-card{border-radius:12px; padding:16px 18px; color:#fff;}
+.soap-card b.letter{font-family:var(--font-display); font-size:1.6rem; display:block; line-height:1;}
+.soap-card .name{font-weight:700; font-size:.85rem; text-transform:uppercase; letter-spacing:.06em; opacity:.9; margin:2px 0 8px;}
+.soap-card p{font-size:.85rem; opacity:.96;}
+
+/* type comparison cards */
+.type-card{border-radius:14px; overflow:hidden; border:1px solid var(--border);}
+.type-head{padding:14px 18px; color:#fff;}
+.type-head b{font-family:var(--font-display); font-size:1.1rem; display:block;}
+.type-head span{font-size:.76rem; opacity:.9;}
+.type-body{padding:14px 18px; background:var(--surface); font-size:.83rem;}
+.type-body h4{margin:10px 0 4px; font-size:.76rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted);}
+.type-body h4:first-child{margin-top:0;}
+.type-body ul{margin:0; padding-left:18px;}
+.type-body li{margin-bottom:3px;}
+
+.callout{border-radius:12px; padding:14px 18px; border:1px solid; font-size:.86rem;}
+.callout.warn{background:color-mix(in srgb, var(--warn) 12%, var(--surface)); border-color:var(--warn); color:var(--ink);}
+.callout.info{background:var(--accent-soft); border-color:var(--accent); color:var(--ink);}
+
+/* stroke table */
+table.strokes{width:100%; border-collapse:collapse; font-size:.85rem;}
+table.strokes th{text-align:left; padding:8px 10px; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); border-bottom:1px solid var(--border);}
+table.strokes td{padding:9px 10px; border-bottom:1px solid var(--grid); vertical-align:top;}
+table.strokes tr:last-child td{border-bottom:none;}
+.fam-dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px;}
+.overflow-x{overflow-x:auto;}
+
+/* flashcard drill */
+.drill-wrap{max-width:560px; margin:0 auto;}
+.drill-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:34px 26px;
+  min-height:180px; display:flex; align-items:center; justify-content:center; text-align:center;
+  cursor:pointer; font-size:1.08rem; font-weight:600; position:relative;
+}
+.drill-card .tag{position:absolute; top:14px; left:16px; font-size:.68rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink-muted);}
+.drill-card .hint{position:absolute; bottom:12px; font-size:.72rem; color:var(--ink-muted); font-weight:400;}
+.drill-controls{display:flex; justify-content:space-between; align-items:center; margin-top:16px; gap:10px;}
+.drill-progress{font-size:.8rem; color:var(--ink-2); font-weight:600;}
+.drill-score{display:flex; gap:14px; font-size:.82rem;}
+.drill-score b{font-family:var(--font-display);}
+.drill-verdict-row{display:flex; gap:10px; margin-top:14px; justify-content:center;}
+.btn.wrong{border-color:var(--crit); color:var(--crit);}
+.btn.right{border-color:var(--good); color:var(--good);}
+
+/* energy cards */
+.energy-card{border-radius:14px; padding:18px 20px; border:1px solid var(--border); background:var(--surface);}
+.energy-card .dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:8px;}
+
+.footnote{font-size:.76rem; color:var(--ink-muted); margin-top:6px;}
+::selection{background:var(--accent); color:#fff;}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail">
+    <div class="rail-brand">Chapter Four<small>Field Guide</small></div>
+    <button class="rail-btn" data-view="home"><span class="rail-ico">🏠</span>Home</button>
+    <button class="rail-btn" data-view="flow"><span class="rail-ico">🐾</span>Session Flow</button>
+    <button class="rail-btn" data-view="soap"><span class="rail-ico">📋</span>SOAP &amp; Charting</button>
+    <button class="rail-btn" data-view="types"><span class="rail-ico">🩺</span>Massage Types</button>
+    <button class="rail-btn" data-view="strokes"><span class="rail-ico">✋</span>Strokes &amp; Drills</button>
+    <button class="rail-btn" data-view="stretch"><span class="rail-ico">🧘</span>Stretching</button>
+    <button class="rail-btn" data-view="energy"><span class="rail-ico">⚡</span>Energy Systems</button>
+    <button class="rail-btn" data-view="review"><span class="rail-ico">🎯</span>Full Review</button>
+    <div class="rail-foot">NWSAM Ch.4 · built from your live coursework &amp; quiz history</div>
+  </nav>
+  <main class="main" id="main"></main>
+</div>
+<script>
+/* ============================= DATA ============================= */
+
+const COMPETENCIES = [
+  {id:"c1", label:"Explain the physiological benefits of massage", view:"strokes", hint:"See the Systems table"},
+  {id:"c2", label:"Appraise the situation on a first visit", view:"flow", hint:"11-point observation checklist"},
+  {id:"c3", label:"Write an Intake Form for a specific animal", view:"flow", hint:"Prep checklist + your fillable form"},
+  {id:"c4", label:"Differentiate types of massage plans", view:"types", hint:"Maintenance / Performance / Rehab"},
+  {id:"c5", label:"Prepare a massage plan for a specific animal", view:"types", hint:"Match candidate → plan type"},
+  {id:"c6", label:"Demonstrate the six massage strokes and their variations", view:"strokes", hint:"Quick-ref table + drills"},
+  {id:"c7", label:"Summarize the 5 stages and why order matters", view:"flow", hint:"Session Flow timeline"}
+];
+
+const PREP_ITEMS = [
+  "Rubber mat (yoga/bathtub mat or rubber-backed carpet) for a flat, non-slip surface",
+  "Soft dog bed on top of the mat — use a clean cover per-dog to avoid transmitting irritants",
+  "Nail clippers + trimming scissors, only if trained (carry a styptic stick/powder)",
+  "Dog brush — removes debris and doubles as a familiar, positive first-contact ritual",
+  "Short lead, for distracting environments",
+  "Bland, preservative-free treats — always ask the guardian first",
+  "Alcohol wipes / baby wipes for messes and between-animal hand cleaning",
+  "Nolvasan or similar bacteriostatic for mat/table/equipment between dogs",
+  "An acceptable toy for engagement and reward"
+];
+
+const CONTACT_CHECKLIST = [
+  "Where does the pet spend most of its time — is the area clean and safe?",
+  "Ample natural light and ventilation? Are other people/animals affecting behavior?",
+  "How is the dog standing on first observation — weight distributed evenly?",
+  "Does the pet adopt a specific posture more often than not?",
+  "General demeanor — sullen, anxious, peaceful, bored?",
+  "Does the pet show interest in your arrival?",
+  "General appearance of coat, eyes, feet",
+  "Is the hair irregular, fish-hooked, or dull? (surface dirt itself is not of concern)",
+  "Are the eyes warm and bright, or rheumy (watery/thin mucous discharge)?",
+  "Any obvious injuries or scars?",
+  "Does the pet favor a limb, or carry head/neck to the side or downward?"
+];
+
+const STAGES = [
+  {n:1, name:"Opening", color:"var(--seq1)", dark:true,
+    body:"Begins the moment you enter the pet's environment. You allow the pet to greet you and introduce yourself. Involves initial touch to quiet the pet, engaging the nervous system and encouraging a relaxation response."},
+  {n:2, name:"Palpation", color:"var(--seq2)", dark:true,
+    body:"Mild strokes with light pressure over the entire body. Purpose: gauge comfort with touch, learn which areas the pet dislikes being touched, let the animal feel your intent, and — most importantly — feel the general health of the tissue. This information drives your decisions for the Body stage."},
+  {n:3, name:"Body", color:"var(--seq3)", dark:true,
+    body:"Where most of the actual massage work happens. Based on observation + palpation, you select the strokes/techniques that suit that pet's needs that day. Critical: this should NOT follow a rigid routine — each session's needs differ."},
+  {n:4, name:"Stretching", color:"var(--seq4)", dark:false,
+    body:"Cements the nervous-system work, takes muscles to full length, restores circulation. Modify or postpone for an older, sick, or injured animal."},
+  {n:5, name:"Closing", color:"var(--seq5)", dark:false,
+    body:"Light strokes reconnect all aspects of the body, leaving the pet calm and relaxed — mirrors the Opening. An abrupt ending can leave the pet feeling unresolved or confused. (Tip: keep a small notebook nearby for your own notes/questions — for your use only, may or may not go into the record.)"}
+];
+
+const PALPATE_STEPS = [
+  "Flat hand, light pressure, sweep the entire surface: start at the head, follow the spine, sweep shoulder → belly → hindquarters, then each limb and the stifle area.",
+  "Feel for heat, cold, swelling, contusions, spasm, tension, atrophy, anything out of the ordinary. Note the pet's reaction. Compare left to right for symmetry. Collect information without judgment first.",
+  "After the full-body pass, return to areas of concern. Remember: touch itself begins to change the body — so do one deliberate full pass first, THEN reassess areas of concern, to get a true baseline picture."
+];
+
+const SOAP = [
+  {letter:"S", name:"Subjective", color:"var(--eff)",
+    body:"Information from the initial health intake — client info, basic animal info, veterinarian, trainer, use, etc. Comes from the owner/“subject” and is “subject” to opinion."},
+  {letter:"O", name:"Objective", color:"var(--com)",
+    body:"Your findings before, during, and after palpation and throughout the session. Comes from you, based on what you observe."},
+  {letter:"A", name:"Action", color:"var(--fri)",
+    body:"The actual techniques you used and the results. NWSAM note: some call this “Assessment” instead — also acceptable, though this course places assessment inside Objective (your own observations)."},
+  {letter:"P", name:"Plan", color:"var(--gym)",
+    body:"Recommendations for future massage or immediate actions (stretches, icing, etc). Always indicate when the next massage is scheduled. Can include payment info."}
+];
+
+const SYMBOLS = [
+  ["Ā, pre","before"], ["@","at"], ["~, ≈","approximate"], ["c̄, w/","with"],
+  ["Δ","change"], ["↓","down, decrease"], ["↑","up, increasing"], ["=","equals"],
+  ["< >","lesser than, greater than"], ["−","minus, negative"], ["+","plus, positive"], ["Ø","no, none"],
+  ["p̄","post, after"], ["//","parallel"], ["/","per"], ["s̄, w/o","without"],
+  ["X","repetitions; also adhesion"], ["///","hypertonicity (excess tension)"], ["*","spasm"],
+  ["®","right (circled L = left)"], ["•","tender point"], ["¶","trigger point"], ["Ⓟ","(circled) area of pain"]
+];
+
+const MASSAGE_TYPES = [
+  {key:"maint", name:"Maintenance", color:"var(--maint)",
+    intent:"Help a healthy pet stay at a specific level of work, for as long and as safely as possible.",
+    goal:"Decrease muscular tension.",
+    benefits:["Decreased recovery time between workouts","Decreased post-workout discomfort (endorphin release)","Decreased overuse/stress injury risk (fiber lengthening)","Lymphatic stimulation → improved immune function","Prevention of chronic conditions via regular monitoring"],
+    candidates:["Companion animals","Healthy athletic animals","Geriatric pets","Working animals in normal duty"],
+    freq:"1–2 sessions / month"},
+  {key:"perf", name:"Performance", color:"var(--perf)",
+    intent:"Optimize current performance while helping the animal reach the next level of proficiency in movement.",
+    goal:"Improve work efficiency, proprioceptive skill, and flexibility.",
+    benefits:["Consistent, repeatable performance","Improved muscle memory & neural function","Greater training gains, fewer interruptions","Disrupts poor postural habits","All Maintenance benefits, plus longevity / competitive edge"],
+    candidates:["Show dogs/cats","Dogs in training","Young dogs starting work","Pets transitioning roles","Breeding animals (pregnancy/lactation — caution)"],
+    freq:"3–4 sessions / month (or per competition schedule)"},
+  {key:"rehab", name:"Rehabilitation", color:"var(--rehab)",
+    intent:"Help the body reach physical equilibrium to facilitate natural healing, or complement a vet's treatment plan.",
+    goal:"Stimulate the body's healing properties and provide comfort.",
+    benefits:["Stimulates localized circulation","Decreases localized inflammation","Stimulates the parasympathetic nervous system","Stimulates endorphin release","Increases cellular activity/metabolism","Supports healthy scar tissue formation","All Maintenance benefits included"],
+    candidates:["Hospitalized pets","Nutritionally debilitated animals","Shelter animals","Geriatric animals","Confined animals"],
+    freq:"Daily to every 3–5 days (most intensive)",
+    warn:"NOT designed to treat, diagnose, or prognose illness/injury — diagnosis is outside a massage practitioner's scope. Requires a veterinarian diagnosis and a coordinated care plan."}
+];
+
+const STROKE_FAMILIES = [
+  {key:"eff", name:"Effleurage", color:"var(--eff)", technique:"Flat-Handed —or— Forearm Glide",
+    role:"Opens & closes every session; threads between areas; superficial fluid movement", contra:"Pitted/marked edema, gross swellings, open wounds"},
+  {key:"pet", name:"Petrissage", color:"var(--pet)", technique:"Lifting / kneading",
+    role:"Separates muscle fibers; general effects apply to every technique per chart NOTE", contra:"See variant — generally avoid over acute injury"},
+  {key:"com", name:"Compression", color:"var(--com)", technique:"Rhythmic pumping pressure",
+    role:"Pumps fluid through deeper tissue and over joints (incl. synovial fluid)", contra:"Avoid direct pressure over acute injury/fracture"},
+  {key:"fri", name:"Friction", color:"var(--fri)", technique:"Finger / thumb / knuckle / forearm / elbow",
+    role:"Breaks down adhesions & scar tissue; generates heat (thixotropy)", contra:"Acute injury, fresh scars, painful/inflamed areas, open wounds"},
+  {key:"tap", name:"Tapotement", color:"var(--tap)", technique:"Tapping, slapping, hacking, cupping, pincement, pounding",
+    role:"Stimulates weak muscles (esp. over joints); dilates vessels with heavier/prolonged use", contra:"Severe hypertonicity, muscle spasm, muscle cramp"},
+  {key:"ner", name:"Nerve Strokes", color:"var(--ner)", technique:"Very light, feather-light superficial contact",
+    role:"Settles the nervous system; often used near session end", contra:"None emphasized — always gentle by design"},
+  {key:"gym", name:"Gymnastic Strokes", color:"var(--gym)", technique:"Jostling, shaking",
+    role:"Reduces muscle guarding through rhythmic movement", contra:"Avoid over unstable joints/recent injury"}
+];
+
+/* Weak-spot flashcards — targeted at J's documented confusion pairs */
+const WEAKSPOT_CARDS = [
+  {tag:"Terminology", q:"What is the exact LMS phrase for what massage does to circulation — NOT “increases circulation”?", a:"“Stimulation of localized circulation.” Massage doesn't speed up or add volume — vasodilation lets more blood pass with less effort (efficiency), and pooled fluid re-enters circulation (redistribution)."},
+  {tag:"Shaking vs. Jostling", q:"Shaking vs. Jostling — which is the Gymnastic Stroke used to reduce muscle guarding, matched by quiz language?", a:"Jostling. (Both are rhythmic-movement strokes; “jostling” is the one named directly in Activity Two as the gymnastic-stroke answer for reducing guarding.)"},
+  {tag:"Hacking vs. Pounding/Beating", q:"Hacking vs. Pounding/Beating — both are Tapotement variants. What's the key distinguishing caution for Hacking specifically?", a:"No hacking over bony areas. Hacking uses the ulnar (pinky) edge of the hand in rapid alternating strikes — fine over muscle, risky directly on bone."},
+  {tag:"Family-general info", q:"True or false: on the Massage Strokes Chart, a family's first “general” row (tools/mechanism, not a named technique) still applies its uses/effects/contraindications to every named variant below it.", a:"True — confirmed for Petrissage (explicit chart NOTE), Friction, and Tapotement. Don't skip the general row when studying a family."},
+  {tag:"Effleurage naming", q:"On the Strokes Chart, are “Flat-Handed” and “Forearm Glide” one merged technique or two separate ones?", a:"Two separate application methods — same stroke family, same general contraindication (pitted/marked edema, gross swellings, open wounds), but distinct hand-vs-forearm techniques."},
+  {tag:"Bony vs. soft-tissue opposition", q:"Range of Motion is limited by bony opposition and soft-tissue opposition. Give one example of each.", a:"Bony: elbow or knee (bone stops the joint). Soft tissue: muscle, e.g. the compressed tricep during shoulder extension."},
+  {tag:"ROM vs. Stretching", q:"What's the key functional difference between Range of Motion and Stretching?", a:"ROM provides no traction — it's just moving a joint through its available range. Stretching adds traction/lengthening beyond that."},
+  {tag:"Static vs. PRS", q:"Why does a static stretch need to be held past 30 seconds, while PRS reps stay under 2 seconds?", a:"Both are managing the same guarding reflex at the joint's “end feel.” Static stretch has to outlast the nervous system's resistance response (30s+). PRS instead avoids triggering that response at all by never holding long enough to launch it."},
+  {tag:"SOAP: Action vs. Assessment", q:"In this course's SOAP method, what does “Action” cover, and why might that surprise someone used to standard SOAP notes?", a:"Action = the actual techniques used + results. Standard medical SOAP uses “Assessment” for the third letter — this course explicitly notes “Assessment” is an acceptable alternate name, but places the instructor's own assessments inside Objective instead."},
+  {tag:"Massage type scope", q:"Which of the three massage-plan types requires a veterinarian diagnosis before you begin, and why?", a:"Rehabilitation massage — because massage “is not designed to treat, diagnose, or prognose an illness or injury,” which is outside a massage practitioner's scope of practice."},
+  {tag:"Electrical vs. Chemical", q:"Between chemical and electrical energy systems, which one shows up as neurological symptoms needing vet diagnosis, and which is more about diet/metabolism?", a:"Electrical → neurological symptoms, vet diagnosis + massage support for proprioception/movement. Chemical → usually metabolic, addressed via diet/supplements."},
+  {tag:"Contraindication recall", q:"Name at least 2 of Tapotement's family-level contraindications.", a:"Severe hypertonicity, muscle spasm, muscle cramp (all 3, if you can get them)."}
+];
+
+/* Full review question bank — mixed across all sections, multiple-choice */
+const REVIEW_QUESTIONS = [
+  {q:"Put the 5 stages of a massage in order, starting point given: Opening → ? → Body → ? → Closing", options:["Stretching, Palpation","Palpation, Stretching","Closing, Palpation","Palpation, Opening"], a:1},
+  {q:"During Palpation, what is the MOST important purpose, per the LMS?", options:["Making the pet comfortable","Feeling the general health of the tissue to inform the Body stage","Building trust for future sessions","Checking for fleas"], a:1},
+  {q:"In this course's SOAP method, the 3rd letter (Action) covers:", options:["Owner-reported history","Techniques used and results","Payment plan only","Diagnosis"], a:1},
+  {q:"Which SOAP charting symbol means “hypertonicity (excessive tension)”?", options:["///","X","*","↓"], a:0},
+  {q:"A dog transitioning from a shelter to a new home, or a herding dog starting fly-ball, is a candidate for:", options:["Maintenance massage","Performance massage","Rehabilitation massage","No massage until cleared"], a:1},
+  {q:"Rehabilitation massage requires:", options:["Nothing extra beyond Foundation training","A veterinarian diagnosis and coordinated care plan","Owner consent only","A Level 100 certificate"], a:1},
+  {q:"Typical Maintenance massage frequency is:", options:["Daily","3–4x/month","1–2x/month","Once per year"], a:2},
+  {q:"On the Effleurage family, “Flat-Handed” and “Forearm Glide” are:", options:["The same technique, two names","Two separate application methods sharing one contraindication","Unrelated stroke families","Only used in Rehabilitation massage"], a:1},
+  {q:"Which stroke family's general row lists tools (finger/thumb/knuckle/forearm/elbow) instead of one named technique?", options:["Effleurage","Petrissage","Friction","Nerve Strokes"], a:2},
+  {q:"Jostling reduces muscle guarding and belongs to which stroke family?", options:["Tapotement","Gymnastic Strokes","Friction","Passive Touch"], a:1},
+  {q:"“No hacking over bony areas” is a caution specific to:", options:["Cupping","Pincement","Hacking","Compression"], a:2},
+  {q:"Range of Motion is limited by bony opposition and:", options:["Nerve conduction speed","Soft-tissue opposition","Blood pressure","Skin elasticity"], a:1},
+  {q:"Static stretch must be held past roughly how long for the nervous system to stop guarding?", options:["2 seconds","10 seconds","30 seconds","2 minutes"], a:2},
+  {q:"PRS (Passive Repetitive Stretch) reps are held for about:", options:["Under 2 seconds","10–15 seconds","30+ seconds","1 minute"], a:0},
+  {q:"The exact LMS phrase for massage's effect on circulation is:", options:["“Increased circulation”","“Stimulation of localized circulation”","“Accelerated blood flow”","“Maximized circulation”"], a:1},
+  {q:"Electrical energy disruption in the body often shows up as:", options:["Digestive upset","Neurological symptoms","Skin discoloration","Weight gain"], a:1},
+  {q:"Chemical energy deficiencies are most often related to:", options:["Nerve conduction","Metabolic factors (diet/nutrition)","Magnetic field exposure","Muscle spasm"], a:1},
+  {q:"The Three D's of massage are Depth, Direction, and:", options:["Duration","Dexterity","Density","Diagnosis"], a:0},
+  {q:"A 90° angle of contact produces a ___ effect; 45° produces a ___ sensation with drag.", options:["diffused / localized","localized / diffused","superficial / deep","deep / superficial"], a:1},
+  {q:"Slower strokes tend to be ___ ; rapid strokes tend to be ___.", options:["stimulating / sedating","sedating or calming / stimulating or rejuvenating","painful / pleasant","deep / superficial"], a:1},
+  {q:"Which system's physiological benefit list includes “improved alignment of skeletal structures without force”?", options:["Muscular","Skeletal","Nervous","Circulatory"], a:1},
+  {q:"Practicum readiness requires you to be able to demonstrate how many massage strokes and their variations?", options:["Four","Five","Six","Seven"], a:2},
+  {q:"What should you do BEFORE re-assessing an area of concern during palpation?", options:["Nothing, go straight to the area of concern","Complete one deliberate full-body pass first","Ask the owner to leave","Wait 24 hours"], a:1},
+  {q:"The Opening and Closing stages are similar because both:", options:["Use deep tissue work","Use light strokes to connect/settle the pet","Involve stretching","Require SOAP charting"], a:1}
+];
+
+/* ============================= STATE ============================= */
+const KEY = "ch4-field-guide-v1";
+let state = {};
+try{ state = JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ state = {}; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+if(!state.comp) state.comp = {};
+if(!state.prep) state.prep = {};
+if(!state.contact) state.contact = {};
+if(!state.drillMissed) state.drillMissed = [];
+if(!state.reviewScore) state.reviewScore = {right:0, wrong:0};
+
+let currentView = "home";
+let stageOpen = 0;
+let drillIdx = 0, drillFlipped = false, drillOrder = [];
+let reviewIdx = 0, reviewOrder = [], reviewAnswered = false;
+let reviewPassComplete = false, passRight = 0, passWrong = 0, passMissed = [];
+
+/* ============================= HELPERS ============================= */
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function competencyDoneCount(){ return COMPETENCIES.filter(c=>state.comp[c.id]).length; }
+
+/* ============================= RENDER: HOME ============================= */
+function renderHome(){
+  const done = competencyDoneCount();
+  const pct = Math.round(done/COMPETENCIES.length*100);
+  const navCards = [
+    ["flow","🐾","Session Flow","5 stages, palpation steps, first-contact & prep checklists"],
+    ["soap","📋","SOAP & Charting","4-part chart structure, symbol cheat sheet"],
+    ["types","🩺","Massage Types","Maintenance vs. Performance vs. Rehabilitation"],
+    ["strokes","✋","Strokes & Drills","Quick-ref table + your weak-spot flashcards"],
+    ["stretch","🧘","Stretching","Static vs. PRS, guidelines, routine areas"],
+    ["energy","⚡","Energy Systems","Chemical, electrical, magnetic — condensed"]
+  ];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Practicum-focused field guide</p>
+    <h1 class="title">Everything Chapter 4, one map.</h1>
+    <p class="dek">Built from your actual quiz history and the LMS's own practicum-readiness checklist. Start anywhere — the rail always gets you back.</p>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h3 class="sub" style="margin-bottom:4px;">Practicum readiness</h3>
+      <p class="muted" style="max-width:40ch;">The official 7-item checklist from the LMS's own "Practicum Readiness" page. Tap any item to jump to it.</p>
+    </div>
+    <div class="hero-stat">
+      <div class="num">${done}/${COMPETENCIES.length}</div>
+      <div class="lbl">competencies checked</div>
+    </div>
+  </div>
+
+  <div class="grid" style="gap:10px; margin-bottom:32px;">
+    ${COMPETENCIES.map(c => `
+      <div class="comp-card ${state.comp[c.id] ? 'done' : ''}" onclick="toggleCompFromCard('${c.id}', event)">
+        <div class="comp-num">${state.comp[c.id] ? '✓' : c.id.replace('c','')}</div>
+        <div class="comp-body" style="flex:1;">
+          <b>${esc(c.label)}</b>
+          <span>${esc(c.hint)}</span>
+        </div>
+        <input type="checkbox" ${state.comp[c.id] ? 'checked' : ''} onclick="event.stopPropagation(); toggleComp('${c.id}')" style="margin-top:4px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer;">
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Jump to a section</h2>
+  <div class="grid grid-3">
+    ${navCards.map(([v,ico,name,desc]) => `
+      <button class="nav-card" onclick="goto('${v}')">
+        <span class="ico">${ico}</span>
+        <b>${name}</b>
+        <span>${esc(desc)}</span>
+      </button>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Or jump straight to practice</h2>
+  <div class="grid grid-2">
+    <button class="nav-card" onclick="goto('strokes'); setTimeout(()=>document.getElementById('drill-anchor')?.scrollIntoView({behavior:'smooth'}),50)">
+      <span class="ico">🃏</span><b>Weak-spot flashcards</b>
+      <span>12 cards targeting your documented mix-up pairs (Shaking/Jostling, Hacking/Pounding, etc.)</span>
+    </button>
+    <button class="nav-card" onclick="goto('review')">
+      <span class="ico">🎯</span><b>Full review quiz</b>
+      <span>${REVIEW_QUESTIONS.length} mixed questions across the whole chapter, 5 at a time</span>
+    </button>
+  </div>
+  `;
+}
+function toggleComp(id){ state.comp[id] = !state.comp[id]; save(); render(); }
+function toggleCompFromCard(id, ev){ if(ev.target.tagName==='INPUT') return; goto(COMPETENCIES.find(c=>c.id===id).view); }
+
+/* ============================= RENDER: SESSION FLOW ============================= */
+function renderFlow(){
+  const s = STAGES[stageOpen];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #2, #3, #7</p>
+    <h1 class="title">Session Flow</h1>
+    <p class="dek">The 5 stages, how to palpate, what to look for on first contact, and what to pack. This is the walk-in-the-door-to-walk-out sequence.</p>
+  </div>
+
+  <h2 class="sec">The Five Stages</h2>
+  <p class="muted footnote" style="margin-bottom:12px;">Order matters — each stage sets up information or a state the next stage relies on. Tap a stage.</p>
+  <div class="stage-flow">
+    ${STAGES.map((st,i) => `
+      <div class="stage-chip ${i===stageOpen?'active':''}" style="background:${st.color}; color:${st.dark?'#fff':'#0b0b0b'};" onclick="stageOpen=${i}; render();">
+        <span>Stage ${st.n}</span>${st.name}
+      </div>
+    `).join("")}
+  </div>
+  <div class="stage-detail">
+    <h3 class="sub">${s.n}. ${s.name}</h3>
+    <p>${s.body}</p>
+  </div>
+
+  <h2 class="sec">How to Palpate</h2>
+  <div class="grid" style="gap:10px;">
+    ${PALPATE_STEPS.map((p,i) => `
+      <div class="card" style="padding:14px 18px;">
+        <b style="font-family:var(--font-display); color:var(--accent);">${i+1}.</b> ${p}
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">First-Contact Observation — 11 points</h2>
+  <p class="muted footnote" style="margin-bottom:10px;">Kinesthetic: run through this list, out loud, on a real or stuffed animal, before the practicum.</p>
+  <div class="card">
+    ${CONTACT_CHECKLIST.map((item,i) => `
+      <div class="check-row ${state.contact[i]?'done':''}">
+        <input type="checkbox" id="ct-${i}" ${state.contact[i]?'checked':''} onchange="state.contact[${i}]=this.checked; save(); render();">
+        <label for="ct-${i}">${esc(item)}</label>
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Prep Checklist — what to pack</h2>
+  <p class="muted footnote" style="margin-bottom:10px;">Kinesthetic: physically gather these into a bag before your next practice session.</p>
+  <div class="card">
+    ${PREP_ITEMS.map((item,i) => `
+      <div class="check-row ${state.prep[i]?'done':''}">
+        <input type="checkbox" id="pr-${i}" ${state.prep[i]?'checked':''} onchange="state.prep[${i}]=this.checked; save(); render();">
+        <label for="pr-${i}">${esc(item)}</label>
+      </div>
+    `).join("")}
+  </div>
+  `;
+}
+
+/* ============================= RENDER: SOAP ============================= */
+function renderSoap(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency: documentation</p>
+    <h1 class="title">SOAP &amp; Charting</h1>
+    <p class="dek">The four-part chart you'll actually fill out at the practicum, plus the symbol shorthand.</p>
+  </div>
+
+  <div class="grid grid-2" style="gap:14px;">
+    ${SOAP.map(s => `
+      <div class="soap-card" style="background:${s.color};">
+        <b class="letter">${s.letter}</b>
+        <div class="name">${s.name}</div>
+        <p>${s.body}</p>
+      </div>
+    `).join("")}
+  </div>
+
+  <div class="callout info" style="margin-top:18px;">
+    <b>Watch for this on a quiz:</b> this course's third letter is <b>Action</b>, not the standard-SOAP "Assessment." "Assessment" is called out as an acceptable alternate name — but the instructor's own notes explicitly fold assessment into <b>Objective</b> instead.
+  </div>
+
+  <h2 class="sec">Charting Key — symbol shorthand</h2>
+  <p class="muted footnote" style="margin-bottom:10px;">Used for class work / your own longhand notes.</p>
+  <div class="sym-grid">
+    ${SYMBOLS.map(([g,m]) => `
+      <div class="sym-cell"><span class="sym-glyph">${g}</span><span class="sym-mean">${m}</span></div>
+    `).join("")}
+  </div>
+  <p class="footnote" style="margin-top:10px;">Additional marks: circle an area of concern on a body diagram; a broken circle / sunburst = swelling; an X inside a circle = an area contraindicated for massage, or one you avoided.</p>
+
+  <div class="callout warn" style="margin-top:18px;">
+    <b>Do not memorize:</b> the LMS's full anatomy/descriptive abbreviations list is explicitly marked reference-only ("DO NOT MEMORIZE this list") — it's there to help you read a vet's or trainer's notes, not something you're tested on.
+  </div>
+  `;
+}
+
+/* ============================= RENDER: TYPES ============================= */
+function renderTypes(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #4, #5</p>
+    <h1 class="title">Massage Types</h1>
+    <p class="dek">Every case fits one of three plans. This Foundation course focuses on Maintenance; Performance and Rehab are covered at Level 200/300.</p>
+  </div>
+
+  <div class="grid grid-3">
+    ${MASSAGE_TYPES.map(t => `
+      <div class="type-card">
+        <div class="type-head" style="background:${t.color};">
+          <b>${t.name}</b>
+          <span>${t.freq}</span>
+        </div>
+        <div class="type-body">
+          <h4>Intent</h4><p style="margin:0;">${t.intent}</p>
+          <h4>Primary goal</h4><p style="margin:0;">${t.goal}</p>
+          <h4>Benefits</h4><ul>${t.benefits.map(b=>`<li>${b}</li>`).join("")}</ul>
+          <h4>Candidates</h4><ul>${t.candidates.map(c=>`<li>${c}</li>`).join("")}</ul>
+          ${t.warn ? `<h4 style="color:var(--crit);">Scope warning</h4><p style="margin:0;">${t.warn}</p>` : ""}
+        </div>
+      </div>
+    `).join("")}
+  </div>
+  `;
+}
+
+/* ============================= RENDER: STROKES + DRILLS ============================= */
+function renderStrokes(){
+  if(drillOrder.length===0) drillOrder = shuffle(WEAKSPOT_CARDS.map((_,i)=>i));
+  const cardIdx = drillOrder[drillIdx % drillOrder.length];
+  const card = WEAKSPOT_CARDS[cardIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #1, #6</p>
+    <h1 class="title">Strokes &amp; Drills</h1>
+    <p class="dek">Quick-reference table of all 7 families (full detail lives in your Massage Strokes Reference chart), plus Speed/Pressure/3D's, plus your weak-spot flashcard deck.</p>
+  </div>
+
+  <h2 class="sec">Speed, Pressure &amp; The Three D's</h2>
+  <div class="grid grid-2" style="margin-bottom:8px;">
+    <div class="card">
+      <h3 class="sub">Speed &amp; Pressure</h3>
+      <p>Slower strokes → sedating/calming. Rapid strokes → stimulating/rejuvenating. Approach pressure on an <b>ascending scale</b>: start lightest, add firmness until you get a response, then hold or back off slightly to stay just ahead of it. Deep pressure ≠ excessive pressure — one is educated, the other abusive.</p>
+    </div>
+    <div class="card">
+      <h3 class="sub">The Three D's</h3>
+      <p><b>Depth</b> — pressure / tissue layer targeted.<br>
+      <b>Direction</b> — 90° = localized effect; 45° = diffused sensation + drag.<br>
+      <b>Duration</b> — slow steady friction is better tolerated than rapid; wait for the tissue to soften/release.</p>
+    </div>
+  </div>
+
+  <h2 class="sec">Stroke Families — quick reference</h2>
+  <div class="overflow-x">
+  <table class="strokes">
+    <thead><tr><th>Family</th><th>Technique</th><th>Role</th><th>Contraindications</th></tr></thead>
+    <tbody>
+      ${STROKE_FAMILIES.map(f => `
+        <tr>
+          <td><span class="fam-dot" style="background:${f.color};"></span><b>${f.name}</b></td>
+          <td>${f.technique}</td>
+          <td>${f.role}</td>
+          <td>${f.contra}</td>
+        </tr>
+      `).join("")}
+    </tbody>
+  </table>
+  </div>
+  <p class="footnote">Full detail on every variant lives in your <b>Massage Strokes Reference</b> chart &amp; <b>Visual Learning</b> tool from earlier this chapter.</p>
+
+  <h2 class="sec" id="drill-anchor">Weak-Spot Flashcard Drill</h2>
+  <p class="muted footnote" style="margin-bottom:14px;">12 cards built from your actual quiz mix-ups this chapter. Tap the card to flip.</p>
+  <div class="drill-wrap">
+    <div class="drill-card" onclick="drillFlipped=!drillFlipped; render();">
+      <span class="tag">${card.tag}</span>
+      ${drillFlipped ? esc(card.a) : esc(card.q)}
+      <span class="hint">${drillFlipped ? 'tap to see question' : 'tap to reveal answer'}</span>
+    </div>
+    <div class="drill-controls">
+      <div class="drill-progress">Card ${(drillIdx % drillOrder.length)+1} / ${drillOrder.length}</div>
+      <button class="btn primary" onclick="drillIdx++; drillFlipped=false; if(drillIdx % drillOrder.length===0){ drillOrder=shuffle(WEAKSPOT_CARDS.map((_,i)=>i)); } render();">Next card →</button>
+    </div>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: STRETCH ============================= */
+function renderStretch(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">From your quiz history</p>
+    <h1 class="title">Stretching</h1>
+    <p class="dek">Static vs. PRS, guidelines, and the 7 routine areas.</p>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3 class="sub">Static Stretch</h3>
+      <p>Full lengthened position + traction, held up to 60s (increasing traction as it lengthens). Because it goes past the joint's "end feel," the body's first response is to guard. Must hold <b>past ~30s</b> for the nervous system to accept it — often too long for a dog to tolerate calmly. Also creates an ischemic state under tension.</p>
+    </div>
+    <div class="card">
+      <h3 class="sub">Passive Repetitive Stretch (PRS)</h3>
+      <p>Full range of motion, multiple reps, each <b>under 2 seconds</b>. Never holds past end-feel long enough to launch guarding, so the muscle doesn't resist. Bonus: acts as a fluid pump, resets proprioceptors, better animal cooperation, kinder on the therapist's body.</p>
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top:16px;">
+    <b>Key mechanism to remember:</b> both strategies manage the same nervous-system guarding reflex at the joint's end feel — Static <i>outlasts</i> it, PRS <i>avoids triggering it</i> in the first place.
+  </div>
+
+  <h2 class="sec">Stretching Guidelines</h2>
+  <div class="card">
+    <div class="check-row"><label>Never stretch a cold muscle — best after light work or massage to warm tissues.</label></div>
+    <div class="check-row"><label>Always stay within a comfortable range of motion to prevent overstretching/guarding.</label></div>
+    <div class="check-row"><label>Keep your back flat, knees slightly bent — protects you.</label></div>
+    <div class="check-row"><label>Always support the joints to prevent movement outside normal range.</label></div>
+  </div>
+
+  <h2 class="sec">Routine Stretch Areas (3–5x/week)</h2>
+  <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px;">
+    ${["Neck","Limbs","Shoulder","Back","Abdomen","Hip","Inner thigh"].map(a=>`<div class="pill" style="background:var(--accent-soft); color:var(--accent); text-align:center; padding:10px;">${a}</div>`).join("")}
+  </div>
+  <p class="footnote" style="margin-top:8px;">General rule for building any stretch: take the body into the <b>opposing action</b> of the muscle/motion you're targeting.</p>
+  `;
+}
+
+/* ============================= RENDER: ENERGY ============================= */
+function renderEnergy(){
+  const cards = [
+    {name:"Chemical", dot:"var(--eff)", body:"Krebs cycle converts nutrients → ATP. ATP + calcium required for muscle contraction. Massage stimulates localized circulation (not \"increased\" circulation) to deliver oxygen/glucose and clear waste — especially valuable for chronically hypertonic or injured tissue."},
+    {name:"Electrical", dot:"var(--tap)", body:"All cellular activity runs on electrical signaling; the nervous system is the biggest consumer. A muscle contraction requires an electrical signal to/from the brain or spinal cord. Every touch — intentional or not — sends an electrical message the animal registers."},
+    {name:"Magnetic", dot:"var(--gym)", body:"External influence on the cell via magnetic/electromagnetic fields. Pain → cells become more positively charged. Theory: a negative magnetic field supports alkalinity → supports tissue oxygenation. Mainstream science is skeptical of static-magnet efficacy (NCCIH: no conclusive evidence) — know this is the course's own framing, not settled science."}
+  ];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Lower practicum weight — still on the Ch.4 quiz</p>
+    <h1 class="title">Energy Systems</h1>
+    <p class="dek">Conceptual material — the Conclusion page ties dysfunction in one system to cascading effects in the others.</p>
+  </div>
+
+  <div class="grid" style="gap:12px;">
+    ${cards.map(c => `
+      <div class="energy-card">
+        <h3 class="sub"><span class="dot" style="background:${c.dot};"></span>${c.name} Energy</h3>
+        <p style="margin:0;">${c.body}</p>
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Suggested Effects of Negative Pole Magnets</h2>
+  <div class="card">
+    <p style="margin:0;">Relieves pain · Reduces inflammation · Encourages alkalinity · Fights infection · Supports healing · Increases cellular oxygenation · Encourages deep sleep · Stimulates melatonin production · Normalizes cellular pH</p>
+  </div>
+
+  <h2 class="sec">Which system for which fix (Conclusion page)</h2>
+  <div class="card">
+    <p><b>Chemical</b> deficiency → diet/nutritional supplements.<br>
+    <b>Electrical</b> disruption → vet diagnosis + massage to support proprioception/movement.<br>
+    <b>Magnetic</b> imbalance (common, under-recognized) → more time in nature, or magnetized therapeutic products.</p>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: FULL REVIEW ============================= */
+function startNewPass(questionIndices){
+  reviewOrder = shuffle(questionIndices);
+  reviewIdx = 0;
+  reviewAnswered = false;
+  window.__reviewPick = null;
+  reviewPassComplete = false;
+  passRight = 0; passWrong = 0; passMissed = [];
+}
+
+function renderReview(){
+  if(reviewOrder.length===0) startNewPass(REVIEW_QUESTIONS.map((_,i)=>i));
+  if(reviewPassComplete) return renderReviewSummary();
+
+  const qIdx = reviewOrder[reviewIdx];
+  const q = REVIEW_QUESTIONS[qIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">One pass through the deck, then a results screen</p>
+    <h1 class="title">Full Review</h1>
+    <p class="dek">${REVIEW_QUESTIONS.length} questions across every section. Finish the pass to see your score and what to re-drill.</p>
+  </div>
+
+  <div class="drill-wrap">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div class="drill-progress">Question ${reviewIdx+1} / ${reviewOrder.length}</div>
+      <div class="drill-score">
+        <span style="color:var(--good);"><b>${passRight}</b> right</span>
+        <span style="color:var(--crit);"><b>${passWrong}</b> wrong</span>
+      </div>
+    </div>
+    <div class="pbar-outer" style="margin-bottom:18px;"><div class="pbar-inner" style="width:${(reviewIdx/reviewOrder.length)*100}%;"></div></div>
+
+    <div class="card" style="padding:22px 24px;">
+      <h3 class="sub" style="margin-bottom:16px;">${esc(q.q)}</h3>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        ${q.options.map((opt,i) => {
+          let cls = "btn"; let style="text-align:left; justify-content:flex-start; width:100%;";
+          if(reviewAnswered){
+            if(i===q.a) cls += " right";
+            else if(i===window.__reviewPick) cls += " wrong";
+          }
+          return `<button class="${cls}" style="${style}" ${reviewAnswered?'disabled':''} onclick="answerReview(${i}, ${q.a})">${esc(opt)}</button>`;
+        }).join("")}
+      </div>
+    </div>
+
+    ${reviewAnswered ? `<div style="margin-top:14px; text-align:center;"><button class="btn primary" onclick="nextReview()">${reviewIdx+1 >= reviewOrder.length ? 'See results →' : 'Next question →'}</button></div>` : ""}
+  </div>
+  `;
+}
+
+function renderReviewSummary(){
+  const total = passRight + passWrong;
+  const pct = total ? Math.round((passRight/total)*100) : 0;
+  const lifetimeTotal = state.reviewScore.right + state.reviewScore.wrong;
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Round complete</p>
+    <h1 class="title">Results</h1>
+    <p class="dek">Here's how this round went. Missed ones are worth another pass before the quiz.</p>
+  </div>
+
+  <div class="card" style="text-align:center; padding:32px 26px; margin-bottom:22px;">
+    <div style="font-family:var(--font-display); font-size:2.6rem; font-weight:700; color:var(--accent); line-height:1;">${pct}%</div>
+    <p class="muted" style="margin-top:8px;">${passRight} correct / ${passWrong} missed out of ${total}</p>
+    ${lifetimeTotal ? `<p class="footnote" style="margin-top:6px;">Lifetime: ${state.reviewScore.right} right / ${state.reviewScore.wrong} wrong across all rounds</p>` : ""}
+  </div>
+
+  ${passMissed.length ? `
+    <h2 class="sec">Questions you missed this round</h2>
+    <div class="grid" style="gap:10px; margin-bottom:6px;">
+      ${passMissed.map(m => `
+        <div class="card" style="padding:14px 18px;">
+          <p style="margin:0 0 4px;"><b>${esc(m.q)}</b></p>
+          <p class="muted" style="margin:0;">Correct answer: ${esc(m.correct)}</p>
+        </div>
+      `).join("")}
+    </div>
+  ` : `<div class="callout info">Perfect round — no misses.</div>`}
+
+  <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+    ${passMissed.length ? `<button class="btn primary" onclick="startNewPass(passMissed.map(m=>m.qIdx)); render();">Practice missed questions (${passMissed.length}) →</button>` : ""}
+    <button class="btn ${passMissed.length ? '' : 'primary'}" onclick="startNewPass(REVIEW_QUESTIONS.map((_,i)=>i)); render();">Start a new full round →</button>
+  </div>
+  `;
+}
+
+function answerReview(picked, correct){
+  window.__reviewPick = picked;
+  reviewAnswered = true;
+  const qIdx = reviewOrder[reviewIdx];
+  if(picked===correct){
+    state.reviewScore.right++; passRight++;
+  } else {
+    state.reviewScore.wrong++; passWrong++;
+    passMissed.push({qIdx, q:REVIEW_QUESTIONS[qIdx].q, correct:REVIEW_QUESTIONS[qIdx].options[correct]});
+  }
+  save();
+  render();
+}
+
+function nextReview(){
+  reviewAnswered = false; window.__reviewPick = null;
+  if(reviewIdx+1 >= reviewOrder.length){
+    reviewPassComplete = true;
+  } else {
+    reviewIdx++;
+  }
+  render();
+}
+
+/* ============================= NAV / BOOT ============================= */
+function goto(view){ currentView = view; render(); window.scrollTo({top:0, behavior:"instant"}); }
+function render(){
+  document.querySelectorAll('.rail-btn').forEach(b => b.classList.toggle('active', b.dataset.view===currentView));
+  const renderers = {home:renderHome, flow:renderFlow, soap:renderSoap, types:renderTypes, strokes:renderStrokes, stretch:renderStretch, energy:renderEnergy, review:renderReview};
+  document.getElementById('main').innerHTML = renderers[currentView]();
+}
+document.querySelectorAll('.rail-btn').forEach(b => b.addEventListener('click', () => goto(b.dataset.view)));
+render();
+
+</script>
+</body>
+</html>

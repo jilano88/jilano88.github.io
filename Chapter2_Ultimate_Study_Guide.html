@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter Two Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --surface-2:#f3f2ee;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-muted:#898781;
+  --border:rgba(11,11,11,0.10); --grid:#e1e0d9;
+  --accent:#2a78d6; --accent-soft:#e8f0fb;
+  --g1:#2a78d6; --g2:#eb6834; --g3:#1baf7a; --g4:#eda100; --g5:#e87ba4; --g6:#008300; --g7:#4a3aa7; --g8:#6b5344;
+  --seq1:#cde2fb; --seq2:#9ec5f4; --seq3:#6da7ec; --seq4:#3987e5; --seq5:#184f95;
+  --good:#0ca30c; --warn:#c98500; --crit:#d03b3b;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+    --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+    --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+    --accent:#3987e5; --accent-soft:#122840;
+    --g1:#3987e5; --g2:#d95926; --g3:#199e70; --g4:#c98500; --g5:#d55181; --g6:#1fae1f; --g7:#9085e9; --g8:#a1846b;
+    --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+    --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+  --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+  --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+  --accent:#3987e5; --accent-soft:#122840;
+  --g1:#3987e5; --g2:#d95926; --g3:#199e70; --g4:#c98500; --g5:#d55181; --g6:#1fae1f; --g7:#9085e9; --g8:#a1846b;
+  --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+  --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--page); color:var(--ink); font-family:var(--font-body);
+  min-height:100vh; line-height:1.5;
+}
+.app{display:grid; grid-template-columns:232px 1fr; min-height:100vh;}
+@media (max-width:860px){ .app{grid-template-columns:1fr;} .rail{position:sticky; top:0; z-index:20;} }
+
+/* ---- Rail ---- */
+.rail{
+  background:var(--surface); border-right:1px solid var(--border);
+  padding:18px 12px 24px; display:flex; flex-direction:column; gap:2px;
+}
+.rail-brand{
+  font-family:var(--font-display); font-weight:700; font-size:1.18rem;
+  padding:4px 10px 14px; letter-spacing:.2px;
+}
+.rail-brand small{display:block; font-family:var(--font-body); font-weight:600; font-size:.68rem;
+  text-transform:uppercase; letter-spacing:.09em; color:var(--ink-muted); margin-top:3px;}
+.rail-btn{
+  display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:9px;
+  border:none; background:none; color:var(--ink-2); font:inherit; font-size:.87rem; font-weight:600;
+  text-align:left; cursor:pointer; width:100%;
+}
+.rail-btn:hover{background:var(--surface-2); color:var(--ink);}
+.rail-btn.active{background:var(--accent-soft); color:var(--accent);}
+.rail-ico{width:19px; text-align:center; flex-shrink:0; font-size:1.02rem;}
+.rail-foot{margin-top:auto; padding:14px 10px 2px; font-size:.72rem; color:var(--ink-muted); border-top:1px solid var(--border); margin-top:14px;}
+
+/* ---- Main ---- */
+.main{padding:26px 30px 70px; max-width:1080px;}
+@media (max-width:640px){ .main{padding:18px 16px 60px;} }
+.view{display:none;}
+.view.active{display:block;}
+.view-head{margin-bottom:22px;}
+.eyebrow{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin:0 0 6px;}
+h1.title{font-family:var(--font-display); font-weight:700; font-size:2rem; margin:0 0 8px; text-wrap:balance;}
+.dek{color:var(--ink-2); font-size:1rem; max-width:64ch; margin:0;}
+
+.card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px;}
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:760px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} }
+
+h2.sec{font-family:var(--font-display); font-weight:600; font-size:1.3rem; margin:30px 0 12px;}
+h2.sec:first-child{margin-top:0;}
+h3.sub{font-family:var(--font-display); font-weight:600; font-size:1.06rem; margin:0 0 8px;}
+p{margin:0 0 10px;}
+.muted{color:var(--ink-2);}
+code, .mono{font-family:var(--font-mono);}
+
+/* buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:9px;
+  border:1px solid var(--border); background:var(--surface); color:var(--ink); font:inherit; font-weight:600;
+  font-size:.86rem; cursor:pointer;
+}
+.btn:hover{background:var(--surface-2);}
+.btn.primary{background:var(--accent); color:#fff; border-color:transparent;}
+.btn.primary:hover{filter:brightness(1.06);}
+.btn:focus-visible, .rail-btn:focus-visible, input:focus-visible, .chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+/* checklist */
+.check-row{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-top:1px solid var(--grid);}
+.check-row:first-child{border-top:none;}
+.check-row input{margin-top:3px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer; flex-shrink:0;}
+.check-row label{cursor:pointer; font-size:.92rem;}
+.check-row.done label{color:var(--ink-muted); text-decoration:line-through;}
+
+/* progress */
+.pbar-outer{background:var(--surface-2); border-radius:8px; height:9px; overflow:hidden;}
+.pbar-inner{background:var(--accent); height:100%; width:0%; transition:width .3s ease;}
+
+/* pills */
+.pill{display:inline-block; padding:5px 12px; border-radius:999px; font-size:.78rem; font-weight:600; background:var(--surface-2); border:1px solid var(--border);}
+
+/* Home hero + competency map */
+.hero{
+  background:linear-gradient(135deg, var(--accent-soft), var(--surface));
+  border:1px solid var(--border); border-radius:16px; padding:26px 26px;
+  display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:24px;
+}
+@media (max-width:700px){ .hero{flex-direction:column; align-items:flex-start;} }
+.hero-stat{text-align:right;}
+@media (max-width:700px){ .hero-stat{text-align:left;} }
+.hero-stat .num{font-family:var(--font-display); font-size:2.3rem; font-weight:700; color:var(--accent); line-height:1;}
+.hero-stat .lbl{font-size:.75rem; color:var(--ink-2); text-transform:uppercase; letter-spacing:.06em; margin-top:3px;}
+
+.quizband{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:24px;
+}
+
+.comp-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px;
+  display:flex; gap:12px; align-items:flex-start; cursor:pointer; transition:border-color .15s;
+}
+.comp-card:hover{border-color:var(--accent);}
+.comp-num{
+  font-family:var(--font-display); font-weight:700; font-size:1.15rem; color:var(--accent);
+  width:28px; flex-shrink:0;
+}
+.comp-card.done .comp-num{color:var(--good);}
+.comp-body b{display:block; font-size:.9rem; margin-bottom:2px;}
+.comp-body span{font-size:.8rem; color:var(--ink-2);}
+
+/* nav cards on home */
+.nav-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;
+  cursor:pointer; text-align:left; display:flex; flex-direction:column; gap:6px;
+}
+.nav-card:hover{border-color:var(--accent);}
+.nav-card .ico{font-size:1.4rem;}
+.nav-card b{font-family:var(--font-display); font-size:1.02rem; font-weight:600;}
+.nav-card span{font-size:.8rem; color:var(--ink-2);}
+
+/* comparison cards */
+.type-card{border-radius:14px; overflow:hidden; border:1px solid var(--border);}
+.type-head{padding:14px 18px; color:#fff;}
+.type-head b{font-family:var(--font-display); font-size:1.1rem; display:block;}
+.type-head span{font-size:.76rem; opacity:.9;}
+.type-body{padding:14px 18px; background:var(--surface); font-size:.83rem;}
+.type-body h4{margin:10px 0 4px; font-size:.76rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted);}
+.type-body h4:first-child{margin-top:0;}
+.type-body ul{margin:0; padding-left:18px;}
+.type-body li{margin-bottom:3px;}
+
+.callout{border-radius:12px; padding:14px 18px; border:1px solid; font-size:.86rem;}
+.callout.warn{background:color-mix(in srgb, var(--warn) 12%, var(--surface)); border-color:var(--warn); color:var(--ink);}
+.callout.info{background:var(--accent-soft); border-color:var(--accent); color:var(--ink);}
+.callout.crit{background:color-mix(in srgb, var(--crit) 10%, var(--surface)); border-color:var(--crit); color:var(--ink);}
+
+/* tables */
+table.cmp{width:100%; border-collapse:collapse; font-size:.85rem;}
+table.cmp th{text-align:left; padding:8px 10px; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); border-bottom:1px solid var(--border);}
+table.cmp td{padding:9px 10px; border-bottom:1px solid var(--grid); vertical-align:top;}
+table.cmp tr:last-child td{border-bottom:none;}
+.fam-dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px;}
+.overflow-x{overflow-x:auto;}
+.num-mono{font-family:var(--font-mono); font-weight:700;}
+.scroll-table{max-height:420px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+.scroll-table table.cmp{margin:0;}
+.scroll-table th{position:sticky; top:0; background:var(--surface); z-index:1;}
+
+/* flashcard drill */
+.drill-wrap{max-width:560px; margin:0 auto;}
+.drill-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:34px 26px;
+  min-height:180px; display:flex; align-items:center; justify-content:center; text-align:center;
+  cursor:pointer; font-size:1.05rem; font-weight:600; position:relative;
+}
+.drill-card .tag{position:absolute; top:14px; left:16px; font-size:.68rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink-muted);}
+.drill-card .hint{position:absolute; bottom:12px; font-size:.72rem; color:var(--ink-muted); font-weight:400;}
+.drill-controls{display:flex; justify-content:space-between; align-items:center; margin-top:16px; gap:10px;}
+.drill-progress{font-size:.8rem; color:var(--ink-2); font-weight:600;}
+.drill-score{display:flex; gap:14px; font-size:.82rem;}
+.drill-score b{font-family:var(--font-display);}
+.btn.wrong{border-color:var(--crit); color:var(--crit);}
+.btn.right{border-color:var(--good); color:var(--good);}
+
+/* structure hierarchy */
+.hier{display:flex; flex-direction:column; gap:8px;}
+.hier-row{display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; background:var(--surface-2);}
+.hier-row .lvl{font-family:var(--font-mono); font-size:.7rem; font-weight:700; color:var(--ink-muted); width:64px; flex-shrink:0;}
+
+.footnote{font-size:.76rem; color:var(--ink-muted); margin-top:6px;}
+::selection{background:var(--accent); color:#fff;}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail">
+    <div class="rail-brand">Chapter Two<small>Field Guide</small></div>
+    <button class="rail-btn" data-view="home"><span class="rail-ico">🏠</span>Home</button>
+    <button class="rail-btn" data-view="vocab"><span class="rail-ico">🧭</span>Vocabulary</button>
+    <button class="rail-btn" data-view="skeleton"><span class="rail-ico">🦴</span>Skeleton</button>
+    <button class="rail-btn" data-view="joints"><span class="rail-ico">🔗</span>Joints</button>
+    <button class="rail-btn" data-view="softtissue"><span class="rail-ico">🕸️</span>Soft Tissue</button>
+    <button class="rail-btn" data-view="muscles"><span class="rail-ico">💪</span>Muscles</button>
+    <button class="rail-btn" data-view="drills"><span class="rail-ico">🃏</span>Flashcard Drill</button>
+    <button class="rail-btn" data-view="review"><span class="rail-ico">🎯</span>Full Review</button>
+    <div class="rail-foot">NWSAM Ch.2 · built from your live coursework &amp; quiz history</div>
+  </nav>
+  <main class="main" id="main"></main>
+</div>
+<script>
+/* ============================= DATA ============================= */
+
+const COMPETENCIES = [
+  {id:"c1", label:"Discuss locations of canine anatomy using directional and locational terms", view:"vocab", hint:"Caudal/cranial, dorsal/ventral, medial/lateral..."},
+  {id:"c2", label:"Diagram anatomy figures correctly", view:"vocab", hint:"Body planes + external points"},
+  {id:"c3", label:"Use anatomical vocabulary correctly in describing physiology", view:"vocab", hint:"Root words, prefixes, directional terms"},
+  {id:"c4", label:"Explain the functions of bones and connective tissue", view:"skeleton", hint:"5 skeletal functions"},
+  {id:"c5", label:"Locate bony landmarks on a dog skeleton", view:"skeleton", hint:"33-landmark reference chart"},
+  {id:"c6", label:"Label the components of a synovial joint", view:"joints", hint:"Capsule, synovial fluid, articular cartilage"},
+  {id:"c7", label:"Identify the names of different muscles and show their attachment points", view:"muscles", hint:"Origin vs. insertion"},
+  {id:"c8", label:"List muscle groups", view:"muscles", hint:"Muscle Action Groups chart"},
+  {id:"c9", label:"Demonstrate a working knowledge of the anatomy/physiology and how it will inform your massage", view:"muscles", hint:"Ties every section together"}
+];
+
+/* ---- Vocabulary ---- */
+const DIRECTIONAL_TERMS = [
+  ["Caudal","Toward the tail","Posterior is an acceptable alternative"],
+  ["Cranial","Toward the head","Anterior is an acceptable alternative"],
+  ["Deep","Toward the core","Into the body from any direction"],
+  ["Distal","Further from body/core","Used with limbs — think \"distant\""],
+  ["Dorsal","Toward the back, top, sky","Dorsal fin of the dolphin"],
+  ["Lateral","Toward the side","Latus = flank"],
+  ["Medial","Toward the midline","Think \"middle\""],
+  ["Proximal","Closer to body/core","Used with limbs — think \"proximity\""],
+  ["Superficial","Toward the surface","In any direction from the body's core"],
+  ["Unilateral","Toward one side","—"],
+  ["Ventral","Toward the belly, bottom, ground","—"]
+];
+const BODY_PLANES = [
+  ["Dorsal / Frontal Plane","Divides the body into upper and lower sections"],
+  ["Transverse / Coronal Plane","Divides the body into forward and rearward sections"],
+  ["Median Plane","Divides the body into left and right HALVES (equal)"],
+  ["Sagittal Plane","Divides the body into left and right sections, NOT necessarily equal"]
+];
+const EXTERNAL_POINTS = ["Pinna","Neck","Thorax","Throatlatch","Withers","Loin","Commissure of lips","Shoulder","Abdomen","Flew","Point of shoulder","Flank","Nose","Chest","Point of hip","Muzzle","Arm","Croup (rump)","Foreface","Elbow","Set of tail","Stop","Carpus (wrist)","Buttock","Crown","Metacarpus (pastern)","Thigh","Occiput","Digits (toes 1–5)","Stifle (knee)","Crest","Back","Leg","Tarsus (hock)"];
+
+/* ---- Skeleton ---- */
+const SKELETON_FUNCTIONS = ["Provides the structural frame for the body","Provides the lever system for movement with the muscles","Provides protection for the vital and internal organs","Acts as a storage site for minerals, particularly calcium","Acts as a production site for blood cells within the bone marrow"];
+const VERTEBRAE_COUNTS = [
+  ["Cervical","7","Atlas (C1) + Axis (C2) form the atlantoaxial joint — most head/neck rotation"],
+  ["Thoracic","13","13 rib pairs; spinous processes form the withers; T10 = the \"point of aclination\" (no tilt) — a stress point for back issues"],
+  ["Lumbar","7","Flat bridge between ribcage and pelvis"],
+  ["Sacral","3 (fused)","Forms the sacroiliac joint with the ilium — the ONLY joint connecting appendicular to axial skeleton"],
+  ["Caudal (coccygeal)","~20","Forms the tail — spinal cord does not extend into them"]
+];
+const LANDMARK_TERMS = [
+  ["Arch","arc","inguinal arch"],["Condyle","knuckle","lateral femoral condyle"],["Crest","prominent ridge","crest of the ilium"],
+  ["Epicondyle","above the knuckle","medial epicondyle"],["Fossa","bowl","supraspinous fossa"],["Glenoid","cup shaped","supraglenoid fossa"],
+  ["Process","projection","spinous process"],["Spine","ridge","spine of the scapula"],["Trochanter","large process","greater trochanter"],
+  ["Tuber","root or bulb","tuber coxae"],["Tubercle","small round bump","lesser tubercle of the humerus"],["Tuberosity","large round bump","radial tuberosity"]
+];
+const BONY_LANDMARKS = [
+  ["Zygomatic Arch","Ventral to the eye, lateral aspect of skull","Masseter"],
+  ["Ramus of the Mandible","Caudal portion of lower jaw","Masseter"],
+  ["Frontal Bone","From ears/eyes to midline of skull","Frontalis"],
+  ["Mastoid Process","Caudal to ramus of mandible","Brachiocephalicus, Sternocephalicus"],
+  ["Occiput","Edge of occipital bone, skull/C1 articulation","Brachiocephalicus"],
+  ["Cranial Border of the Scapula","Cranial/anterior edge of scapula","—"],
+  ["Caudal Border of the Scapula","Caudal/posterior edge of scapula","Deltoid"],
+  ["Subscapular Fossa","Medial scapula surface","Rhomboid, Serratus ventralis"],
+  ["Supraglenoid Tubercle","Cranial distal edge of scapula","Bicep brachii"],
+  ["Supraspinous Fossa","Cranial half of scapula","Supraspinatus"],
+  ["Spine of the Scapula","Ridge bisecting scapula top to bottom","Trapezius"],
+  ["Acromion Process","Most distal aspect of scapular spine","Deltoid"],
+  ["Infraspinous Fossa","Caudal half of scapula","Infraspinatus"],
+  ["Greater Tubercle","Anterior humeral head","Supraspinatus"],
+  ["Lesser Tubercle","Medial humeral head","Supraspinatus"],
+  ["Deltoid Tuberosity","Anterior humerus, distal to greater tubercle","Deltoid"],
+  ["Teres Major Tuberosity","Posterior/medial proximal humerus","Latissimus dorsi"],
+  ["Lateral Tuberosity","Above the condyle, lateral humerus","—"],
+  ["Crest of the Humerus","Proximal third, anterior/medial humerus","Brachiocephalicus"],
+  ["Olecranon Process","Proximal ulna — forms the elbow","Tricep brachii"],
+  ["Radial Tuberosity","Lateral proximal radius","Bicep brachii"],
+  ["Sternum","Ventral midline of ribcage","Pectoral muscles"],
+  ["Manubrium of the Sternum","First segment of sternum","Pectoral muscles"],
+  ["Xyphoid Process","Last segment of sternum","—"],
+  ["Crest of the Ilium","Between point of haunch and point of sacrum","Longissimus dorsi"],
+  ["Ischiatic Tuberosity (Point of Buttock)","Caudal ischium, either side of tail","Bicep femoris, Semitendinosus, Semimembranosus"],
+  ["Tuber Coxae (Point of Haunch)","Ventral tip of ilium, most lateral","Tensor fascia latae"],
+  ["Iliac Spine","Dorsal ilium between tuber sacrale and ischium","Internal obliques"],
+  ["Inguinal Arch","Groin — not a true bony landmark","External oblique"],
+  ["Rim of the Pubis","Cranial edge of pubic bone","Rectus abdominus"],
+  ["Head of the Femur","Proximal femur, in the hip socket","—"],
+  ["Greater Trochanter (Point of the Hip)","Most lateral aspect of proximal femur","Superficial gluteal"],
+  ["Lesser Trochanter","Posterior femur, distal to femoral head","Iliopsoas"],
+  ["Tertiary Trochanter","Lateral femur, just distal to greater trochanter","—"],
+  ["Tibial Tuberosity","Proximal tibia, below stifle joint","Quadricep muscles"],
+  ["Calcaneal Tuberosity (Point of the Hock)","Proximal calcaneus","Hamstring muscles, Gastrocnemius"]
+];
+
+/* ---- Joints ---- */
+const JOINT_STRUCTURAL = [["Fibrous","Connected by dense connective tissue (mostly collagen)"],["Cartilaginous","Connected entirely by cartilage (fibrocartilage or hyaline)"],["Synovial","\"Not connected\" — separated by a joint capsule/cavity"]];
+const JOINT_FUNCTIONAL = [["Synarthrosis","Little/no mobility — most are fibrous joints (e.g. the skull)"],["Amphiarthrosis","Slight mobility — most are cartilaginous joints (e.g. vertebrae)"],["Diarthrosis","Full range of movement — ALL diarthrosis joints are synovial (hip, elbow, stifle)"]];
+const JOINT_BIOMECH = [["Simple","2 articulation surfaces (shoulder, hip)"],["Compound","3+ articulation surfaces (radiocarpal)"],["Complex","2+ surfaces PLUS an articular disc/meniscus (stifle)"]];
+const SYNOVIAL_TYPES = [
+  ["Gliding","Carpals, Tarsals","2 flat surfaces; least movement; has a fluid-filled bursa"],
+  ["Hinge","Elbow, Stifle, Metacarpus","Like a door hinge — flexion/extension in one plane"],
+  ["Pivot","Atlantoaxial (head rotation)","One bone rotates around another, like a jar and its lid"],
+  ["Ellipsoid (condyloid)","Radiocarpal (wrist)","Odd/ellipse fit — one concave, one convex"],
+  ["Ball and socket","Coxofemoral (hip)","Sphere → bowl; widest range, incl. circumduction"],
+  ["Saddle","Human thumb (no canine example)","Two concave+convex surfaces, saddle-shaped"]
+];
+const JOINT_DYSFUNCTIONS = ["Osteoarthritis (degenerative joint disease)","Hip and elbow dysplasia","Inflammation from strain/injury to ligaments or tendons","Desiccation of joint fluid (age or nutrition)"];
+
+/* ---- Soft Tissue ---- */
+const FASCIA_TYPES = [["Superficial fascia","Just below the skin — usually palpable"],["Deep fascia","Between muscles and bones, the periosteum, internal viscera membranes"],["Myofascia","Fascia associated with the muscle and its neural components"]];
+const FASCIAL_PLANES = ["Cervical Fascia — encases the neck","Omobrachial Fascia — broad flat surface of the shoulder","Antebrachial Fascia — sleeve around the forearm","Thoracolumbar Fascia — withers to sacrum","Abdominal Fascia — area of restriction along the belly","Fascia Latae — enfolds the stifle, dictates its flexibility","Crural Fascia — wraps the calf","Gluteal Fascia — caudal thoracolumbar fascia to dock of the tail","Retinaculum — sheaths around limb joints"];
+const FASCIA_HEALTH = [
+  ["Healthy","Flexible and resilient — natural tone like a resting muscle, neither loose nor firm."],
+  ["Too tight","Ratcheted/strained movement; may feel wrinkled, dry, leathery, or stiff; dehydrated; puckered or crowded."],
+  ["Too loose","Less common — chronic/pocketed swelling; structures sag or hang; sloppy/hypermobile movement."]
+];
+const LIG_TEN = [
+  ["Connects","Bone to bone","Muscle to bone"],
+  ["Composition","Elastic (yellow) + inelastic (white) protein fibers","Elastic (yellow) + inelastic (white) protein fibers"],
+  ["Flexibility","LESS flexible","MORE flexible (higher % elastic fibers)"],
+  ["Blood supply","Limited","Greater than ligament"],
+  ["Typical injury","Sprain","Tendonitis"],
+  ["Healing speed","Slower","Faster"]
+];
+
+/* ---- Muscles ---- */
+const MUSCLE_TYPES = [
+  {name:"Skeletal", color:"var(--g1)", body:"Voluntary. Most of the body's muscles — anchored by tendons to bone, drives locomotion and posture. Primary focus of massage practice."},
+  {name:"Smooth (visceral)", color:"var(--g3)", body:"Involuntary. Found in organ/structure walls: esophagus, stomach, intestines, bronchi, uterus, urethra, bladder, blood vessels, even skin (hair erection)."},
+  {name:"Cardiac", color:"var(--g2)", body:"Involuntary, striated. Found in the heart walls — propels blood into the heart and through the circulatory system."}
+];
+const MUSCLE_CHARACTERISTICS = [["Excitability","Can be coaxed into action by the nervous system"],["Contractibility","Can shorten"],["Extensibility","Can lengthen or stretch"],["Elasticity","Can return to original length after shortening/lengthening"]];
+const MUSCLE_HIERARCHY = [
+  ["Epimysium","Ensheaths the ENTIRE muscle belly"],
+  ["Perimysium","Groups 10–100+ individual fibers into bundles (fascicles)"],
+  ["Endomysium","Ensheaths a single muscle fiber; muscle spindles live here"],
+  ["Myofibrils → sarcomeres","Actin + myosin — the filaments that actually contract"]
+];
+const CONTRACTION_AXES = [
+  {axis:"Concentric vs. Eccentric", color:"var(--g1)", a:"Concentric", adesc:"Muscle shortens, going from rest into a shortened position (biceps raising a glass).", b:"Eccentric", bdesc:"Shortened muscle returns to a lengthened state UNDER CONTROL (biceps lowering the glass, staying contracted while lengthening)."},
+  {axis:"Isometric vs. Isotonic", color:"var(--g2)", a:"Isometric", adesc:"Muscle contracts but produces NO bone movement (holding/carrying a box).", b:"Isotonic", bdesc:"Muscle contracts and DOES produce bone movement — can itself be either concentric or eccentric."}
+];
+const MUSCLE_ROLES = [
+  {name:"Agonist", nick:"prime mover", color:"var(--g1)", body:"Causes the specific movement through its own contraction, crossing the moving joint. Example: Iliopsoas is the prime mover of hip flexion over Rectus femoris because it's the stronger flexor."},
+  {name:"Antagonist", nick:"opposer", color:"var(--g5)", body:"Acts in opposition to the agonist's movement and returns the limb to its start position. Found in pairs (extensor + flexor) — e.g. biceps/triceps. Muscles can only pull, never push themselves back."},
+  {name:"Synergist", nick:"neutralizer", color:"var(--g3)", body:"Assists the agonist by canceling out unwanted extra motion, keeping force in the desired plane. Example: Tensor fascia latae as synergist to Iliopsoas in hip flexion. Easy to confuse with antagonist — but it helps the agonist, doesn't oppose it."}
+];
+const MUSCLE_ACTION_PAIRS = [["Biceps","Triceps"],["Deltoids","Latissimus dorsi"],["Pectoralis major","Trapezius, Rhomboids"],["Iliopsoas","Gluteus"],["Quadriceps","Hamstrings"],["Hip adductor","Gluteus medius"]];
+
+/* ---- Weak-spot flashcards ---- */
+const WEAKSPOT_CARDS = [
+  {tag:"MSF vs. GTO", q:"Muscle Spindle Fiber vs. Golgi Tendon Organ — which is excitatory and which is inhibitory?", a:"MSF (within the muscle belly) = excitatory, triggers rapid contraction — the \"trigger wire.\" GTO (at the musculotendinous junction) = inhibitory, triggers shut-down under overload — the marathon-runner-collapse example."},
+  {tag:"Ligament vs. Tendon", q:"Which connects bone-to-bone and which connects muscle-to-bone — and which heals faster?", a:"Ligament = bone to bone, less flexible, limited blood supply, SLOWER healing, injury = \"sprain.\" Tendon = muscle to bone, more flexible, greater blood supply, FASTER healing, injury = \"tendonitis.\""},
+  {tag:"Six synovial types", q:"Which synovial joint type is the hip, and which is the elbow?", a:"Hip (coxofemoral) = Ball-and-socket (widest range, incl. circumduction). Elbow (humeroulnar) = Hinge (flexion/extension in one plane only)."},
+  {tag:"Joint classification axes", q:"Name the three SEPARATE joint classification schemes and what each one measures.", a:"Structural (fibrous/cartilaginous/synovial) = connection material. Functional (synarthrosis/amphiarthrosis/diarthrosis) = degree of mobility. Biomechanical (simple/compound/complex) = number of articulation surfaces — \"complex\" specifically requires a meniscus/disc (e.g. the stifle)."},
+  {tag:"Contraction axes", q:"Concentric/eccentric and isometric/isotonic — are these the same axis or two different ones?", a:"Two independent axes. Concentric (shortening) vs. eccentric (controlled lengthening) describes direction of length change. Isometric (no bone movement) vs. isotonic (produces bone movement) describes whether bones move — and isotonic contractions can be EITHER concentric or eccentric."},
+  {tag:"Agonist/Antagonist/Synergist", q:"What's the key difference between an antagonist and a synergist — both sound like \"helpers.\"", a:"Antagonist OPPOSES the agonist's movement (returns the limb to start). Synergist ASSISTS the agonist by canceling unwanted extra motion — it doesn't oppose, it refines. Easy to mix up because both are framed relative to the agonist."},
+  {tag:"Body plane naming", q:"In THIS course, does the Dorsal/Frontal Plane divide upper/lower or front/back?", a:"Upper and lower. (This is reversed from typical human-anatomy usage, where \"frontal\" usually means front/back — memorize the course's own definition, not the outside convention.)"},
+  {tag:"Origin vs. Insertion", q:"Which end of a muscle is the \"origin\" — the fixed end or the moving end?", a:"Origin = the fixed anchor, NOT moved by the muscle's contraction. Insertion = the moving end. Caution: some muscles have 3+ attachments, which can blur this distinction."},
+  {tag:"Muscle fascia hierarchy", q:"Epimysium, perimysium, endomysium — which wraps the whole muscle, which wraps a bundle, and which wraps a single fiber?", a:"Epimysium = whole muscle (epi- = outer/upon). Perimysium = fascicle/bundle (peri- = around). Endomysium = single fiber (endo- = within)."},
+  {tag:"Point-of nicknames", q:"What are the common \"Point of ___\" nicknames for the Greater Trochanter, Tuber Coxae, Calcaneal Tuberosity, and Ischiatic Tuberosity?", a:"Greater Trochanter = Point of the Hip. Tuber Coxae = Point of the Haunch. Calcaneal Tuberosity = Point of the Hock. Ischiatic Tuberosity = Point of the Buttock."},
+  {tag:"Practicum-critical", q:"Your Activity One (bone/landmark/joint ID) score was 20/20 — so why does this section stay high-priority?", a:"Because \"Locate bony landmarks on a dog skeleton\" and \"Label the components of a synovial joint\" are physical, hands-on practicum skills the instructor observes live — not just written-quiz recall. A perfect quiz score doesn't guarantee palpation fluency under observation."},
+  {tag:"Axial vs. Appendicular", q:"What's the ONLY joint that connects the appendicular skeleton to the axial skeleton?", a:"The sacroiliac joint. The forelimb connects to the axial skeleton through soft tissue structures only — no bony joint."},
+  {tag:"Clavicle", q:"Does the dog have a functional clavicle (collarbone)?", a:"No — the course explicitly states \"we do not recognize the existence of a clavicle in the dog.\" It has no articulation to the skeleton and isn't present in all breeds."},
+  {tag:"Synovial joint structure", q:"What are the three structural components of a synovial joint?", a:"(1) A supportive fibrous joint capsule with supporting ligaments. (2) Lubricating synovial fluid within the synovial membrane. (3) A pad of articular cartilage at the bone edges."}
+];
+
+/* ---- Full review question bank ---- */
+const REVIEW_QUESTIONS = [
+  {q:"Caudal means toward the:", options:["Head","Tail","Belly","Back"], a:1},
+  {q:"Cranial means toward the:", options:["Head","Tail","Belly","Side"], a:0},
+  {q:"In this course, the Dorsal/Frontal Plane divides the body into:", options:["Left and right halves","Forward and rearward sections","Upper and lower sections","Deep and superficial layers"], a:2},
+  {q:"The Transverse/Coronal Plane in this course divides the body into:", options:["Upper and lower sections","Forward and rearward sections","Left and right equal halves","Left and right unequal sections"], a:1},
+  {q:"Which plane divides the body into left/right but NOT necessarily equal halves?", options:["Median Plane","Sagittal Plane","Dorsal Plane","Transverse Plane"], a:1},
+  {q:"How many cervical vertebrae does a dog have?", options:["5","7","9","13"], a:1},
+  {q:"How many pairs of ribs does a dog have?", options:["10","12","13","15"], a:2},
+  {q:"The ONLY joint connecting the appendicular skeleton to the axial skeleton is the:", options:["Shoulder joint","Sacroiliac joint","Hip joint","Elbow joint"], a:1},
+  {q:"Does the dog have a functional clavicle?", options:["Yes, in all breeds","No — not recognized as existing in the dog","Only in large breeds","Only in toy breeds"], a:1},
+  {q:"\"Point of the Hip\" refers to which bony landmark?", options:["Tuber Coxae","Greater Trochanter","Ischiatic Tuberosity","Calcaneal Tuberosity"], a:1},
+  {q:"\"Point of the Hock\" refers to which bony landmark?", options:["Greater Trochanter","Tibial Tuberosity","Calcaneal Tuberosity","Tuber Coxae"], a:2},
+  {q:"The Olecranon Process forms which joint?", options:["Hip","Stifle","Elbow","Hock"], a:2},
+  {q:"Structurally, a synovial joint is classified as:", options:["Connected by dense collagen","Connected entirely by cartilage","\"Not connected\" — separated by a capsule/cavity","Fused solid"], a:2},
+  {q:"Functionally, ALL diarthrosis joints are:", options:["Fibrous","Cartilaginous","Synovial","Fused"], a:2},
+  {q:"Biomechanically, a \"complex\" joint specifically requires:", options:["3+ bones","An articular disc or meniscus","No cartilage","Fusion"], a:1},
+  {q:"The hip (coxofemoral) joint is which type of synovial joint?", options:["Hinge","Pivot","Ball and socket","Gliding"], a:2},
+  {q:"The elbow is which type of synovial joint?", options:["Hinge","Ball and socket","Saddle","Ellipsoid"], a:0},
+  {q:"The atlantoaxial joint (head rotation) is which type?", options:["Hinge","Pivot","Gliding","Saddle"], a:1},
+  {q:"Fascia associated with the muscle and its neural components is called:", options:["Superficial fascia","Deep fascia","Myofascia","Retinaculum"], a:2},
+  {q:"A ligament connects:", options:["Muscle to bone","Bone to bone","Muscle to muscle","Nerve to muscle"], a:1},
+  {q:"A tendon connects:", options:["Bone to bone","Muscle to bone","Cartilage to cartilage","Nerve to bone"], a:1},
+  {q:"Which soft tissue has a GREATER blood supply and heals FASTER?", options:["Ligament","Tendon","Both are equal","Neither has blood supply"], a:1},
+  {q:"The Muscle Spindle Fiber (MSF) is:", options:["Inhibitory, at the musculotendinous junction","Excitatory, within the muscle belly","Inhibitory, within the muscle belly","Excitatory, at the musculotendinous junction"], a:1},
+  {q:"The Golgi Tendon Organ (GTO) is:", options:["Excitatory, within the muscle belly","Inhibitory, at the musculotendinous junction","Excitatory, at the musculotendinous junction","Inhibitory, within the muscle belly"], a:1},
+  {q:"Skeletal muscle is:", options:["Involuntary, found in organ walls","Voluntary, anchored by tendons to bone","Involuntary, found only in the heart","Voluntary, found only in the face"], a:1},
+  {q:"Cardiac muscle is:", options:["Voluntary and striated","Involuntary and striated","Voluntary and smooth","Involuntary and smooth"], a:1},
+  {q:"Epimysium ensheaths:", options:["A single muscle fiber","A bundle of fibers (fascicle)","The entire muscle","Only the tendon"], a:2},
+  {q:"Perimysium groups fibers into:", options:["Sarcomeres","Fascicles (bundles)","Myofibrils","Motor units"], a:1},
+  {q:"A concentric contraction is one where the muscle:", options:["Lengthens under control","Shortens","Produces no movement","Only occurs in cardiac muscle"], a:1},
+  {q:"An isometric contraction is one where:", options:["The muscle shortens rapidly","Bones move closer together","No bone movement is produced","The muscle always lengthens"], a:2},
+  {q:"An agonist is also called the:", options:["Neutralizer","Prime mover","Stabilizer","Opposer"], a:1},
+  {q:"A synergist's role relative to the agonist is to:", options:["Oppose its movement directly","Cancel out unwanted extra motion","Replace it when fatigued","Do nothing during contraction"], a:1},
+  {q:"Biceps and Triceps are an example of which muscle-role pairing?", options:["Agonist/Synergist","Agonist/Antagonist","Synergist/Antagonist","Two agonists"], a:1},
+  {q:"The fixed anchor point of a muscle, not moved by its own contraction, is the:", options:["Insertion","Origin","Belly","Fascicle"], a:1}
+];
+
+/* ============================= STATE ============================= */
+const KEY = "ch2-field-guide-v1";
+let state = {};
+try{ state = JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ state = {}; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+if(!state.comp) state.comp = {};
+if(!state.reviewScore) state.reviewScore = {right:0, wrong:0};
+
+let currentView = "home";
+let drillIdx = 0, drillFlipped = false, drillOrder = [];
+let reviewIdx = 0, reviewOrder = [], reviewAnswered = false;
+let reviewPassComplete = false, passRight = 0, passWrong = 0, passMissed = [];
+
+/* ============================= HELPERS ============================= */
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function competencyDoneCount(){ return COMPETENCIES.filter(c=>state.comp[c.id]).length; }
+
+/* ============================= RENDER: HOME ============================= */
+function renderHome(){
+  const done = competencyDoneCount();
+  const navCards = [
+    ["vocab","🧭","Vocabulary","Directional terms, body planes, external points"],
+    ["skeleton","🦴","Skeleton","Axial/appendicular, vertebrae, the 33-landmark chart"],
+    ["joints","🔗","Joints","3 classification schemes, 6 synovial types"],
+    ["softtissue","🕸️","Soft Tissue","Fascia, MSF vs. GTO, ligaments vs. tendons"],
+    ["muscles","💪","Muscles","Types, contraction axes, agonist/antagonist/synergist"]
+  ];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Practicum-focused field guide</p>
+    <h1 class="title">Everything Chapter 2, one map.</h1>
+    <p class="dek">Built from your actual quiz history and the LMS's own practicum-readiness checklist. Start anywhere — the rail always gets you back.</p>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h3 class="sub" style="margin-bottom:4px;">Practicum readiness</h3>
+      <p class="muted" style="max-width:40ch;">The official 9-item competency checklist from the LMS's own "Practicum Readiness" page. Tap any item to jump to it.</p>
+    </div>
+    <div class="hero-stat">
+      <div class="num">${done}/${COMPETENCIES.length}</div>
+      <div class="lbl">competencies checked</div>
+    </div>
+  </div>
+
+  <div class="quizband">
+    <div>
+      <b style="font-family:var(--font-display); font-size:1rem;">Chapter Two Quiz: 40/40 (100%) · Activity One (Bones/Landmarks/Joints): 20/20</b>
+      <p class="muted" style="margin:2px 0 0; font-size:.85rem;">Perfect scores — but bony-landmark palpation and joint-labeling are hands-on skills observed live at the practicum, not just quiz recall. Stayed high priority in the drills below.</p>
+    </div>
+    <button class="btn primary" onclick="goto('drills')">Practice the drills →</button>
+  </div>
+
+  <div class="grid" style="gap:10px; margin-bottom:32px;">
+    ${COMPETENCIES.map(c => `
+      <div class="comp-card ${state.comp[c.id] ? 'done' : ''}" onclick="toggleCompFromCard('${c.id}', event)">
+        <div class="comp-num">${state.comp[c.id] ? '✓' : c.id.replace('c','')}</div>
+        <div class="comp-body" style="flex:1;">
+          <b>${esc(c.label)}</b>
+          <span>${esc(c.hint)}</span>
+        </div>
+        <input type="checkbox" ${state.comp[c.id] ? 'checked' : ''} onclick="event.stopPropagation(); toggleComp('${c.id}')" style="margin-top:4px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer;">
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Jump to a section</h2>
+  <div class="grid grid-3">
+    ${navCards.map(([v,ico,name,desc]) => `
+      <button class="nav-card" onclick="goto('${v}')">
+        <span class="ico">${ico}</span>
+        <b>${name}</b>
+        <span>${esc(desc)}</span>
+      </button>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Or jump straight to practice</h2>
+  <div class="grid grid-2">
+    <button class="nav-card" onclick="goto('drills')">
+      <span class="ico">🃏</span><b>Flashcard drill</b>
+      <span>${WEAKSPOT_CARDS.length} cards targeting this chapter's most confusable pairs</span>
+    </button>
+    <button class="nav-card" onclick="goto('review')">
+      <span class="ico">🎯</span><b>Full review quiz</b>
+      <span>${REVIEW_QUESTIONS.length} mixed questions across the whole chapter, 5 at a time</span>
+    </button>
+  </div>
+  `;
+}
+function toggleComp(id){ state.comp[id] = !state.comp[id]; save(); render(); }
+function toggleCompFromCard(id, ev){ if(ev.target.tagName==='INPUT') return; goto(COMPETENCIES.find(c=>c.id===id).view); }
+
+/* ============================= RENDER: VOCAB ============================= */
+function renderVocab(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #1, #2, #3</p>
+    <h1 class="title">Vocabulary</h1>
+    <p class="dek">Directional/locational terms, body planes, and the external points of the dog — the shared language for everything that follows.</p>
+  </div>
+
+  <h2 class="sec">Directional &amp; Locational Terms</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Term</th><th>Meaning</th><th>Note</th></tr></thead>
+    <tbody>${DIRECTIONAL_TERMS.map(([t,m,n])=>`<tr><td><b>${t}</b></td><td>${m}</td><td class="muted">${n}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+
+  <h2 class="sec">Body Planes</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Plane</th><th>Divides the body into...</th></tr></thead>
+    <tbody>${BODY_PLANES.map(([t,m])=>`<tr><td><b>${t}</b></td><td>${m}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+  <div class="callout warn" style="margin-top:12px;">
+    <b>Reversed from typical human anatomy:</b> this course's Dorsal/Frontal Plane = upper/lower, and Transverse/Coronal Plane = forward/rearward — the OPPOSITE pairing from how these terms are usually taught in human-anatomy courses. Memorize the course's own definitions, not the outside convention.
+  </div>
+
+  <h2 class="sec">External Points of the Dog</h2>
+  <p class="muted footnote" style="margin-bottom:10px;">Kinesthetic: point to each of these on a real or stuffed dog as you read through the list.</p>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    ${EXTERNAL_POINTS.map(p=>`<span class="pill">${p}</span>`).join("")}
+  </div>
+  `;
+}
+
+/* ============================= RENDER: SKELETON ============================= */
+function renderSkeleton(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #4, #5</p>
+    <h1 class="title">Skeleton</h1>
+    <p class="dek">Functions, axial vs. appendicular, vertebral regions, and the full 33-landmark palpation reference chart.</p>
+  </div>
+
+  <h2 class="sec">Functions of the Skeleton</h2>
+  <div class="card"><ul style="margin:0; padding-left:18px;">${SKELETON_FUNCTIONS.map(f=>`<li style="margin-bottom:6px;">${f}</li>`).join("")}</ul></div>
+
+  <h2 class="sec">Axial vs. Appendicular</h2>
+  <div class="grid grid-2">
+    <div class="card"><h3 class="sub">Axial Skeleton</h3><p style="margin:0;">Bones along the midline / core of the body (skull, vertebrae, ribs, sternum).</p></div>
+    <div class="card"><h3 class="sub">Appendicular Skeleton</h3><p style="margin:0;">Bones of the limbs. The sacroiliac joint is the ONLY joint connecting it to the axial skeleton — the forelimb connects via soft tissue only. (The dog has no functional clavicle.)</p></div>
+  </div>
+
+  <h2 class="sec">Vertebral Regions</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Region</th><th>Count</th><th>Notes</th></tr></thead>
+    <tbody>${VERTEBRAE_COUNTS.map(([r,c,n])=>`<tr><td><b>${r}</b></td><td class="num-mono">${c}</td><td>${n}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+
+  <h2 class="sec">Landmark Terminology</h2>
+  <div class="grid grid-3">
+    ${LANDMARK_TERMS.map(([t,m,ex])=>`<div class="card" style="padding:12px 16px;"><b style="font-family:var(--font-display);">${t}</b><p class="muted" style="margin:2px 0 0; font-size:.82rem;">${m} — <i>${ex}</i></p></div>`).join("")}
+  </div>
+
+  <h2 class="sec">Bony Landmark Chart — full palpation reference</h2>
+  <p class="muted footnote" style="margin-bottom:10px;">The LMS's own note: "no need to memorize the chart — it's for reference as you learn the muscles and their attachments." Scroll to browse all 33.</p>
+  <div class="scroll-table">
+  <table class="cmp">
+    <thead><tr><th>Landmark</th><th>Location</th><th>Associated Muscle</th></tr></thead>
+    <tbody>${BONY_LANDMARKS.map(([l,loc,m])=>`<tr><td><b>${l}</b></td><td>${loc}</td><td class="muted">${m}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: JOINTS ============================= */
+function renderJoints(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #6</p>
+    <h1 class="title">Joints</h1>
+    <p class="dek">Three separate classification schemes, the six synovial joint types, and common joint dysfunctions.</p>
+  </div>
+
+  <div class="callout info" style="margin-bottom:20px;">
+    <b>These three schemes are independent axes, not one system:</b> Structural = what material connects the bones. Functional = how much it moves. Biomechanical = how many articulation surfaces meet. A single joint gets one label from EACH scheme.
+  </div>
+
+  <h2 class="sec">Structural Classification</h2>
+  <div class="grid grid-3">${JOINT_STRUCTURAL.map(([n,d])=>`<div class="card"><h3 class="sub">${n}</h3><p style="margin:0;">${d}</p></div>`).join("")}</div>
+
+  <h2 class="sec">Functional Classification</h2>
+  <div class="grid grid-3">${JOINT_FUNCTIONAL.map(([n,d])=>`<div class="card"><h3 class="sub">${n}</h3><p style="margin:0;">${d}</p></div>`).join("")}</div>
+
+  <h2 class="sec">Biomechanical Classification</h2>
+  <div class="grid grid-3">${JOINT_BIOMECH.map(([n,d])=>`<div class="card"><h3 class="sub">${n}</h3><p style="margin:0;">${d}</p></div>`).join("")}</div>
+
+  <h2 class="sec">Six Types of Synovial Joints</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Type</th><th>Example</th><th>Description</th></tr></thead>
+    <tbody>${SYNOVIAL_TYPES.map(([t,ex,d])=>`<tr><td><b>${t}</b></td><td class="muted">${ex}</td><td>${d}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+
+  <h2 class="sec">Common Joint Dysfunctions</h2>
+  <div class="card"><ul style="margin:0; padding-left:18px;">${JOINT_DYSFUNCTIONS.map(f=>`<li style="margin-bottom:6px;">${f}</li>`).join("")}</ul></div>
+  `;
+}
+
+/* ============================= RENDER: SOFT TISSUE ============================= */
+function renderSoftTissue(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Massage-critical</p>
+    <h1 class="title">Soft Tissue</h1>
+    <p class="dek">Fascia, the MSF/GTO proprioceptor pair, and ligaments vs. tendons — the tissues massage directly affects.</p>
+  </div>
+
+  <h2 class="sec">Fascia — Three Sub-Types</h2>
+  <div class="grid grid-3">${FASCIA_TYPES.map(([n,d])=>`<div class="card"><h3 class="sub">${n}</h3><p style="margin:0;">${d}</p></div>`).join("")}</div>
+
+  <h2 class="sec">Fascial Planes (head to tail)</h2>
+  <div class="card"><ul style="margin:0; padding-left:18px;">${FASCIAL_PLANES.map(f=>`<li style="margin-bottom:6px;">${f}</li>`).join("")}</ul></div>
+
+  <h2 class="sec">Fascial Health</h2>
+  <div class="grid grid-3">
+    ${FASCIA_HEALTH.map(([n,d],i) => `<div class="type-card"><div class="type-head" style="background:${i===0?'var(--good)':i===1?'var(--warn)':'var(--g7)'};"><b>${n}</b></div><div class="type-body"><p style="margin:0;">${d}</p></div></div>`).join("")}
+  </div>
+
+  <h2 class="sec">Proprioceptors: MSF vs. GTO</h2>
+  <div class="grid grid-2">
+    <div class="type-card">
+      <div class="type-head" style="background:var(--g1);"><b>Muscle Spindle Fiber</b><span>Excitatory — the "trigger wire"</span></div>
+      <div class="type-body"><p style="margin:0;">Located within the muscle belly. Forces rapid contraction in response to a sudden/heavy stimulus — e.g. the biceps contracting hard when a surprisingly heavy object lands in your hand, to prevent tearing. Feels and acts at the spinal-cord level (a shortened feedback loop).</p></div>
+    </div>
+    <div class="type-card">
+      <div class="type-head" style="background:var(--g2);"><b>Golgi Tendon Organ</b><span>Inhibitory — the "shut-down switch"</span></div>
+      <div class="type-body"><p style="margin:0;">Located at the musculotendinous junction. Measures load/tension and triggers a muscle to shut down under overload — e.g. an exhausted marathoner's legs giving out steps from the finish line.</p></div>
+    </div>
+  </div>
+
+  <h2 class="sec">Ligaments vs. Tendons</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th></th><th>Ligament</th><th>Tendon</th></tr></thead>
+    <tbody>${LIG_TEN.map(([r,l,t])=>`<tr><td><b>${r}</b></td><td>${l}</td><td>${t}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: MUSCLES ============================= */
+function renderMuscles(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #7, #8, #9</p>
+    <h1 class="title">Muscles</h1>
+    <p class="dek">Types, structural hierarchy, contraction axes, functional roles, and the Muscle Action Groups chart.</p>
+  </div>
+
+  <h2 class="sec">Three Muscle Types</h2>
+  <div class="grid grid-3">
+    ${MUSCLE_TYPES.map(m => `<div class="type-card"><div class="type-head" style="background:${m.color};"><b>${m.name}</b></div><div class="type-body"><p style="margin:0;">${m.body}</p></div></div>`).join("")}
+  </div>
+
+  <h2 class="sec">Four Functional Characteristics</h2>
+  <div class="grid grid-4">${MUSCLE_CHARACTERISTICS.map(([n,d])=>`<div class="card" style="padding:14px 16px;"><h3 class="sub" style="font-size:.95rem;">${n}</h3><p class="muted" style="margin:0; font-size:.82rem;">${d}</p></div>`).join("")}</div>
+
+  <h2 class="sec">Structural Hierarchy</h2>
+  <div class="hier">
+    ${MUSCLE_HIERARCHY.map((h,i)=>`<div class="hier-row"><span class="lvl">Level ${i+1}</span><div><b>${h[0]}</b> — ${h[1]}</div></div>`).join("")}
+  </div>
+  <p class="footnote">Anchor via prefix: epi- (outer) = whole muscle; peri- (around) = bundle; endo- (within) = single fiber. These fascial layers continue on to form the tendon.</p>
+
+  <h2 class="sec">Contraction — Two Independent Axes</h2>
+  <div class="grid grid-2">
+    ${CONTRACTION_AXES.map(ax => `
+      <div class="type-card">
+        <div class="type-head" style="background:${ax.color};"><b>${ax.axis}</b></div>
+        <div class="type-body">
+          <h4>${ax.a}</h4><p style="margin:0 0 8px;">${ax.adesc}</p>
+          <h4>${ax.b}</h4><p style="margin:0;">${ax.bdesc}</p>
+        </div>
+      </div>
+    `).join("")}
+  </div>
+  <div class="callout warn" style="margin-top:12px;"><b>Don't conflate the two axes:</b> isotonic contractions can be EITHER concentric or eccentric — the axes describe different things (direction of length change vs. whether bones move).</div>
+
+  <h2 class="sec">Agonist / Antagonist / Synergist</h2>
+  <div class="grid grid-3">
+    ${MUSCLE_ROLES.map(r => `<div class="type-card"><div class="type-head" style="background:${r.color};"><b>${r.name}</b><span>"${r.nick}"</span></div><div class="type-body"><p style="margin:0;">${r.body}</p></div></div>`).join("")}
+  </div>
+
+  <h2 class="sec">Origin vs. Insertion</h2>
+  <div class="card"><p style="margin:0;"><b>Origin</b> = the fixed anchor point — not moved by the muscle's own contraction. <b>Insertion</b> = the opposite, moving end. Some muscles have 3+ attachments, which can blur this distinction.</p></div>
+
+  <h2 class="sec">Muscle Action Groups Chart</h2>
+  <div class="overflow-x">
+  <table class="cmp">
+    <thead><tr><th>Agonist (Prime Mover)</th><th>Antagonist</th></tr></thead>
+    <tbody>${MUSCLE_ACTION_PAIRS.map(([a,b])=>`<tr><td><b>${a}</b></td><td>${b}</td></tr>`).join("")}</tbody>
+  </table>
+  </div>
+
+  <h2 class="sec">Naming Convention</h2>
+  <div class="card"><p style="margin:0;">Muscles are named for location (<i>serratus ventralis</i>), shape (<i>triceps, trapezius</i>), action (<i>adductor</i>), or attachment site (<i>brachiocephalicus</i>). Worked example: <b>superficial digital flexor</b> = Superficial (location) + Digital (attachment) + Flexor (action).</p></div>
+  `;
+}
+
+/* ============================= RENDER: DRILLS ============================= */
+function renderDrills(){
+  if(drillOrder.length===0) drillOrder = shuffle(WEAKSPOT_CARDS.map((_,i)=>i));
+  const cardIdx = drillOrder[drillIdx % drillOrder.length];
+  const card = WEAKSPOT_CARDS[cardIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Built from this chapter's confusable pairs</p>
+    <h1 class="title">Flashcard Drill</h1>
+    <p class="dek">${WEAKSPOT_CARDS.length} cards covering the terminology pairs most likely to get swapped. Tap the card to flip.</p>
+  </div>
+
+  <div class="drill-wrap">
+    <div class="drill-card" onclick="drillFlipped=!drillFlipped; render();">
+      <span class="tag">${esc(card.tag)}</span>
+      ${drillFlipped ? esc(card.a) : esc(card.q)}
+      <span class="hint">${drillFlipped ? 'tap to see question' : 'tap to reveal answer'}</span>
+    </div>
+    <div class="drill-controls">
+      <div class="drill-progress">Card ${(drillIdx % drillOrder.length)+1} / ${drillOrder.length}</div>
+      <button class="btn primary" onclick="drillIdx++; drillFlipped=false; if(drillIdx % drillOrder.length===0){ drillOrder=shuffle(WEAKSPOT_CARDS.map((_,i)=>i)); } render();">Next card →</button>
+    </div>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: FULL REVIEW ============================= */
+function startNewPass(questionIndices){
+  reviewOrder = shuffle(questionIndices);
+  reviewIdx = 0;
+  reviewAnswered = false;
+  window.__reviewPick = null;
+  reviewPassComplete = false;
+  passRight = 0; passWrong = 0; passMissed = [];
+}
+
+function renderReview(){
+  if(reviewOrder.length===0) startNewPass(REVIEW_QUESTIONS.map((_,i)=>i));
+  if(reviewPassComplete) return renderReviewSummary();
+
+  const qIdx = reviewOrder[reviewIdx];
+  const q = REVIEW_QUESTIONS[qIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">One pass through the deck, then a results screen</p>
+    <h1 class="title">Full Review</h1>
+    <p class="dek">${REVIEW_QUESTIONS.length} questions across every section. Finish the pass to see your score and what to re-drill.</p>
+  </div>
+
+  <div class="drill-wrap">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div class="drill-progress">Question ${reviewIdx+1} / ${reviewOrder.length}</div>
+      <div class="drill-score">
+        <span style="color:var(--good);"><b>${passRight}</b> right</span>
+        <span style="color:var(--crit);"><b>${passWrong}</b> wrong</span>
+      </div>
+    </div>
+    <div class="pbar-outer" style="margin-bottom:18px;"><div class="pbar-inner" style="width:${(reviewIdx/reviewOrder.length)*100}%;"></div></div>
+
+    <div class="card" style="padding:22px 24px;">
+      <h3 class="sub" style="margin-bottom:16px;">${esc(q.q)}</h3>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        ${q.options.map((opt,i) => {
+          let cls = "btn"; let style="text-align:left; justify-content:flex-start; width:100%;";
+          if(reviewAnswered){
+            if(i===q.a) cls += " right";
+            else if(i===window.__reviewPick) cls += " wrong";
+          }
+          return `<button class="${cls}" style="${style}" ${reviewAnswered?'disabled':''} onclick="answerReview(${i}, ${q.a})">${esc(opt)}</button>`;
+        }).join("")}
+      </div>
+    </div>
+
+    ${reviewAnswered ? `<div style="margin-top:14px; text-align:center;"><button class="btn primary" onclick="nextReview()">${reviewIdx+1 >= reviewOrder.length ? 'See results →' : 'Next question →'}</button></div>` : ""}
+  </div>
+  `;
+}
+
+function renderReviewSummary(){
+  const total = passRight + passWrong;
+  const pct = total ? Math.round((passRight/total)*100) : 0;
+  const lifetimeTotal = state.reviewScore.right + state.reviewScore.wrong;
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Round complete</p>
+    <h1 class="title">Results</h1>
+    <p class="dek">Here's how this round went. Missed ones are worth another pass before the quiz.</p>
+  </div>
+
+  <div class="card" style="text-align:center; padding:32px 26px; margin-bottom:22px;">
+    <div style="font-family:var(--font-display); font-size:2.6rem; font-weight:700; color:var(--accent); line-height:1;">${pct}%</div>
+    <p class="muted" style="margin-top:8px;">${passRight} correct / ${passWrong} missed out of ${total}</p>
+    ${lifetimeTotal ? `<p class="footnote" style="margin-top:6px;">Lifetime: ${state.reviewScore.right} right / ${state.reviewScore.wrong} wrong across all rounds</p>` : ""}
+  </div>
+
+  ${passMissed.length ? `
+    <h2 class="sec">Questions you missed this round</h2>
+    <div class="grid" style="gap:10px; margin-bottom:6px;">
+      ${passMissed.map(m => `
+        <div class="card" style="padding:14px 18px;">
+          <p style="margin:0 0 4px;"><b>${esc(m.q)}</b></p>
+          <p class="muted" style="margin:0;">Correct answer: ${esc(m.correct)}</p>
+        </div>
+      `).join("")}
+    </div>
+  ` : `<div class="callout info">Perfect round — no misses.</div>`}
+
+  <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+    ${passMissed.length ? `<button class="btn primary" onclick="startNewPass(passMissed.map(m=>m.qIdx)); render();">Practice missed questions (${passMissed.length}) →</button>` : ""}
+    <button class="btn ${passMissed.length ? '' : 'primary'}" onclick="startNewPass(REVIEW_QUESTIONS.map((_,i)=>i)); render();">Start a new full round →</button>
+  </div>
+  `;
+}
+
+function answerReview(picked, correct){
+  window.__reviewPick = picked;
+  reviewAnswered = true;
+  const qIdx = reviewOrder[reviewIdx];
+  if(picked===correct){
+    state.reviewScore.right++; passRight++;
+  } else {
+    state.reviewScore.wrong++; passWrong++;
+    passMissed.push({qIdx, q:REVIEW_QUESTIONS[qIdx].q, correct:REVIEW_QUESTIONS[qIdx].options[correct]});
+  }
+  save();
+  render();
+}
+
+function nextReview(){
+  reviewAnswered = false; window.__reviewPick = null;
+  if(reviewIdx+1 >= reviewOrder.length){
+    reviewPassComplete = true;
+  } else {
+    reviewIdx++;
+  }
+  render();
+}
+
+/* ============================= NAV / BOOT ============================= */
+function goto(view){ currentView = view; render(); window.scrollTo({top:0, behavior:"instant"}); }
+function render(){
+  document.querySelectorAll('.rail-btn').forEach(b => b.classList.toggle('active', b.dataset.view===currentView));
+  const renderers = {home:renderHome, vocab:renderVocab, skeleton:renderSkeleton, joints:renderJoints, softtissue:renderSoftTissue, muscles:renderMuscles, drills:renderDrills, review:renderReview};
+  document.getElementById('main').innerHTML = renderers[currentView]();
+}
+document.querySelectorAll('.rail-btn').forEach(b => b.addEventListener('click', () => goto(b.dataset.view)));
+render();
+
+</script>
+</body>
+</html>

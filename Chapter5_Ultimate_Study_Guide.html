@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter Five First Aid Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --surface-2:#f3f2ee;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-muted:#898781;
+  --border:rgba(11,11,11,0.10); --grid:#e1e0d9;
+  --accent:#2a78d6; --accent-soft:#e8f0fb;
+  --vit:#2a78d6; --cpr:#d03b3b; --eme:#eb6834; --sho:#a3282f; --hot:#eda100; --cld:#3987e5; --poi:#1baf7a; --mas:#4a3aa7;
+  --seq1:#cde2fb; --seq2:#9ec5f4; --seq3:#6da7ec; --seq4:#3987e5; --seq5:#184f95;
+  --good:#0ca30c; --warn:#c98500; --crit:#d03b3b;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+    --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+    --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+    --accent:#3987e5; --accent-soft:#122840;
+    --vit:#3987e5; --cpr:#e8716b; --eme:#f2955f; --sho:#e2716f; --hot:#f0b743; --cld:#6ea6f2; --poi:#4fd0a0; --mas:#8b7ce0;
+    --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+    --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
+  --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+  --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
+  --accent:#3987e5; --accent-soft:#122840;
+  --vit:#3987e5; --cpr:#e8716b; --eme:#f2955f; --sho:#e2716f; --hot:#f0b743; --cld:#6ea6f2; --poi:#4fd0a0; --mas:#8b7ce0;
+  --seq1:#12335c; --seq2:#184f95; --seq3:#1c5cab; --seq4:#3987e5; --seq5:#86b6ef;
+  --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--page); color:var(--ink); font-family:var(--font-body);
+  min-height:100vh; line-height:1.5;
+}
+.app{display:grid; grid-template-columns:232px 1fr; min-height:100vh;}
+@media (max-width:860px){ .app{grid-template-columns:1fr;} .rail{position:sticky; top:0; z-index:20;} }
+
+/* ---- Rail ---- */
+.rail{
+  background:var(--surface); border-right:1px solid var(--border);
+  padding:18px 12px 24px; display:flex; flex-direction:column; gap:2px;
+}
+.rail-brand{
+  font-family:var(--font-display); font-weight:700; font-size:1.18rem;
+  padding:4px 10px 14px; letter-spacing:.2px;
+}
+.rail-brand small{display:block; font-family:var(--font-body); font-weight:600; font-size:.68rem;
+  text-transform:uppercase; letter-spacing:.09em; color:var(--ink-muted); margin-top:3px;}
+.rail-btn{
+  display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:9px;
+  border:none; background:none; color:var(--ink-2); font:inherit; font-size:.87rem; font-weight:600;
+  text-align:left; cursor:pointer; width:100%;
+}
+.rail-btn:hover{background:var(--surface-2); color:var(--ink);}
+.rail-btn.active{background:var(--accent-soft); color:var(--accent);}
+.rail-ico{width:19px; text-align:center; flex-shrink:0; font-size:1.02rem;}
+.rail-foot{margin-top:auto; padding:14px 10px 2px; font-size:.72rem; color:var(--ink-muted); border-top:1px solid var(--border); margin-top:14px;}
+
+/* ---- Main ---- */
+.main{padding:26px 30px 70px; max-width:1080px;}
+@media (max-width:640px){ .main{padding:18px 16px 60px;} }
+.view{display:none;}
+.view.active{display:block;}
+.view-head{margin-bottom:22px;}
+.eyebrow{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin:0 0 6px;}
+h1.title{font-family:var(--font-display); font-weight:700; font-size:2rem; margin:0 0 8px; text-wrap:balance;}
+.dek{color:var(--ink-2); font-size:1rem; max-width:62ch; margin:0;}
+
+.card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px;}
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+@media (max-width:760px){ .grid-2,.grid-3{grid-template-columns:1fr;} }
+
+h2.sec{font-family:var(--font-display); font-weight:600; font-size:1.3rem; margin:30px 0 12px;}
+h2.sec:first-child{margin-top:0;}
+h3.sub{font-family:var(--font-display); font-weight:600; font-size:1.06rem; margin:0 0 8px;}
+p{margin:0 0 10px;}
+.muted{color:var(--ink-2);}
+code, .mono{font-family:var(--font-mono);}
+ul.list-plain{margin:0; padding-left:18px;}
+ul.list-plain li{margin-bottom:4px; font-size:.86rem; color:var(--ink-2);}
+
+/* buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:9px;
+  border:1px solid var(--border); background:var(--surface); color:var(--ink); font:inherit; font-weight:600;
+  font-size:.86rem; cursor:pointer;
+}
+.btn:hover{background:var(--surface-2);}
+.btn.primary{background:var(--accent); color:#fff; border-color:transparent;}
+.btn.primary:hover{filter:brightness(1.06);}
+.btn:focus-visible, .rail-btn:focus-visible, input:focus-visible, .chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+/* checklist */
+.check-row{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-top:1px solid var(--grid);}
+.check-row:first-child{border-top:none;}
+.check-row input{margin-top:3px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer; flex-shrink:0;}
+.check-row label{cursor:pointer; font-size:.92rem;}
+.check-row.done label{color:var(--ink-muted); text-decoration:line-through;}
+
+/* progress */
+.pbar-outer{background:var(--surface-2); border-radius:8px; height:9px; overflow:hidden;}
+.pbar-inner{background:var(--accent); height:100%; width:0%; transition:width .3s ease;}
+
+/* pills */
+.pill{display:inline-block; padding:3px 10px; border-radius:999px; font-size:.72rem; font-weight:700;}
+
+/* Home hero + competency map */
+.hero{
+  background:linear-gradient(135deg, var(--accent-soft), var(--surface));
+  border:1px solid var(--border); border-radius:16px; padding:26px 26px;
+  display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:24px;
+}
+@media (max-width:700px){ .hero{flex-direction:column; align-items:flex-start;} }
+.hero-stat{text-align:right;}
+@media (max-width:700px){ .hero-stat{text-align:left;} }
+.hero-stat .num{font-family:var(--font-display); font-size:2.3rem; font-weight:700; color:var(--accent); line-height:1;}
+.hero-stat .lbl{font-size:.75rem; color:var(--ink-2); text-transform:uppercase; letter-spacing:.06em; margin-top:3px;}
+
+.comp-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px;
+  display:flex; gap:12px; align-items:flex-start; cursor:pointer; transition:border-color .15s;
+}
+.comp-card:hover{border-color:var(--accent);}
+.comp-num{
+  font-family:var(--font-display); font-weight:700; font-size:1.15rem; color:var(--accent);
+  width:28px; flex-shrink:0;
+}
+.comp-card.done .comp-num{color:var(--good);}
+.comp-body b{display:block; font-size:.9rem; margin-bottom:2px;}
+.comp-body span{font-size:.8rem; color:var(--ink-2);}
+
+/* nav cards on home */
+.nav-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;
+  cursor:pointer; text-align:left; display:flex; flex-direction:column; gap:6px;
+}
+.nav-card:hover{border-color:var(--accent);}
+.nav-card .ico{font-size:1.4rem;}
+.nav-card b{font-family:var(--font-display); font-size:1.02rem; font-weight:600;}
+.nav-card span{font-size:.8rem; color:var(--ink-2);}
+
+/* stage flow (reused for emergency response sequence) */
+.stage-flow{display:flex; gap:4px; overflow-x:auto; padding-bottom:6px;}
+.stage-chip{
+  flex:1; min-width:130px; border-radius:12px; padding:14px 14px; cursor:pointer; border:2px solid transparent;
+  color:#fff; font-weight:700; font-family:var(--font-display); font-size:.98rem;
+  display:flex; flex-direction:column; gap:4px; transition:transform .15s;
+}
+.stage-chip span{font-family:var(--font-body); font-weight:600; font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; opacity:.85;}
+.stage-chip:hover{transform:translateY(-2px);}
+.stage-chip.active{border-color:var(--ink);}
+.stage-detail{margin-top:16px; padding:18px 20px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2);}
+
+/* symbol-style grid (reused for quick glyph/fact cells) */
+.sym-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px;}
+.sym-cell{background:var(--surface-2); border-radius:9px; padding:10px 12px; display:flex; align-items:center; gap:10px;}
+.sym-glyph{font-family:var(--font-mono); font-weight:700; font-size:1.05rem; min-width:34px; color:var(--accent);}
+.sym-mean{font-size:.78rem; color:var(--ink-2);}
+
+/* 3/4-up colored fact cards (reused for ABCs, seizure stages, SOAP-style groupings) */
+.soap-card{border-radius:12px; padding:16px 18px; color:#fff;}
+.soap-card b.letter{font-family:var(--font-display); font-size:1.6rem; display:block; line-height:1;}
+.soap-card .name{font-weight:700; font-size:.85rem; text-transform:uppercase; letter-spacing:.06em; opacity:.9; margin:2px 0 8px;}
+.soap-card p{font-size:.85rem; opacity:.96;}
+
+/* comparison cards (reused for bleeding types, hyper/hypothermia) */
+.type-card{border-radius:14px; overflow:hidden; border:1px solid var(--border);}
+.type-head{padding:14px 18px; color:#fff;}
+.type-head b{font-family:var(--font-display); font-size:1.1rem; display:block;}
+.type-head span{font-size:.76rem; opacity:.9;}
+.type-body{padding:14px 18px; background:var(--surface); font-size:.83rem;}
+.type-body h4{margin:10px 0 4px; font-size:.76rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted);}
+.type-body h4:first-child{margin-top:0;}
+.type-body ul{margin:0; padding-left:18px;}
+.type-body li{margin-bottom:3px;}
+
+.callout{border-radius:12px; padding:14px 18px; border:1px solid; font-size:.86rem;}
+.callout.warn{background:color-mix(in srgb, var(--warn) 12%, var(--surface)); border-color:var(--warn); color:var(--ink);}
+.callout.info{background:var(--accent-soft); border-color:var(--accent); color:var(--ink);}
+.callout.crit{background:color-mix(in srgb, var(--crit) 12%, var(--surface)); border-color:var(--crit); color:var(--ink);}
+
+/* reference table (reused for vitals, CRT, contraindications) */
+table.strokes{width:100%; border-collapse:collapse; font-size:.85rem;}
+table.strokes th{text-align:left; padding:8px 10px; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); border-bottom:1px solid var(--border);}
+table.strokes td{padding:9px 10px; border-bottom:1px solid var(--grid); vertical-align:top;}
+table.strokes tr:last-child td{border-bottom:none;}
+.fam-dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px;}
+.overflow-x{overflow-x:auto;}
+
+/* flashcard drill */
+.drill-wrap{max-width:560px; margin:0 auto;}
+.drill-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:34px 26px;
+  min-height:180px; display:flex; align-items:center; justify-content:center; text-align:center;
+  cursor:pointer; font-size:1.08rem; font-weight:600; position:relative;
+}
+.drill-card .tag{position:absolute; top:14px; left:16px; font-size:.68rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink-muted);}
+.drill-card .hint{position:absolute; bottom:12px; font-size:.72rem; color:var(--ink-muted); font-weight:400;}
+.drill-controls{display:flex; justify-content:space-between; align-items:center; margin-top:16px; gap:10px;}
+.drill-progress{font-size:.8rem; color:var(--ink-2); font-weight:600;}
+.drill-score{display:flex; gap:14px; font-size:.82rem;}
+.drill-score b{font-family:var(--font-display);}
+.btn.wrong{border-color:var(--crit); color:var(--crit);}
+.btn.right{border-color:var(--good); color:var(--good);}
+
+/* fact cards with color dot (reused for poison categories, practice considerations) */
+.energy-card{border-radius:14px; padding:18px 20px; border:1px solid var(--border); background:var(--surface);}
+.energy-card .dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:8px;}
+
+.footnote{font-size:.76rem; color:var(--ink-muted); margin-top:6px;}
+::selection{background:var(--accent); color:#fff;}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail">
+    <div class="rail-brand">Chapter Five<small>First Aid Guide</small></div>
+    <button class="rail-btn" data-view="home"><span class="rail-ico">🏠</span>Home</button>
+    <button class="rail-btn" data-view="vitals"><span class="rail-ico">🌡️</span>Vital Signs</button>
+    <button class="rail-btn" data-view="cpr"><span class="rail-ico">🫁</span>CPR &amp; ABCs</button>
+    <button class="rail-btn" data-view="emergency"><span class="rail-ico">🚨</span>Emergency Response</button>
+    <button class="rail-btn" data-view="shock"><span class="rail-ico">🩸</span>Shock &amp; Bleeding</button>
+    <button class="rail-btn" data-view="tempseiz"><span class="rail-ico">🥵</span>Temp &amp; Seizures</button>
+    <button class="rail-btn" data-view="poison"><span class="rail-ico">☠️</span>Poisoning</button>
+    <button class="rail-btn" data-view="massage"><span class="rail-ico">🖐️</span>Contraindications</button>
+    <button class="rail-btn" data-view="review"><span class="rail-ico">🎯</span>Full Review</button>
+    <div class="rail-foot">NWSAM Ch.5 · built from your live coursework &amp; quiz history</div>
+  </nav>
+  <main class="main" id="main"></main>
+</div>
+<script>
+/* ============================= DATA ============================= */
+
+const COMPETENCIES = [
+  {id:"c1", label:"Recognize normal ranges of the vital statistics", view:"vitals", hint:"Temp, pulse, respiration, CRT — the reference numbers"},
+  {id:"c2", label:"Define and evaluate the vital statistics of a dog", view:"vitals", hint:"How to actually take temp/pulse/resp/CRT/hydration"},
+  {id:"c3", label:"Describe how to apply rescue breathing and CPR as needed", view:"cpr", hint:"ABCs, compression depth & ratio, RB vs. CPR"},
+  {id:"c4", label:"Explain appropriate care for severe bleeding, shock, motor vehicle accident injuries, hypothermia, hyperthermia, and seizures", view:"emergency", hint:"Trauma, shock & bleeding, temp emergencies, seizures"},
+  {id:"c5", label:"Identify practice considerations involved with medical emergencies", view:"massage", hint:"Scope of practice, contraindications, when to refer out"}
+];
+
+const DOG_VITALS = [
+  {stat:"Temperature", range:"100.2 – 102.8 °F", note:"Healthy adult band runs narrower: 101.5–102.5 °F"},
+  {stat:"Pulse — under 30 lbs", range:"100 – 160 bpm", note:""},
+  {stat:"Pulse — over 30 lbs", range:"60 – 100 bpm", note:"Not the same as the under-30lb range"},
+  {stat:"Pulse — puppies", range:"120 – 160 bpm", note:""},
+  {stat:"Respiration (resting)", range:"10 – 30 breaths/min", note:""},
+  {stat:"Capillary Refill Time", range:"1 – 2 seconds", note:"Press gum, count return of pink color"}
+];
+
+const CAT_VITALS = [
+  {stat:"Temperature", range:"100.5 – 102.5 °F"},
+  {stat:"Pulse", range:"160 – 220 bpm"},
+  {stat:"Respiration (resting)", range:"20 – 30 breaths/min"},
+  {stat:"Capillary Refill Time", range:"1 – 2 seconds"}
+];
+
+const CRT_TABLE = [
+  {color:"Pink, even color, refill 1–2 sec", meaning:"Normal — well perfused &amp; oxygenated"},
+  {color:"Pale pink / white", meaning:"Ischemic tissue — shock or blood loss"},
+  {color:"Purple / mottled", meaning:"Toxic tissue — infection or poisoning"},
+  {color:"Gray / blue (cyanotic)", meaning:"Lack of oxygen in the blood"}
+];
+
+const ABC_CARDS = [
+  {letter:"A", name:"Airway", color:"var(--vit)", body:"Is anything blocking the airway? Clear it before anything else."},
+  {letter:"B", name:"Breathing", color:"var(--cpr)", body:"Is the animal breathing on its own? If not, and there IS a heartbeat — rescue breathing."},
+  {letter:"C", name:"Circulation", color:"var(--eme)", body:"Is there a heartbeat/pulse? If not — begin CPR plus rescue breathing together."}
+];
+
+const EMERGENCY_FLOW = [
+  {n:1, name:"Assess Your Own Safety", color:"var(--seq1)", dark:true,
+    body:"Before you do anything else — assess the situation. A scared or injured animal can hurt you. This is for your own safety, always."},
+  {n:2, name:"Assess the Animal (ABCs)", color:"var(--seq2)", dark:true,
+    body:"Airway, Breathing, Circulation. Figure out what's actually wrong before you act."},
+  {n:3, name:"Control the Emergency", color:"var(--seq3)", dark:true,
+    body:"Stop bleeding, stabilize a fracture or back injury, address the specific emergency in front of you. If both bleeding and CPR/RB are needed, control excessive bleeding first."},
+  {n:4, name:"Watch for Shock", color:"var(--seq4)", dark:false,
+    body:"Keep monitoring even after the initial crisis looks handled — shock can develop afterward."},
+  {n:5, name:"Get to a Vet", color:"var(--seq5)", dark:false,
+    body:"Transport safely, or call ahead so the clinic is ready when you arrive."}
+];
+
+const EMERGENCY_TYPES = [
+  {name:"Trauma", body:"Traumatic injury can appear much later after the initial incident — don't assume 'no visible injury' means 'no injury.' In a multi-injury scene, excessive bleeding is the top priority."},
+  {name:"Car Accident", body:"Same delayed-injury warning applies: symptoms of trauma can show up well after the accident itself, so keep monitoring even if the animal seems fine at first."},
+  {name:"Broken Back", body:"Minimize movement as much as possible. Slide a rigid board underneath the animal and secure it with strips of material — don't try to reposition by hand."},
+  {name:"Fractures", body:"Immobilize with an improvised splint — rolled newspaper for large dogs, pencils for cats/small dogs. Don't attempt to realign the bone yourself."},
+  {name:"Drowning", body:"Hold the animal by the hind legs to let water drain from the lungs. Afterward, watch closely for shock and hypothermia — the danger doesn't end once water is out of the lungs."}
+];
+
+const SHOCK_STAGES = [
+  {stage:"Early", finding:"Increased heart rate"},
+  {stage:"Later", finding:"Respiratory rate and pulse both DECREASE"}
+];
+
+const BLEEDING_TYPES = [
+  {name:"Arterial", color:"var(--cpr)", freq:"More urgent", body:"Bright red. Spurts rhythmically, in time with the heartbeat. Harder to control."},
+  {name:"Venous", color:"var(--eme)", freq:"Easier to control", body:"Darker / purple. Steady flow, not spurting. Generally easier to manage."}
+];
+
+const TEMP_TYPES = [
+  {name:"Hyperthermia", color:"var(--hot)", freq:"Heat-related", body:"Abnormally HIGH body temperature."},
+  {name:"Hypothermia", color:"var(--cld)", freq:"Cold-related", body:"Abnormally LOW body temperature."}
+];
+
+const SEIZURE_STAGES = ["Aura", "Prodrome", "Ictus", "Postictal"];
+
+const POISON_CATEGORIES = ["Household chemicals", "Prescription drugs", "Alcohol", "Flea powders & shampoos", "Inhaled toxins"];
+
+const PREVENTION_ITEMS = [
+  "Self-cleaning oven fumes — a real inhalation hazard, easy to overlook.",
+  "Rawhide chews — a common blockage/choking hazard flagged in prevention material.",
+  "Certain poisoning risks tie to fluke worms and cross-species exposure — species named in your session: birds, mice, rabbits, horses, cattle, and goats."
+];
+
+const MASSAGE_CONTRAINDICATIONS = [
+  {cond:"Congenital heart disease", rule:"Contraindicated", note:"Politely decline and explain that certain physiological effects of massage may aggravate the condition."},
+  {cond:"Sarcoptic mange", rule:"Contraindicated", note:"Highly contagious — do not proceed."},
+  {cond:"Demodectic mange", rule:"Use judgment", note:"Generally NOT contagious, unlike sarcoptic — the two get mixed up on quizzes."},
+  {cond:"Myasthenia Gravis", rule:"Exception — indicated", note:"Helps with cramping relief. Don't default to \"contraindicated\" just because it's a neuromuscular condition."},
+  {cond:"Any active infection", rule:"Contraindicated", note:"Two exceptions: quality-of-life care, or when specifically vet-recommended."},
+  {cond:"Bloat (gastric torsion) or peritonitis", rule:"Not a massage scenario", note:"This is a medical emergency — refer out immediately."}
+];
+
+/* Weak-spot flashcards — targeted at J's documented quiz mix-ups this chapter */
+const WEAKSPOT_CARDS = [
+  {tag:"Vital Signs", q:"How long should you wait when taking a temperature with a GLASS thermometer, vs. digital?", a:"Digital: about 1 minute. Glass: up to 3 minutes. (First pass, only '1 minute' was given — glass takes longer than digital.)"},
+  {tag:"Vital Signs", q:"What's the normal resting pulse range for a dog OVER 30 lbs?", a:"60–100 bpm — not the same as the under-30lb range (100–160 bpm). Easy to default to the whole-species range by mistake."},
+  {tag:"Vital Signs", q:"Where exactly do you perform the skin-tent hydration test?", a:"At or just above the withers. Skin return speed alone isn't the full answer — location matters too."},
+  {tag:"Vital Signs", q:"What does a CYANOTIC (gray/blue) gum color during a CRT check actually indicate?", a:"Lack of oxygen in the blood — the underlying cause, not just a category label like 'toxic tissue.'"},
+  {tag:"CPR", q:"What is the DEFAULT compression-to-breath ratio for CPR, regardless of the animal's size?", a:"5:1 — for ALL sizes by default. 10:1 is reserved ONLY as a special-case exception for extremely large dogs."},
+  {tag:"CPR", q:"Is it ever appropriate to perform CPR on an animal that still has a heartbeat?", a:"No. CPR on an animal WITH a heartbeat can be dangerous. If there's a heartbeat but no breathing, use rescue breathing only."},
+  {tag:"Temperature Emergencies", q:"Hyperthermia vs. hypothermia — which is which?", a:"Hyperthermia = HIGH body temp (heat-related). Hypothermia = LOW body temp (cold-related). Easy to swap under quiz pressure."},
+  {tag:"Skin & Coat", q:"Sarcoptic mange vs. demodectic mange — which one is highly contagious?", a:"Sarcoptic mange is highly contagious. Demodectic mange generally is not."},
+  {tag:"Bleeding", q:"What is the hard rule about tourniquets in first aid?", a:"Do NOT apply tourniquets — use direct hand pressure on the nearest artery instead."},
+  {tag:"Poisoning", q:"What is the hard rule about ipecac syrup?", a:"Never use ipecac syrup on an animal."},
+  {tag:"Bleeding", q:"How do you tell arterial bleeding apart from venous bleeding?", a:"Arterial: bright red, spurts rhythmically with the heartbeat. Venous: darker/purple, steady flow — generally easier to control."},
+  {tag:"Practice Considerations", q:"When is massage contraindicated due to infection — and what are the two exceptions?", a:"Contraindicated whenever ANY active infection is present. Exceptions: quality-of-life care, or when specifically recommended by a vet."},
+  {tag:"Seizures", q:"What are the four stages of a seizure, in order?", a:"Aura → Prodrome → Ictus → Postictal."},
+  {tag:"Practice Considerations", q:"Is massage contraindicated for a dog with Myasthenia Gravis?", a:"No — this is the exception to the pattern. Massage IS indicated for Myasthenia Gravis; it helps with cramping relief. Don't auto-flag every neuromuscular condition as contraindicated."},
+  {tag:"CPR", q:"If an animal needs both CPR/rescue breathing AND has excessive bleeding, which do you address first?", a:"Control the excessive bleeding first, then move to CPR/RB."}
+];
+
+/* Full review question bank — mixed across all sections, multiple-choice */
+const REVIEW_QUESTIONS = [
+  {q:"What is the normal temperature range for a dog?", options:["95–99 °F","100.2–102.8 °F","103–106 °F","97–100 °F"], a:1},
+  {q:"Normal resting pulse for a dog OVER 30 lbs?", options:["100–160 bpm","60–100 bpm","40–60 bpm","160–200 bpm"], a:1},
+  {q:"Normal resting pulse for a puppy?", options:["60–100 bpm","80–100 bpm","120–160 bpm","160–200 bpm"], a:2},
+  {q:"Normal resting respiration rate for a dog?", options:["5–10 breaths/min","10–30 breaths/min","30–50 breaths/min","50–70 breaths/min"], a:1},
+  {q:"Normal capillary refill time?", options:["Under 1 second","1–2 seconds","3–5 seconds","5–10 seconds"], a:1},
+  {q:"How long should you wait when taking a temperature with a DIGITAL thermometer?", options:["10 seconds","About 1 minute","3 minutes","5 minutes"], a:1},
+  {q:"How long should you wait with a GLASS thermometer?", options:["1 minute","90 seconds","Up to 3 minutes","5 minutes"], a:2},
+  {q:"A purple or mottled gum color during a CRT check most likely indicates:", options:["Normal perfusion","Toxic tissue — infection or poisoning","Dehydration only","Nothing significant"], a:1},
+  {q:"A gray/blue (cyanotic) gum color during a CRT check indicates:", options:["Toxicity","Dehydration","Lack of oxygen in the blood","Normal perfusion"], a:2},
+  {q:"Where do you perform the skin-tent hydration test?", options:["Belly","At or just above the withers","Ear tip","Paw pad"], a:1},
+  {q:"How should you take a dog's pulse?", options:["With your thumb","With your fingers","Either works equally well","With a stethoscope only"], a:1},
+  {q:"If an animal has a heartbeat but isn't breathing, you should:", options:["Perform CPR","Perform rescue breathing only","Do nothing","Apply a tourniquet"], a:1},
+  {q:"What do the ABCs of CPR/RB stand for?", options:["Airway, Breathing, Circulation","Assess, Breathe, Call","Airway, Bleeding, Circulation","Alert, Breathing, CPR"], a:0},
+  {q:"Default compression-to-breath ratio for CPR, across all sizes?", options:["10:1","5:1","15:2","30:2"], a:1},
+  {q:"The 10:1 compression ratio is reserved for:", options:["Puppies","Cats","Extremely large dogs","Small dogs"], a:2},
+  {q:"Compression depth for a smaller animal?", options:["1 inch","2 inches","3 inches","4 inches"], a:0},
+  {q:"Is it ever safe to practice CPR/RB techniques on a healthy, living animal?", options:["Yes, it's good practice","No — practice on a stuffed animal instead","Only with vet supervision","Only on cats"], a:1},
+  {q:"Before approaching an emergency, your very first priority is to:", options:["Call the owner","Assess the situation — for your own safety","Start CPR immediately","Apply a tourniquet"], a:1},
+  {q:"If an animal needs both CPR/RB and has excessive bleeding, you should:", options:["Start CPR first, always","Control the bleeding first","Do both at the exact same time","Call the vet before doing anything"], a:1},
+  {q:"With traumatic injuries (including car accidents), a key danger is that:", options:["Injuries always show immediately","Injuries can appear much later","Only external injuries matter","Trauma never affects behavior"], a:1},
+  {q:"In a trauma scene with multiple injuries, your top priority is:", options:["Bandaging minor scrapes","Controlling excessive bleeding","Checking temperature first","Comforting the owner"], a:1},
+  {q:"An improvised splint for a fractured leg on a large dog can be made from:", options:["Rolled newspaper","A metal rod","Duct tape only","A wet towel"], a:0},
+  {q:"For a suspected broken back, you should:", options:["Reposition the animal by hand to a comfortable spot","Slide a rigid board underneath and secure it","Encourage the animal to walk to the car","Apply a tourniquet to the spine"], a:1},
+  {q:"After a drowning incident, you should hold the animal:", options:["By the front legs","By the hind legs, to drain water from the lungs","Upside down by the tail","Flat on its side only"], a:1},
+  {q:"After drowning, you should watch closely afterward for:", options:["Shock and hypothermia","Fever and vomiting only","Nothing further needed","Hyperthermia only"], a:0},
+  {q:"In shock, what happens to respiratory rate and pulse in the LATER stage?", options:["Both increase","Both decrease","Only pulse increases","No change at all"], a:1},
+  {q:"Arterial bleeding is best described as:", options:["Dark, oozing steadily","Bright red, spurting rhythmically","Clear and thin","A slow trickle only"], a:1},
+  {q:"What is the hard rule about tourniquets?", options:["Use them for all severe bleeding","Never apply them","Only use on legs","Only use for 10 minutes"], a:1},
+  {q:"A properly-fitted compression bandage should:", options:["Be as tight as possible","Still allow a 4th finger to just fit underneath","Be loose enough to slide off","Cut off circulation briefly, then loosen"], a:1},
+  {q:"Hyperthermia refers to:", options:["Abnormally low body temperature","Abnormally high body temperature","Normal body temperature","Rapid pulse only"], a:1},
+  {q:"When warming or cooling an animal for a temperature emergency, you should:", options:["Do it as fast as possible","Do it slowly, rechecking temperature often","Only cool, never warm","Skip monitoring once it feels normal"], a:1},
+  {q:"The four stages of a seizure, in order, are:", options:["Ictus, Aura, Prodrome, Postictal","Aura, Prodrome, Ictus, Postictal","Prodrome, Ictus, Aura, Postictal","Postictal, Aura, Ictus, Prodrome"], a:1},
+  {q:"During a seizure, a key safety caution to remember is:", options:["The animal may bite","The animal will vomit","The animal must be restrained tightly","The animal should be given water"], a:0},
+  {q:"What's the correct hydrogen peroxide dose to induce vomiting, and when should you use it?", options:["1 tsp/10 lbs — use anytime you suspect poisoning","1 tsp/10 lbs — use ONLY if a vet tells you to","1 tbsp/10 lbs — use anytime","1 tsp/lb — use ONLY if a vet tells you to"], a:1},
+  {q:"What is the hard rule about ipecac syrup?", options:["Use it for all poisonings","Never use it","Use only in cats","Use only alongside activated charcoal"], a:1},
+  {q:"Bloat (gastric torsion) is best described as:", options:["A skin infection","A twisted stomach — a life-threatening emergency","A mild digestive upset","A parasitic infection"], a:1},
+  {q:"Peritonitis is:", options:["An infection","A skin condition","A vitamin deficiency","A vaccine reaction"], a:0},
+  {q:"Which mange type is highly contagious?", options:["Demodectic","Sarcoptic","Both equally","Neither"], a:1},
+  {q:"Massage is contraindicated whenever:", options:["The dog is over 5 years old","Any active infection is present","The dog just ate","The dog is a puppy"], a:1},
+  {q:"Is massage contraindicated for a dog with Myasthenia Gravis?", options:["Yes, always contraindicated","No — it's an exception, massage helps with cramping relief","Only for puppies","Only if vet-recommended, otherwise no"], a:1},
+  {q:"A dog with congenital heart disease and a massage request — the appropriate response is:", options:["Proceed as normal","Politely decline and explain the risk","Massage only the legs","Ask the dog to consent"], a:1},
+  {q:"As a massage practitioner, your scope of practice regarding first aid is to:", options:["Diagnose and treat illnesses you find","Recognize emergencies and respond safely — not diagnose or prescribe","Prescribe medication if trained","Practice first aid instead of referring to a vet"], a:1}
+];
+
+/* ============================= STATE ============================= */
+const KEY = "ch5-first-aid-guide-v1";
+let state = {};
+try{ state = JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ state = {}; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+if(!state.comp) state.comp = {};
+
+let currentView = "home";
+let stageOpen = 0;
+let drillIdx = 0, drillFlipped = false, drillOrder = [];
+let reviewIdx = 0, reviewOrder = [], reviewAnswered = false;
+let reviewPassComplete = false, passRight = 0, passWrong = 0, passMissed = [];
+if(!state.reviewScore) state.reviewScore = {right:0, wrong:0};
+
+/* ============================= HELPERS ============================= */
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function competencyDoneCount(){ return COMPETENCIES.filter(c=>state.comp[c.id]).length; }
+
+/* ============================= RENDER: HOME ============================= */
+function renderHome(){
+  const done = competencyDoneCount();
+  const pct = Math.round(done/COMPETENCIES.length*100);
+  const navCards = [
+    ["vitals","🌡️","Vital Signs","Dog & cat reference ranges, CRT, temp/pulse/hydration technique"],
+    ["cpr","🫁","CPR & ABCs","Airway/Breathing/Circulation, compression depth & ratio"],
+    ["emergency","🚨","Emergency Response","5-stage sequence, trauma, car accident, broken back, fractures, drowning"],
+    ["shock","🩸","Shock & Bleeding","Stage progression, arterial vs. venous, no-tourniquet rule"],
+    ["tempseiz","🥵","Temp & Seizures","Hyperthermia/hypothermia, 4 seizure stages"],
+    ["poison","☠️","Poisoning","Common categories, hydrogen peroxide protocol, no-ipecac rule"],
+    ["massage","🖐️","Contraindications","Go/no-go table, scope of practice"]
+  ];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Practicum-focused first aid guide</p>
+    <h1 class="title">Everything Chapter 5, one map.</h1>
+    <p class="dek">Built from your actual quiz history and the LMS's own practicum-readiness checklist. Start anywhere — the rail always gets you back.</p>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h3 class="sub" style="margin-bottom:4px;">Practicum readiness</h3>
+      <p class="muted" style="max-width:40ch;">The official 5-item checklist from the LMS's own "Practicum Readiness" page. Tap any item to jump to it.</p>
+    </div>
+    <div class="hero-stat">
+      <div class="num">${done}/${COMPETENCIES.length}</div>
+      <div class="lbl">competencies checked</div>
+    </div>
+  </div>
+
+  <div class="grid" style="gap:10px; margin-bottom:32px;">
+    ${COMPETENCIES.map(c => `
+      <div class="comp-card ${state.comp[c.id] ? 'done' : ''}" onclick="toggleCompFromCard('${c.id}', event)">
+        <div class="comp-num">${state.comp[c.id] ? '✓' : c.id.replace('c','')}</div>
+        <div class="comp-body" style="flex:1;">
+          <b>${esc(c.label)}</b>
+          <span>${esc(c.hint)}</span>
+        </div>
+        <input type="checkbox" ${state.comp[c.id] ? 'checked' : ''} onclick="event.stopPropagation(); toggleComp('${c.id}')" style="margin-top:4px; width:17px; height:17px; accent-color:var(--accent); cursor:pointer;">
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Jump to a section</h2>
+  <div class="grid grid-3">
+    ${navCards.map(([v,ico,name,desc]) => `
+      <button class="nav-card" onclick="goto('${v}')">
+        <span class="ico">${ico}</span>
+        <b>${name}</b>
+        <span>${esc(desc)}</span>
+      </button>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Or jump straight to practice</h2>
+  <div class="grid grid-2">
+    <button class="nav-card" onclick="goto('massage'); setTimeout(()=>document.getElementById('drill-anchor')?.scrollIntoView({behavior:'smooth'}),50)">
+      <span class="ico">🃏</span><b>Weak-spot flashcards</b>
+      <span>15 cards targeting your documented mix-ups (glass thermometer wait, CPR ratio, Myasthenia Gravis, etc.)</span>
+    </button>
+    <button class="nav-card" onclick="goto('review')">
+      <span class="ico">🎯</span><b>Full review quiz</b>
+      <span>${REVIEW_QUESTIONS.length} mixed questions across the whole chapter, 5 at a time</span>
+    </button>
+  </div>
+  `;
+}
+function toggleComp(id){ state.comp[id] = !state.comp[id]; save(); render(); }
+function toggleCompFromCard(id, ev){ if(ev.target.tagName==='INPUT') return; goto(COMPETENCIES.find(c=>c.id===id).view); }
+
+/* ============================= RENDER: VITALS ============================= */
+function renderVitals(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #1, #2</p>
+    <h1 class="title">Vital Signs</h1>
+    <p class="dek">Recognize the normal ranges, and know how to actually take each measurement on a live dog.</p>
+  </div>
+
+  <h2 class="sec">Reference ranges — dog</h2>
+  <div class="overflow-x">
+  <table class="strokes">
+    <thead><tr><th>Vital</th><th>Normal range</th><th>Note</th></tr></thead>
+    <tbody>
+      ${DOG_VITALS.map(v => `<tr><td><b>${v.stat}</b></td><td class="mono">${v.range}</td><td>${v.note}</td></tr>`).join("")}
+    </tbody>
+  </table>
+  </div>
+  <div class="callout warn" style="margin-top:14px;">
+    <b>Corrected in session:</b> the pulse range for dogs over 30 lbs is <b>60–100 bpm</b> — not the full-species 60–160 range. Keep the under/over-30lb ranges distinct in your head.
+  </div>
+
+  <h2 class="sec">Reference ranges — cat (for contrast)</h2>
+  <div class="overflow-x">
+  <table class="strokes">
+    <thead><tr><th>Vital</th><th>Normal range</th></tr></thead>
+    <tbody>
+      ${CAT_VITALS.map(v => `<tr><td><b>${v.stat}</b></td><td class="mono">${v.range}</td></tr>`).join("")}
+    </tbody>
+  </table>
+  </div>
+
+  <h2 class="sec">How to take a temperature</h2>
+  <p class="muted footnote" style="margin-bottom:12px;">Rectal insertion, about 1 inch.</p>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3 class="sub">Digital thermometer</h3>
+      <p style="margin:0;">Wait <b>about 1 minute</b>.</p>
+    </div>
+    <div class="card">
+      <h3 class="sub">Glass thermometer</h3>
+      <p style="margin:0;">Wait <b>up to 3 minutes</b> — noticeably longer than digital.</p>
+    </div>
+  </div>
+  <div class="callout warn" style="margin-top:14px;">
+    <b>Corrected in session:</b> the first pass at this only gave "1 minute" — that's the digital wait time. Glass takes longer.
+  </div>
+
+  <h2 class="sec">How to take a pulse</h2>
+  <div class="card">
+    <p style="margin:0;">Use your <b>fingers</b> — never your thumb (your thumb has its own pulse, which can throw off the count).</p>
+  </div>
+
+  <h2 class="sec">Capillary Refill Time (CRT) — color guide</h2>
+  <div class="overflow-x">
+  <table class="strokes">
+    <thead><tr><th>Gum color / refill</th><th>What it means</th></tr></thead>
+    <tbody>
+      ${CRT_TABLE.map(r => `<tr><td>${r.color}</td><td>${r.meaning}</td></tr>`).join("")}
+    </tbody>
+  </table>
+  </div>
+  <div class="callout warn" style="margin-top:14px;">
+    <b>Corrected in session:</b> answer with the underlying <i>cause</i> (e.g. "lack of oxygen in the blood" for cyanotic) — not just a category label. Purple/mottled (toxic) and gray/blue (cyanotic) are easy to mix up — they're two different findings.
+  </div>
+
+  <h2 class="sec">Hydration / dehydration test (skin tent)</h2>
+  <div class="card">
+    <p style="margin:0;">Gently tent the skin <b>at or just above the withers</b>, lifting about a 1/4 inch, and watch how quickly it returns to place. Slower return time can indicate dehydration.</p>
+  </div>
+  <div class="callout warn" style="margin-top:14px;">
+    <b>Corrected in session:</b> "about a quarter inch, slower return = dehydration" was missing the location — the withers specifically, not just anywhere on the body.
+  </div>
+  `;
+}
+
+/* ============================= RENDER: CPR ============================= */
+function renderCpr(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #3</p>
+    <h1 class="title">CPR &amp; the ABCs</h1>
+    <p class="dek">Rescue breathing and CPR are not interchangeable — knowing which one applies is the whole ballgame.</p>
+  </div>
+
+  <h2 class="sec">The ABCs</h2>
+  <div class="grid grid-3">
+    ${ABC_CARDS.map(c => `
+      <div class="soap-card" style="background:${c.color};">
+        <b class="letter">${c.letter}</b>
+        <div class="name">${c.name}</div>
+        <p>${c.body}</p>
+      </div>
+    `).join("")}
+  </div>
+
+  <h2 class="sec">Rescue Breathing vs. CPR</h2>
+  <div class="overflow-x">
+  <table class="strokes">
+    <thead><tr><th>Situation</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>Heartbeat present, not breathing</td><td class="mono">Rescue breathing only</td></tr>
+      <tr><td>No heartbeat</td><td class="mono">CPR + rescue breathing together</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout crit" style="margin-top:16px;">
+    <b>Hard rule:</b> CPR on an animal that still has a heartbeat can be dangerous. Confirm circulation status before you start compressions.
+  </div>
+  <div class="callout info" style="margin-top:10px;">
+    <b>Priority order:</b> if an animal needs both CPR/RB and has excessive bleeding, control the bleeding first.
+  </div>
+
+  <h2 class="sec">Compression depth &amp; ratio</h2>
+  <div class="overflow-x">
+  <table class="strokes">
+    <thead><tr><th>Animal size</th><th>Compression depth</th></tr></thead>
+    <tbody>
+      <tr><td>Smaller animal</td><td class="mono">1 inch</td></tr>
+      <tr><td>Larger animal</td><td class="mono">1–3 inches</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout warn" style="margin-top:14px;">
+    <b>Corrected in session:</b> the compression-to-breath ratio is <b>5:1 by default, for every size of animal</b>. 10:1 is <b>not</b> "small vs. large" — it's a narrow exception used only for extremely large dogs.
+  </div>
+
+  <div class="callout crit" style="margin-top:16px;">
+    <b>Hard rule:</b> never practice CPR or rescue-breathing techniques on a healthy, living animal. Practice on a stuffed animal instead — real hands-on practice under supervision happens at the October practicum.
+  </div>
+  `;
+}
+
+/* ============================= RENDER: EMERGENCY ============================= */
+function renderEmergency(){
+  const s = EMERGENCY_FLOW[stageOpen];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #4, #5</p>
+    <h1 class="title">Emergency Response</h1>
+    <p class="dek">A general sequence to work through, plus the specifics for each emergency type covered in the chapter.</p>
+  </div>
+
+  <h2 class="sec">General response sequence</h2>
+  <p class="muted footnote" style="margin-bottom:12px;">Tap a stage.</p>
+  <div class="stage-flow">
+    ${EMERGENCY_FLOW.map((st,i) => `
+      <div class="stage-chip ${i===stageOpen?'active':''}" style="background:${st.color}; color:${st.dark?'#fff':'#0b0b0b'};" onclick="stageOpen=${i}; render();">
+        <span>Step ${st.n}</span>${st.name}
+      </div>
+    `).join("")}
+  </div>
+  <div class="stage-detail">
+    <h3 class="sub">${s.n}. ${s.name}</h3>
+    <p>${s.body}</p>
+  </div>
+
+  <h2 class="sec">Emergency types</h2>
+  <div class="grid grid-3">
+    ${EMERGENCY_TYPES.map(e => `
+      <div class="card">
+        <h3 class="sub">${e.name}</h3>
+        <p style="margin:0;">${e.body}</p>
+      </div>
+    `).join("")}
+  </div>
+
+  <div class="callout info" style="margin-top:16px;">
+    <b>Cross-reference:</b> "Traumatic injury can appear much later" shows up for both Trauma and Car Accident — same underlying warning, worth locking in once.
+  </div>
+  `;
+}
+
+/* ============================= RENDER: SHOCK ============================= */
+function renderShock(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #4</p>
+    <h1 class="title">Shock &amp; Bleeding</h1>
+    <p class="dek">Shock develops in stages, and the two bleeding types look and behave differently.</p>
+  </div>
+
+  <h2 class="sec">Shock — stage progression</h2>
+  <div class="overflow-x">
+  <table class="strokes">
+    <thead><tr><th>Stage</th><th>Finding</th></tr></thead>
+    <tbody>
+      ${SHOCK_STAGES.map(s => `<tr><td>${s.stage}</td><td><b>${s.finding}</b></td></tr>`).join("")}
+    </tbody>
+  </table>
+  </div>
+  <p class="footnote">Counterintuitive part: heart rate goes up early, then respiratory rate and pulse both go down later. Don't assume everything trends the same direction.</p>
+
+  <h2 class="sec">Arterial vs. Venous bleeding</h2>
+  <div class="grid grid-2">
+    ${BLEEDING_TYPES.map(t => `
+      <div class="type-card">
+        <div class="type-head" style="background:${t.color};">
+          <b>${t.name}</b>
+          <span>${t.freq}</span>
+        </div>
+        <div class="type-body">
+          <p style="margin:0;">${t.body}</p>
+        </div>
+      </div>
+    `).join("")}
+  </div>
+
+  <div class="callout crit" style="margin-top:16px;">
+    <b>Hard rule:</b> do NOT apply tourniquets. Instead, use direct hand pressure on the nearest artery.
+  </div>
+  <div class="callout info" style="margin-top:10px;">
+    <b>Compression bandage tightness test:</b> it should be snug but you should still be able to just fit a 4th finger underneath it.
+  </div>
+  `;
+}
+
+/* ============================= RENDER: TEMP & SEIZURES ============================= */
+function renderTempSeiz(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #4</p>
+    <h1 class="title">Temperature Emergencies &amp; Seizures</h1>
+    <p class="dek">The classic swap-trap pair, plus the four seizure stages and the one safety rule that matters most in the moment.</p>
+  </div>
+
+  <h2 class="sec">Hyperthermia vs. Hypothermia</h2>
+  <div class="grid grid-2">
+    ${TEMP_TYPES.map(t => `
+      <div class="type-card">
+        <div class="type-head" style="background:${t.color};">
+          <b>${t.name}</b>
+          <span>${t.freq}</span>
+        </div>
+        <div class="type-body">
+          <p style="margin:0;">${t.body}</p>
+        </div>
+      </div>
+    `).join("")}
+  </div>
+  <div class="callout info" style="margin-top:14px;">
+    These two get swapped under quiz pressure more than almost anything else in the chapter — the words look similar. "Hyper" = high/hot, "Hypo" = low/cold. Either way: warm or cool the animal <b>slowly</b>, and keep rechecking temperature so you don't overcorrect into the opposite condition.
+  </div>
+
+  <h2 class="sec">Seizure stages, in order</h2>
+  <div class="grid grid-3">
+    ${SEIZURE_STAGES.map((s,i) => `
+      <div class="soap-card" style="background:var(--seq${i+2 > 5 ? 5 : i+2});">
+        <b class="letter">${i+1}</b>
+        <div class="name">${s}</div>
+      </div>
+    `).join("")}
+  </div>
+
+  <div class="callout crit" style="margin-top:16px;">
+    <b>Safety note:</b> an animal may bite during a seizure. Keep hands away from the mouth — do not try to restrain the head or hold the tongue.
+  </div>
+  `;
+}
+
+/* ============================= RENDER: POISON ============================= */
+function renderPoison(){
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #4</p>
+    <h1 class="title">Poisoning</h1>
+    <p class="dek">Common categories, the one protocol you're allowed to use, and one you're never allowed to use.</p>
+  </div>
+
+  <h2 class="sec">Common poison categories</h2>
+  <div class="card">
+    <ul class="list-plain">
+      ${POISON_CATEGORIES.map(p => `<li>${p}</li>`).join("")}
+    </ul>
+  </div>
+
+  <h2 class="sec">Hydrogen peroxide protocol</h2>
+  <div class="card">
+    <p><b>Dose:</b> <span class="mono">1 tsp per 10 lbs of body weight</span></p>
+    <p style="margin-bottom:0;"><b>When:</b> only if a vet tells you to.</p>
+  </div>
+
+  <div class="callout crit" style="margin-top:16px;">
+    <b>Hard rule:</b> never use ipecac syrup.
+  </div>
+
+  <h2 class="sec">Prevention notes</h2>
+  <div class="card">
+    <ul class="list-plain">
+      ${PREVENTION_ITEMS.map(p => `<li>${p}</li>`).join("")}
+    </ul>
+  </div>
+
+  <div class="callout warn" style="margin-top:16px;">
+    <b>Course material inconsistency (not something to memorize as "the" answer):</b> the ASPCA/APCC poison control hotline number is printed two different ways across LMS pages — <span class="mono">1-888-426-4435</span> on the Poisoning care and Poisonous Plants A-Z pages, vs. <span class="mono">(800.426.4435)</span> on the Pet First Aid Kit page. Know the hotline exists and belongs in a first aid kit — don't stress over which exact digit string a quiz wants.
+  </div>
+
+  <h2 class="sec">Pet First Aid Kit — cross-reference</h2>
+  <div class="card">
+    <p style="margin:0;">Hydrogen peroxide's purpose in the kit is to induce vomiting — same dose and same vet-only rule as above. This is a deliberate callback: if you know the Poisoning page, you already know this answer.</p>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: MASSAGE / CONTRAINDICATIONS + DRILL ============================= */
+function renderMassage(){
+  if(drillOrder.length===0) drillOrder = shuffle(WEAKSPOT_CARDS.map((_,i)=>i));
+  const cardIdx = drillOrder[drillIdx % drillOrder.length];
+  const card = WEAKSPOT_CARDS[cardIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Competency #5</p>
+    <h1 class="title">Practice Considerations &amp; Contraindications</h1>
+    <p class="dek">Knowing when NOT to massage is as much a practicum skill as knowing how to.</p>
+  </div>
+
+  <h2 class="sec">Contraindications — quick reference</h2>
+  <div class="overflow-x">
+  <table class="strokes">
+    <thead><tr><th>Condition</th><th>Rule</th><th>Why</th></tr></thead>
+    <tbody>
+      ${MASSAGE_CONTRAINDICATIONS.map(m => `<tr><td><b>${m.cond}</b></td><td>${m.rule}</td><td>${m.note}</td></tr>`).join("")}
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout info" style="margin-top:16px;">
+    <b>Scope of practice, in one line:</b> when a contraindication is present, politely decline and explain why — don't just silently skip the session or proceed anyway. This is exactly the judgment call you'll be making in person at practicum.
+  </div>
+  <div class="callout warn" style="margin-top:10px;">
+    <b>Also part of your scope:</b> as a massage practitioner, you are explicitly NOT expected to diagnose, prescribe, or practice first aid on the animals you treat. First aid knowledge is for recognizing an emergency and responding safely — not for treating illness.
+  </div>
+
+  <h2 class="sec">Digestive disorders — quick reference</h2>
+  <div class="card">
+    <ul class="list-plain">
+      <li><b>Bloat / gastric torsion</b> — the stomach twists; life-threatening emergency, not a massage scenario.</li>
+      <li><b>Peritonitis</b> — an infection (of the abdominal cavity).</li>
+      <li><b>Impacted anal glands</b> — a distinct odor is the telltale sign.</li>
+    </ul>
+  </div>
+
+  <h2 class="sec" id="drill-anchor">Weak-Spot Flashcard Drill</h2>
+  <p class="muted footnote" style="margin-bottom:14px;">15 cards built from your actual quiz mix-ups this chapter. Tap the card to flip.</p>
+  <div class="drill-wrap">
+    <div class="drill-card" onclick="drillFlipped=!drillFlipped; render();">
+      <span class="tag">${card.tag}</span>
+      ${drillFlipped ? esc(card.a) : esc(card.q)}
+      <span class="hint">${drillFlipped ? 'tap to see question' : 'tap to reveal answer'}</span>
+    </div>
+    <div class="drill-controls">
+      <div class="drill-progress">Card ${(drillIdx % drillOrder.length)+1} / ${drillOrder.length}</div>
+      <button class="btn primary" onclick="drillIdx++; drillFlipped=false; if(drillIdx % drillOrder.length===0){ drillOrder=shuffle(WEAKSPOT_CARDS.map((_,i)=>i)); } render();">Next card →</button>
+    </div>
+  </div>
+  `;
+}
+
+/* ============================= RENDER: FULL REVIEW ============================= */
+function startNewPass(questionIndices){
+  reviewOrder = shuffle(questionIndices);
+  reviewIdx = 0;
+  reviewAnswered = false;
+  window.__reviewPick = null;
+  reviewPassComplete = false;
+  passRight = 0; passWrong = 0; passMissed = [];
+}
+
+function renderReview(){
+  if(reviewOrder.length===0) startNewPass(REVIEW_QUESTIONS.map((_,i)=>i));
+  if(reviewPassComplete) return renderReviewSummary();
+
+  const qIdx = reviewOrder[reviewIdx];
+  const q = REVIEW_QUESTIONS[qIdx];
+  return `
+  <div class="view-head">
+    <p class="eyebrow">One pass through the deck, then a results screen</p>
+    <h1 class="title">Full Review</h1>
+    <p class="dek">${REVIEW_QUESTIONS.length} questions across every section. Finish the pass to see your score and what to re-drill.</p>
+  </div>
+
+  <div class="drill-wrap">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div class="drill-progress">Question ${reviewIdx+1} / ${reviewOrder.length}</div>
+      <div class="drill-score">
+        <span style="color:var(--good);"><b>${passRight}</b> right</span>
+        <span style="color:var(--crit);"><b>${passWrong}</b> wrong</span>
+      </div>
+    </div>
+    <div class="pbar-outer" style="margin-bottom:18px;"><div class="pbar-inner" style="width:${(reviewIdx/reviewOrder.length)*100}%;"></div></div>
+
+    <div class="card" style="padding:22px 24px;">
+      <h3 class="sub" style="margin-bottom:16px;">${esc(q.q)}</h3>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        ${q.options.map((opt,i) => {
+          let cls = "btn"; let style="text-align:left; justify-content:flex-start; width:100%;";
+          if(reviewAnswered){
+            if(i===q.a) cls += " right";
+            else if(i===window.__reviewPick) cls += " wrong";
+          }
+          return `<button class="${cls}" style="${style}" ${reviewAnswered?'disabled':''} onclick="answerReview(${i}, ${q.a})">${esc(opt)}</button>`;
+        }).join("")}
+      </div>
+    </div>
+
+    ${reviewAnswered ? `<div style="margin-top:14px; text-align:center;"><button class="btn primary" onclick="nextReview()">${reviewIdx+1 >= reviewOrder.length ? 'See results →' : 'Next question →'}</button></div>` : ""}
+  </div>
+  `;
+}
+
+function renderReviewSummary(){
+  const total = passRight + passWrong;
+  const pct = total ? Math.round((passRight/total)*100) : 0;
+  const lifetimeTotal = state.reviewScore.right + state.reviewScore.wrong;
+  return `
+  <div class="view-head">
+    <p class="eyebrow">Round complete</p>
+    <h1 class="title">Results</h1>
+    <p class="dek">Here's how this round went. Missed ones are worth another pass before the quiz.</p>
+  </div>
+
+  <div class="card" style="text-align:center; padding:32px 26px; margin-bottom:22px;">
+    <div style="font-family:var(--font-display); font-size:2.6rem; font-weight:700; color:var(--accent); line-height:1;">${pct}%</div>
+    <p class="muted" style="margin-top:8px;">${passRight} correct / ${passWrong} missed out of ${total}</p>
+    ${lifetimeTotal ? `<p class="footnote" style="margin-top:6px;">Lifetime: ${state.reviewScore.right} right / ${state.reviewScore.wrong} wrong across all rounds</p>` : ""}
+  </div>
+
+  ${passMissed.length ? `
+    <h2 class="sec">Questions you missed this round</h2>
+    <div class="grid" style="gap:10px; margin-bottom:6px;">
+      ${passMissed.map(m => `
+        <div class="card" style="padding:14px 18px;">
+          <p style="margin:0 0 4px;"><b>${esc(m.q)}</b></p>
+          <p class="muted" style="margin:0;">Correct answer: ${esc(m.correct)}</p>
+        </div>
+      `).join("")}
+    </div>
+  ` : `<div class="callout info">Perfect round — no misses.</div>`}
+
+  <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+    ${passMissed.length ? `<button class="btn primary" onclick="startNewPass(passMissed.map(m=>m.qIdx)); render();">Practice missed questions (${passMissed.length}) →</button>` : ""}
+    <button class="btn ${passMissed.length ? '' : 'primary'}" onclick="startNewPass(REVIEW_QUESTIONS.map((_,i)=>i)); render();">Start a new full round →</button>
+  </div>
+  `;
+}
+
+function answerReview(picked, correct){
+  window.__reviewPick = picked;
+  reviewAnswered = true;
+  const qIdx = reviewOrder[reviewIdx];
+  if(picked===correct){
+    state.reviewScore.right++; passRight++;
+  } else {
+    state.reviewScore.wrong++; passWrong++;
+    passMissed.push({qIdx, q:REVIEW_QUESTIONS[qIdx].q, correct:REVIEW_QUESTIONS[qIdx].options[correct]});
+  }
+  save();
+  render();
+}
+
+function nextReview(){
+  reviewAnswered = false; window.__reviewPick = null;
+  if(reviewIdx+1 >= reviewOrder.length){
+    reviewPassComplete = true;
+  } else {
+    reviewIdx++;
+  }
+  render();
+}
+
+/* ============================= NAV / BOOT ============================= */
+function goto(view){ currentView = view; render(); window.scrollTo({top:0, behavior:"instant"}); }
+function render(){
+  document.querySelectorAll('.rail-btn').forEach(b => b.classList.toggle('active', b.dataset.view===currentView));
+  const renderers = {home:renderHome, vitals:renderVitals, cpr:renderCpr, emergency:renderEmergency, shock:renderShock, tempseiz:renderTempSeiz, poison:renderPoison, massage:renderMassage, review:renderReview};
+  document.getElementById('main').innerHTML = renderers[currentView]();
+}
+document.querySelectorAll('.rail-btn').forEach(b => b.addEventListener('click', () => goto(b.dataset.view)));
+render();
+
+</script>
+</body>
+</html>
