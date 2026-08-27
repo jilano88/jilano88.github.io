@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NWSAM Ch.4 — Massage Strokes Reference &amp; Drill</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1c2130; --sub:#5b6270; --line:#e4e7ee;
+    --eff:#2f6fed; --pet:#8b5cf6; --com:#0d9488; --fri:#ea7e2a; --tap:#e0447b; --ner:#22a06b; --gym:#5b5be0;
+    --shadow: 0 1px 2px rgba(20,22,30,.04), 0 6px 20px rgba(20,22,30,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#12141c; --card:#1b1e29; --ink:#e9ebf2; --sub:#a2a8b8; --line:#2a2e3d; }
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:980px;margin:0 auto;padding:28px 20px 80px;}
+  header{margin-bottom:18px;}
+  h1{font-size:1.5rem;margin:0 0 4px;}
+  .tagline{color:var(--sub);font-size:.92rem;margin:0 0 18px;}
+  .tabs{display:flex;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:5px;box-shadow:var(--shadow);position:sticky;top:12px;z-index:20;}
+  .tab{flex:1;text-align:center;padding:10px 8px;border-radius:9px;cursor:pointer;font-weight:600;font-size:.88rem;color:var(--sub);user-select:none;transition:.15s;}
+  .tab.active{background:var(--eff);color:#fff;}
+  .view{display:none;margin-top:18px;}
+  .view.active{display:block;}
+
+  /* ---- Reference view ---- */
+  .search{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.95rem;margin-bottom:14px;}
+  .index{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:.78rem;font-weight:600;cursor:pointer;color:var(--sub);}
+  .fam{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden;}
+  .fam-head{padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;border-left:6px solid transparent;}
+  .fam-head h2{font-size:1.05rem;margin:0;flex:1;}
+  .fam-head .count{font-size:.75rem;color:var(--sub);font-weight:600;}
+  .fam-over{padding:0 16px 12px;color:var(--sub);font-size:.85rem;line-height:1.45;border-top:1px dashed var(--line);margin-top:0;}
+  .fam-body{padding:6px 16px 16px;display:grid;gap:10px;}
+  .variant{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--bg);}
+  .variant h3{margin:0 0 6px;font-size:.95rem;}
+  .row{font-size:.83rem;line-height:1.45;margin:4px 0;color:var(--ink);}
+  .row b{color:var(--sub);font-weight:600;margin-right:4px;}
+  .contra{color:#b8283f;}
+  @media (prefers-color-scheme: dark){ .contra{color:#ff8fa0;} }
+  .collapsed .fam-body, .collapsed .fam-over{display:none;}
+  .caret{transition:.15s;color:var(--sub);}
+  .collapsed .caret{transform:rotate(-90deg);}
+  .hidden{display:none !important;}
+
+  /* ---- Flashcard view ---- */
+  .drillbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center;}
+  .drillbar select{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;}
+  .score{margin-left:auto;font-size:.85rem;color:var(--sub);font-weight:600;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:32px 24px;cursor:pointer;position:relative;}
+  .card .fam-tag{position:absolute;top:14px;left:14px;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;color:#fff;}
+  .card .prompt{font-size:1.05rem;line-height:1.55;}
+  .card .answer{display:none;}
+  .card.flipped .prompt{display:none;}
+  .card.flipped .answer{display:block;}
+  .answer h3{margin:0 0 10px;font-size:1.3rem;}
+  .answer .row{text-align:left;max-width:560px;}
+  .hint{color:var(--sub);font-size:.78rem;margin-top:14px;}
+  .drillnav{display:flex;gap:10px;margin-top:16px;justify-content:center;}
+  .btn{border:none;border-radius:10px;padding:10px 18px;font-weight:600;font-size:.85rem;cursor:pointer;}
+  .btn-primary{background:var(--eff);color:#fff;}
+  .btn-good{background:#1a9c5a;color:#fff;}
+  .btn-bad{background:#c23b4f;color:#fff;}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink);}
+  footer{margin-top:30px;color:var(--sub);font-size:.78rem;text-align:center;}
+  @media print{
+    .tabs,.search,.index,.drillbar,.drillnav{display:none !important;}
+    .view{display:block !important;}
+    #drillView{display:none !important;}
+    .fam{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+    body{background:#fff;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Massage Strokes — Reference &amp; Drill</h1>
+    <p class="tagline">NWSAM Chapter 4 · built from the LMS Massage Strokes Chart (6 pages) + technique pages · rebuilt 2026-08-19</p>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-view="refView">📋 Reference Chart</div>
+    <div class="tab" data-view="drillView">🎴 Flashcard Drill</div>
+  </div>
+
+  <!-- REFERENCE VIEW -->
+  <div class="view active" id="refView">
+    <input class="search" id="searchBox" placeholder="Search a technique, use, or contraindication (e.g. 'open wounds', 'raking', 'bony')...">
+    <div class="index" id="indexChips"></div>
+    <div id="famList"></div>
+  </div>
+
+  <!-- DRILL VIEW -->
+  <div class="view" id="drillView">
+    <div class="drillbar">
+      <select id="famFilter"><option value="all">All families</option></select>
+      <select id="modeFilter">
+        <option value="name">Show description → guess the name</option>
+        <option value="detail">Show name → guess the details</option>
+      </select>
+      <span class="score" id="scoreLine">0 / 0</span>
+    </div>
+    <div class="card" id="card">
+      <div class="fam-tag" id="cardFamTag">—</div>
+      <div class="prompt" id="cardPrompt">Loading…</div>
+      <div class="answer" id="cardAnswer"></div>
+    </div>
+    <p class="hint">Click the card to flip. Then mark yourself honestly — it only helps if you're honest.</p>
+    <div class="drillnav">
+      <button class="btn btn-bad" id="missBtn">✗ Missed it</button>
+      <button class="btn btn-good" id="gotBtn">✓ Got it</button>
+      <button class="btn btn-ghost" id="skipBtn">Skip / Next</button>
+      <button class="btn btn-primary" id="resetBtn">Reset score</button>
+    </div>
+  </div>
+
+  <footer>Study tool — not an official NWSAM document. Always defer to the live LMS for anything graded.</footer>
+</div>
+
+<script>
+const DATA = [
+  { key:"eff", name:"Effleurage", color:"var(--eff)",
+    technique:"Flat-Handed — or — Forearm Glide",
+    overview:"Two separate application methods on the chart — flat hand, or forearm. Same stroke variants and same contraindication apply to both. Bookends every session — opens it, threads between areas, closes it. Speed and pressure change the effect.",
+    familyUses:"Rolled up across the variants: initiate touch → palpate tissue for hard/soft/hot/cold/wounds → warm each area before advanced work → close each massaged area → transition between areas → connect the entire body at the end of a session.",
+    familyContra:"Pitted or marked edema, gross swellings, open wounds",
+    variants:[
+      { name:"Broad, constant pressure", desc:"Pressure is kept constant and relatively broad. (Flat hand or forearm.)", uses:"Initial palpation — evaluate tissue for hard, soft, hot, cold, or wounds.", effects:"", contra:"Pitted or marked edema, gross swellings, open wounds" },
+      { name:"Slow, superficial", desc:"Slow, superficial strokes are soothing. (Flat hand or forearm.)", uses:"Warm each area before advanced work.", effects:"↑ cell membrane permeability — cells expand, warmer membrane thins, easier to take in nutrients & expel waste products.", contra:"Pitted or marked edema, gross swellings, open wounds" },
+      { name:"Fast, superficial", desc:"Fast, superficial strokes are stimulating. (Flat hand or forearm.)", uses:"Close each massaged area.", effects:"", contra:"Pitted or marked edema, gross swellings, open wounds" },
+      { name:"Connective / transitional", desc:"Skin is stroked with hand(s) or forearm.", uses:"Transition between each massaged area; connect the entire body after each session; initiate touch.", effects:"", contra:"Pitted or marked edema, gross swellings, open wounds" }
+    ]
+  },
+  { key:"pet", name:"Petrissage", color:"var(--pet)",
+    technique:"French \"petir\" — \"to knead\"",
+    overview:"Tissue is lifted, rolled, and squeezed rhythmically; speed is limited. Chart note: any of these techniques produces all four general effects listed below, and the same contraindication applies across all of them — not just the technique it happens to sit next to in the table.",
+    familyUses:"Depending on hand position: moves nutrients into muscle tissue and waste products out (One-handed); ↓ hypertonicity (Two-handed); relaxes muscle by introducing slack while encouraging fiber lengthening (Open C/Closed C); softens superficial fascia (Sifting).",
+    familyContra:"Cold muscles, acute inflammation, atrophied muscles, open wounds, injured muscles",
+    variants:[
+      { name:"One-handed", desc:"Tissue is lifted, rolled, and squeezed rhythmically with one hand; speed is limited.", uses:"Moves nutrients into muscle tissue and waste products out.", effects:"↑ Cell membrane permeability — cells expand, warmer membrane thins, easier to take in nutrients & expel waste. · Affects the MSF in the muscle belly, making it feel less stretched. · Tendons stretched on lift — tension in tendons and the GTO has a protective function. · Deforms connective tissue and mechanically warms it as it's pulled.", contra:"Cold muscles, acute inflammation, atrophied muscles, open wounds, injured muscles" },
+      { name:"Two-handed", desc:"Hands face one another across the muscle belly. Muscle belly is lifted and gently squeezed, one hand at a time or both simultaneously.", uses:"↓ Hypertonicity.", effects:"↑ Cell membrane permeability — cells expand, warmer membrane thins, easier to take in nutrients & expel waste. · Affects the MSF in the muscle belly, making it feel less stretched. · Tendons stretched on lift — tension in tendons and the GTO has a protective function. · Deforms connective tissue and mechanically warms it as it's pulled.", contra:"Cold muscles, acute inflammation, atrophied muscles, open wounds, injured muscles" },
+      { name:"Open C / Closed C", desc:"Thumb and forefingers held in the shape of a letter \"C.\" Hands close together, squeezing tissue toward one another alternately.", uses:"Relaxes muscle by introducing slack while encouraging lengthening of muscle fibers.", effects:"↑ Cell membrane permeability — cells expand, warmer membrane thins, easier to take in nutrients & expel waste. · Affects the MSF in the muscle belly, making it feel less stretched. · Tendons stretched on lift — tension in tendons and the GTO has a protective function. · Deforms connective tissue and mechanically warms it as it's pulled.", contra:"Cold muscles, acute inflammation, atrophied muscles, open wounds, injured muscles" },
+      { name:"Sifting", desc:"Lifting tissue with just the fingers, in areas like the chest and inner thigh.", uses:"Softens superficial fascia.", effects:"↑ Cell membrane permeability — cells expand, warmer membrane thins, easier to take in nutrients & expel waste. · Affects the MSF in the muscle belly, making it feel less stretched. · Tendons stretched on lift — tension in tendons and the GTO has a protective function. · Deforms connective tissue and mechanically warms it as it's pulled.", contra:"Cold muscles, acute inflammation, atrophied muscles, open wounds, injured muscles" }
+    ]
+  },
+  { key:"com", name:"Compression", color:"var(--com)",
+    technique:"Palm and heel of hand, thumb, stabilized fingers, or elbow",
+    overview:"A press method — penetrates the sub-Q layer and presses tissue toward the underlying bone. Only two named application rows on the chart (Press, Lift-press); the tool list above applies to both.",
+    familyUses:"Stimulate fluid activity over a joint (Press); tone muscle and stimulate the nervous system (Lift-press).",
+    familyEffects:"Pressing tissue against underlying bone causes it to spread and be squeezed from two sides. Compression spreads the MSF so the muscle \"thinks\" it's stretching — to protect from over-stretching, the MSF signals the muscle to contract.",
+    familyContra:"Injured tissues, open wounds",
+    variants:[
+      { name:"Press", desc:"Penetrates sub-Q layer and presses tissue toward underlying bone.", uses:"Over a joint to stimulate fluid activity.", effects:"Pressing tissue against underlying bone causes it to spread and be squeezed from two sides.", contra:"Injured tissues, open wounds" },
+      { name:"Lift-press", desc:"Lift-press application.", uses:"Tones muscle and stimulates the nervous system.", effects:"Compression spreads the MSF, so the muscle \"thinks\" it's stretching. To protect from over-stretching, the MSF signals the muscle to contract.", contra:"Injured tissues, open wounds" }
+    ]
+  },
+  { key:"fri", name:"Friction", color:"var(--fri)",
+    technique:"Finger, thumb, knuckle, forearm, elbow",
+    overview:"The chart's first row is general to all of Friction (it lists the tools used — finger, thumb, knuckle, forearm, elbow — not a specific named technique). Main focus: introduce heat and mobilize tissue under the skin, via specific/moderate deep compression moved into or away from the direction of restriction.",
+    familyUses:"Breaks up adhesions and releases restrictions between tissue layers. During active phases of scar formation, may prevent adhesion formation.",
+    familyEffects:"Introduces thixotrophy — softening/melting of tissue as a result of heat. Causes a small, controlled inflammatory response; the chemicals released cause reorganization of connective tissue.",
+    familyContra:"Acute injury, fresh scars, painful areas (stay in the animal's comfort zone), open wounds, site of inflammation",
+    variants:[
+      { name:"Direct Pressure", desc:"Sustained pressure over a focal point.", uses:"Adhesions, trigger points, acupressure. Often applied at the musculotendinous junction to relieve stress points (microtrauma from repetitive motion/overstretching is common there). (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Creates a temporary ischemic response (blocks blood flow). Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation · Also: do not maintain more than 15 sec at one spot — may repeat. May cause muscle guarding, bruising, or impede circulation." },
+      { name:"Cross Fiber", desc:"Sustained pressure with movement across the indicated fiber direction.", uses:"Release adhesions/knots, reorganize scar tissue. (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Separates entangled fibers, reintroduces circulatory flow, releases trapped waste products. Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation · Also: do not over-treat — NOT for use on healthy tissue." },
+      { name:"Cross Fascicular (raking)", desc:"Similar to cross fiber, but span fingers over several fiber bundles to diffuse the effect.", uses:"Releasing stubborn hypertonicities. (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Separates entangled fiber bundles, reintroduces circulatory flow, releases trapped waste products. Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation" },
+      { name:"Linear", desc:"Move along the fiber direction.", uses:"Separating borders of muscle groups, releasing bound connective tissue. (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Lengthens the muscle fibers and fascial anatomy. Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation" },
+      { name:"Circular", desc:"Moves over tissue in a circular pattern.", uses:"Mobilizes structures, warms underlying tissue. Used in acupressure and Shiatsu. Very engaging effect on the nervous system. (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Mobilizes restricted tissue, relieves superficial guarding patterns. Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation" },
+      { name:"Skin Rolling", desc:"Lift skin with fingers in a crawling motion while the thumb follows like a plow.", uses:"Assessment tool for pliability of skin and fascia. (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Warms the fascial tissue or skin adhesions. Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation · Also: if dehydrated, watch for any sign of discomfort." },
+      { name:"Rubbing", desc:"Briskly sweep hand or arm over an area.", uses:"Used to warm tissues, introduce mobility. (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Builds up heat in surface tissues. Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation" },
+      { name:"Chucking", desc:"Wrap fingers/hand around the limb and gently pull up and down.", uses:"Used to warm tissues, introduce mobility. (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Builds up heat in surface tissues. Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation · Also: introduce slowly — rapid chucking can cause pain. (Note: introduced on the Gymnastic Strokes page, but the chart classifies it as a friction technique.)" },
+      { name:"Twisting", desc:"Wrap hands around the limb to anchor, then gently twist back and forth.", uses:"Used to warm tissues, introduce mobility. (Plus general: breaks up adhesions, releases restrictions between tissue layers; may prevent adhesion formation during active scar formation.)", effects:"Builds up heat in surface tissues. Also (general): introduces thixotrophy — softening/melting of tissue from heat — and a small, controlled inflammatory response that reorganizes connective tissue.", contra:"Acute injury, fresh scars, painful areas, open wounds, site of inflammation · Also: introduce slowly — rapid twisting can shear fascia and cause pain." }
+    ]
+  },
+  { key:"tap", name:"Tapotement", color:"var(--tap)",
+    technique:"French \"tapoter\" — \"to rap, drum, pat\"",
+    overview:"Any percussive stroke, open or closed hand — springy, fast or slow. Primarily affects the SNS, but continuous slow rhythms can sedate the PNS. Light/heavy pressure sets how deep it penetrates. The chart's first two rows are general to all of Tapotement, not specific to any one named stroke below.",
+    familyUses:"Stimulates atrophied muscles, engages the nerves. Also stimulates weak muscles when applied over joints — affects the joint kinesthetic receptors responsible for position and movement of the body.",
+    familyEffects:"Repetitive stimulation causes the nerves to fire repeatedly, stimulating the nerve tract. Heavy tapotement or prolonged lighter application dilates the blood vessels.",
+    familyContra:"Severe hypertonicity, muscle spasm, muscle cramp",
+    variants:[
+      { name:"Tapping", desc:"Drumming finger(s) in rhythm over a focal point or along an area.", uses:"Sedative effect. (Plus general: stimulates atrophied/weak muscles, engages the nerves.)", effects:"Repetitive stimulation causes the nerves to fire repeatedly, stimulating the nerve tract. Heavy tapotement or prolonged lighter application dilates the blood vessels.", contra:"Severe hypertonicity, muscle spasm, muscle cramp" },
+      { name:"Slapping", desc:"Flat-handed stroke.", uses:"Useful along the abdominal muscles, pectorals, and inner thigh. (Plus general: stimulates atrophied/weak muscles, engages the nerves.)", effects:"Repetitive stimulation causes the nerves to fire repeatedly, stimulating the nerve tract. Heavy tapotement or prolonged lighter application dilates the blood vessels.", contra:"Severe hypertonicity, muscle spasm, muscle cramp · Also: caution for perception of assault (face or haunches)." },
+      { name:"Hacking", desc:"Edge of the hand contacts tissue with a slanted blow.", uses:"Loosening and warming muscles prior to work. (Plus general: stimulates atrophied/weak muscles, engages the nerves.)", effects:"Causes superficial blood vessels of skin to initially contract. Also (general): repetitive stimulation causes the nerves to fire repeatedly, stimulating the nerve tract; heavy tapotement or prolonged lighter application dilates the blood vessels.", contra:"Severe hypertonicity, muscle spasm, muscle cramp · Also: no hacking over bony areas." },
+      { name:"Cupping", desc:"Cupped hand contacts skin with a soft blow.", uses:"Loosening and moving mucus in the chest, improve breathing. (Plus general: stimulates atrophied/weak muscles, engages the nerves.)", effects:"Repetitive stimulation causes the nerves to fire repeatedly, stimulating the nerve tract. Heavy tapotement or prolonged lighter application dilates the blood vessels.", contra:"Severe hypertonicity, muscle spasm, muscle cramp" },
+      { name:"Pincement", desc:"Fingertips and thumbs pick up tissue in a chopstick fashion.", uses:"Lift small segments of skin and fascia. (Plus general: stimulates atrophied/weak muscles, engages the nerves.)", effects:"Repetitive stimulation causes the nerves to fire repeatedly, stimulating the nerve tract. Heavy tapotement or prolonged lighter application dilates the blood vessels.", contra:"Severe hypertonicity, muscle spasm, muscle cramp · Also: don't pinch sharply." },
+      { name:"Pounding / Beating", desc:"Loosely balled fist.", uses:"Softens the muscle while increasing energy. (Plus general: stimulates atrophied/weak muscles, engages the nerves.)", effects:"Repetitive stimulation causes the nerves to fire repeatedly, stimulating the nerve tract. Heavy tapotement or prolonged lighter application dilates the blood vessels.", contra:"Severe hypertonicity, muscle spasm, muscle cramp" }
+    ]
+  },
+  { key:"ner", name:"Nerve Strokes", color:"var(--ner)",
+    technique:"Light fingertip / flat-hand contact",
+    overview:"Light, invigorating strokes — often used as finishing touches. Note: unlike Friction/Tapotement/Petrissage/Effleurage, the chart gives Flicking and Brushing each their own full row with no shared general row above them — so their contraindications are NOT a blanket family note, only Flicking has one listed.",
+    familyUses:"Restores sensation in thickened skin or areas of poor circulation (Flicking); finishing stroke for any area (Brushing).",
+    variants:[
+      { name:"Flicking", desc:"Rapidly flick fingers as if removing lint from a sweater.", uses:"Restores sensation in thickened skin or areas of poor circulation.", effects:"Invigorating.", contra:"Open wounds." },
+      { name:"Brushing", desc:"Similar to flicking, but use a flat hand instead of fingers.", uses:"Finishing stroke for any area.", effects:"", contra:"" }
+    ]
+  },
+  { key:"gym", name:"Gymnastic Strokes", color:"var(--gym)",
+    technique:"Greater degree of movement",
+    overview:"Engages a sluggish nerve response or disengages a pattern of holding/resistance. Note: like Nerve Strokes, each of the 4 techniques below has its own full row on the chart — no shared general row, so each keeps its own distinct contraindication rather than one blanket family note.",
+    familyUses:"Warms/prepares the body for deeper work and ↓ hypertonicity (Shaking); releases muscle guarding (Jostling); accesses deeper tissues and stimulates joint fluid production (Vibrating); decompresses restriction, introduces heat, increases mobility (Traction).",
+    variants:[
+      { name:"Shaking", desc:"Grasp a limb (support the joints) or loose skin and shake it rhythmically or vigorously. Always stay within the limits of normal ROM.", uses:"Warms and prepares the body for deeper work. ↓ Hypertonicity.", effects:"Shaking confuses the positional proprioceptors, so the muscles relax — the sensory input is too unorganized for the brain to interpret, so going limp is the natural response.", contra:"Open wounds, inflamed joints." },
+      { name:"Jostling", desc:"A milder form of shaking, especially useful in the limbs.", uses:"Releases muscle guarding.", effects:"Same proprioceptor-confusion mechanism as shaking — the brain has no memory associated with jostling, so it must focus on the unfamiliar stimulus.", contra:"" },
+      { name:"Vibrating", desc:"Pulse your hand or a balled fist with continual contact.", uses:"Access deeper tissues, stimulate fluid production in joints.", effects:"Penetration.", contra:"Inflamed joints." },
+      { name:"Traction", desc:"Anytime two areas of the body are moved away from one another under tension — anchor one area (e.g. a joint, or the sacrum) and gently pull the other.", uses:"Decompress an area of restriction. Introduce heat into superficial layers to create expansion. Increase mobility.", effects:"Lengthens tissue fibers, resets proprioceptors.", contra:"Watch the animal's response. Do not use on inflamed or fused joints." }
+    ]
+  }
+];
+
+// ---------- Reference view ----------
+const famListEl = document.getElementById('famList');
+const chipsEl = document.getElementById('indexChips');
+
+DATA.forEach(fam=>{
+  const chip = document.createElement('div');
+  chip.className='chip'; chip.textContent = fam.name;
+  chip.style.borderColor = fam.color;
+  chip.onclick = ()=>{ document.getElementById('block-'+fam.key).scrollIntoView({behavior:'smooth',block:'start'}); document.getElementById('block-'+fam.key).classList.remove('collapsed'); };
+  chipsEl.appendChild(chip);
+
+  const block = document.createElement('div');
+  block.className='fam'; block.id='block-'+fam.key;
+  block.innerHTML = `
+    <div class="fam-head" style="border-left-color:${fam.color}">
+      <h2>${fam.name}</h2>
+      <span class="count">${fam.variants.length} variant${fam.variants.length>1?'s':''}</span>
+      <span class="caret">▾</span>
+    </div>
+    <p class="fam-over"><b style="color:${fam.color}">Technique:</b> ${fam.technique} — ${fam.overview}${fam.familyUses? `<br><b>General uses:</b> ${fam.familyUses}`:''}${fam.familyEffects? `<br><b>General effects:</b> ${fam.familyEffects}`:''}${fam.familyContra? `<br><span class="contra"><b>Contraindications:</b> ${fam.familyContra}</span>`:''}</p>
+    <div class="fam-body"></div>
+  `;
+  const body = block.querySelector('.fam-body');
+  fam.variants.forEach(v=>{
+    const card = document.createElement('div');
+    card.className='variant';
+    card.innerHTML = `
+      <h3 style="color:${fam.color}">${v.name}</h3>
+      <div class="row"><b>What it is:</b>${v.desc}</div>
+      ${v.uses? `<div class="row"><b>Uses:</b>${v.uses}</div>`:''}
+      ${v.effects? `<div class="row"><b>Effects:</b>${v.effects}</div>`:''}
+      ${v.contra? `<div class="row contra"><b>Contra:</b>${v.contra}</div>`:''}
+    `;
+    body.appendChild(card);
+  });
+  block.querySelector('.fam-head').onclick = ()=> block.classList.toggle('collapsed');
+  famListEl.appendChild(block);
+});
+
+document.getElementById('searchBox').addEventListener('input', e=>{
+  const q = e.target.value.trim().toLowerCase();
+  DATA.forEach(fam=>{
+    const block = document.getElementById('block-'+fam.key);
+    if(!q){ block.classList.remove('hidden'); block.querySelectorAll('.variant').forEach(v=>v.classList.remove('hidden')); return; }
+    let famMatch = fam.name.toLowerCase().includes(q) || (fam.familyContra||'').toLowerCase().includes(q) || fam.overview.toLowerCase().includes(q);
+    let anyVariant = false;
+    const cards = block.querySelectorAll('.variant');
+    fam.variants.forEach((v,i)=>{
+      const text = (v.name+' '+v.desc+' '+v.uses+' '+v.effects+' '+v.contra).toLowerCase();
+      const match = text.includes(q) || famMatch;
+      cards[i].classList.toggle('hidden', !match);
+      if(match) anyVariant = true;
+    });
+    block.classList.toggle('hidden', !(famMatch || anyVariant));
+    if((famMatch||anyVariant)) block.classList.remove('collapsed');
+  });
+});
+
+// ---------- Tabs ----------
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.view).classList.add('active');
+  };
+});
+
+// ---------- Flashcard drill ----------
+let deck = [];
+let idx = 0;
+let score = {right:0, total:0};
+const famFilter = document.getElementById('famFilter');
+const modeFilter = document.getElementById('modeFilter');
+
+DATA.forEach(fam=>{
+  const opt = document.createElement('option');
+  opt.value = fam.key; opt.textContent = fam.name;
+  famFilter.appendChild(opt);
+});
+
+function buildDeck(){
+  const famKey = famFilter.value;
+  const pool = famKey==='all' ? DATA : DATA.filter(f=>f.key===famKey);
+  deck = [];
+  pool.forEach(fam=>{
+    fam.variants.forEach(v=> deck.push({fam, v}));
+  });
+  // shuffle deterministically-ish without Math.random (not available) - use a simple LCG seeded by deck length
+  let seed = deck.length*2654435761 % 2147483647;
+  function rnd(){ seed = (seed*48271) % 2147483647; return seed/2147483647; }
+  for(let i=deck.length-1;i>0;i--){
+    const j = Math.floor(rnd()*(i+1));
+    [deck[i],deck[j]] = [deck[j],deck[i]];
+  }
+  idx = 0;
+  showCard();
+}
+
+const cardEl = document.getElementById('card');
+const promptEl = document.getElementById('cardPrompt');
+const answerEl = document.getElementById('cardAnswer');
+const famTagEl = document.getElementById('cardFamTag');
+
+function showCard(){
+  if(deck.length===0){ promptEl.textContent = "No cards for this filter."; return; }
+  if(idx>=deck.length) idx = 0;
+  const {fam, v} = deck[idx];
+  cardEl.classList.remove('flipped');
+  famTagEl.textContent = fam.name;
+  famTagEl.style.background = fam.color;
+  const mode = modeFilter.value;
+  if(mode==='name'){
+    promptEl.innerHTML = `<div class="row"><b>Description:</b>${v.desc}</div>${v.uses?`<div class="row"><b>Uses:</b>${v.uses}</div>`:''}<div class="hint">What's this technique called?</div>`;
+    answerEl.innerHTML = `<h3 style="color:${fam.color}">${v.name}</h3>${v.effects?`<div class="row"><b>Effects:</b>${v.effects}</div>`:''}${v.contra?`<div class="row contra"><b>Contra:</b>${v.contra}</div>`:''}`;
+  } else {
+    promptEl.innerHTML = `<h3 style="color:${fam.color}">${v.name}</h3><div class="hint">Describe it — what it is, its use, and any contraindication.</div>`;
+    answerEl.innerHTML = `<div class="row"><b>What it is:</b>${v.desc}</div>${v.uses?`<div class="row"><b>Uses:</b>${v.uses}</div>`:''}${v.effects?`<div class="row"><b>Effects:</b>${v.effects}</div>`:''}${v.contra?`<div class="row contra"><b>Contra:</b>${v.contra}</div>`:''}`;
+  }
+}
+
+cardEl.onclick = ()=> cardEl.classList.toggle('flipped');
+document.getElementById('gotBtn').onclick = ()=>{ score.right++; score.total++; updateScore(); nextCard(); };
+document.getElementById('missBtn').onclick = ()=>{ score.total++; updateScore(); nextCard(); };
+document.getElementById('skipBtn').onclick = ()=> nextCard();
+document.getElementById('resetBtn').onclick = ()=>{ score={right:0,total:0}; updateScore(); };
+function nextCard(){ idx++; showCard(); }
+function updateScore(){ document.getElementById('scoreLine').textContent = `${score.right} / ${score.total}`; }
+famFilter.onchange = buildDeck;
+modeFilter.onchange = showCard;
+buildDeck();
+</script>
+</body>
+</html>

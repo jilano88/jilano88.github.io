@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 3 Flashcards — Kinesiology (Practicum Prep)</title>
+<style>
+  :root{
+    --bg:#f6f5f2; --card:#ffffff; --ink:#2b2b2b; --muted:#6b6b6b;
+    --accent:#3f7a5c; --accent-light:#e6f0ea; --border:#e2e0da;
+    --red:#b6533c; --red-light:#f6e7e2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg); color:var(--ink); margin:0; padding:20px 16px 90px;
+  }
+  .wrap{max-width:640px; margin:0 auto;}
+  header{margin-bottom:14px;}
+  h1{font-size:1.3rem; margin:0 0 4px;}
+  .sub{color:var(--muted); font-size:0.88rem;}
+
+  .controls{
+    display:flex; gap:8px; flex-wrap:wrap; margin:14px 0;
+  }
+  select, button.ctrl{
+    font-size:0.85rem; padding:7px 10px; border-radius:8px;
+    border:1px solid var(--border); background:#fff; color:var(--ink); cursor:pointer;
+  }
+  button.ctrl:hover{border-color:var(--accent); color:var(--accent);}
+
+  .stats{
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:0.82rem; color:var(--muted); margin:6px 2px 12px;
+  }
+  .stats b{color:var(--ink);}
+
+  .stage{
+    perspective:1400px; margin:0 auto 18px; max-width:600px;
+  }
+  .card{
+    position:relative; width:100%; min-height:260px;
+    transform-style:preserve-3d; transition:transform .45s cubic-bezier(.4,.2,.2,1);
+    cursor:pointer;
+  }
+  .card.flipped{ transform:rotateY(180deg); }
+  .face{
+    position:absolute; inset:0; backface-visibility:hidden;
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:26px 24px; display:flex; flex-direction:column;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+  }
+  .face .cat{
+    font-size:0.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:10px;
+  }
+  .face .body{
+    flex:1; display:flex; align-items:center; justify-content:center;
+    font-size:1.12rem; line-height:1.5; text-align:center; white-space:pre-line;
+  }
+  .face .hint{
+    text-align:center; color:var(--muted); font-size:0.78rem; margin-top:10px;
+  }
+  .back{ transform:rotateY(180deg); background:var(--accent-light); }
+  .back .body{ font-size:1rem; text-align:left; justify-content:flex-start; }
+
+  .rate-row{
+    display:flex; gap:10px; margin-bottom:10px;
+  }
+  .rate-row button{
+    flex:1; padding:13px; border-radius:10px; border:1px solid var(--border);
+    background:#fff; font-size:0.95rem; font-weight:600; cursor:pointer;
+  }
+  .rate-row button.again{ color:var(--red); }
+  .rate-row button.again:hover{ background:var(--red-light); border-color:var(--red); }
+  .rate-row button.knew{ color:var(--accent); }
+  .rate-row button.knew:hover{ background:var(--accent-light); border-color:var(--accent); }
+
+  .nav-row{
+    display:flex; justify-content:space-between; gap:10px;
+  }
+  .nav-row button{
+    background:none; border:none; color:var(--muted); font-size:0.85rem; cursor:pointer;
+    padding:6px 4px;
+  }
+  .nav-row button:hover{ color:var(--accent); }
+
+  .done-banner{
+    text-align:center; padding:40px 20px; background:var(--card);
+    border:1px solid var(--border); border-radius:16px;
+  }
+  .done-banner h2{ margin:0 0 8px; color:var(--accent); }
+  .done-banner p{ color:var(--muted); margin:0 0 18px; }
+  .done-banner button{
+    background:var(--accent); color:#fff; border:none; padding:10px 20px;
+    border-radius:10px; font-size:0.9rem; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Chapter 3 Flashcards — Kinesiology</h1>
+    <div class="sub">Practicum prep drill · joints, angulation, gait, common disorders (muscles/attachments not included)</div>
+  </header>
+
+  <div class="controls">
+    <select id="catFilter"></select>
+    <button class="ctrl" id="shuffleBtn">🔀 Shuffle</button>
+    <button class="ctrl" id="resetBtn">↺ Reset deck</button>
+  </div>
+
+  <div class="stats">
+    <span>Card <b id="posLabel">1</b> / <b id="totalLabel">1</b></span>
+    <span><b id="againCount">0</b> to review again</span>
+  </div>
+
+  <div id="stageArea"></div>
+</div>
+
+<script>
+const CARDS = [
+// --- Joint Movements ---
+{cat:"Joint Movements", q:"What is flexion?", a:"Decreasing the joint angle — closing the joint, bringing two bones closer together."},
+{cat:"Joint Movements", q:"What is extension?", a:"Increasing the joint angle — opening the joint, moving two bones apart."},
+{cat:"Joint Movements", q:"What is abduction?", a:"Movement of a limb away from the midline of the body (transverse plane)."},
+{cat:"Joint Movements", q:"What is adduction?", a:"Movement of a limb toward (or across) the midline of the body (transverse plane)."},
+{cat:"Joint Movements", q:"What is rotation, and where does it occur?", a:"A rolling motion around the circumference/axis of a joint. Occurs along the spine and in the limbs (limited in quadrupeds)."},
+{cat:"Joint Movements", q:"Internal (medial) vs. external (lateral) rotation of a limb?", a:"Internal: the cranial aspect of the limb turns TOWARD the midline (e.g., looking at your watch).\nExternal: the cranial aspect turns AWAY from the midline (e.g., hitch-hiking)."},
+{cat:"Joint Movements", q:"What is lateral flexion, and where is it specific to?", a:"Flexion to one side. Specific to the axial skeleton — spine and skull (e.g., turning to scratch an itch)."},
+{cat:"Joint Movements", q:"Unilateral (lateral) flexion vs. bilateral flexion?", a:"Unilateral: one side's muscles contract while the other side lengthens (turning to one side).\nBilateral (usually just called \"flexion\"): both sides move together (e.g., lowering head to chest)."},
+{cat:"Joint Movements", q:"What is circumduction?", a:"A movement that traces a complete circle (not just <360° rotation) — the joint moves through flexion, extension, abduction, adduction, and rotation combined."},
+
+// --- Regional Movements ---
+{cat:"Regional Movements", q:"Which joint gives the head its \"yes\" movement, and what movement is it?", a:"Atlanto-occipital joint (skull–C1) — flexion/extension."},
+{cat:"Regional Movements", q:"Which joint gives the head its \"no\" movement, and what movement is it?", a:"Atlantoaxial joint (C1–C2) — rotation."},
+{cat:"Regional Movements", q:"Jaw depression vs. elevation?", a:"Depression = opening the jaw.\nElevation = closing the jaw."},
+{cat:"Regional Movements", q:"What movements occur at the neck?", a:"Flexion, extension, lateral flexion, and small degrees of rotation (across the 7 cervical vertebrae + T1)."},
+{cat:"Regional Movements", q:"What is the nuchal ligament and what does it do?", a:"Runs from the base of the skull to the withers, continuous with the supraspinous ligament (which ends at the sacrum). Serves as an attachment site for several important muscles."},
+{cat:"Regional Movements", q:"Why is the dog's shoulder movement so different from a human's?", a:"Dogs have no clavicle or shoulder girdle — the scapula is supported by a sling of soft tissue (muscles/tendons/ligaments) that lets it swing pendulum-style between the forelimbs."},
+{cat:"Regional Movements", q:"Shoulder: primary movements vs. limited movements?", a:"Primarily: flexion, extension.\nLimited: abduction, adduction, internal/external rotation (the gliding scapulothoracic joint allows only minute movement in nondescript planes)."},
+{cat:"Regional Movements", q:"What movements does the spine allow overall?", a:"Flexion, extension, some lateral flexion, minimal rotation."},
+{cat:"Regional Movements", q:"Inhalation vs. exhalation — what do the ribs do?", a:"Inhalation: expands and lifts the ribs.\nExhalation: contracts and lowers the ribs."},
+{cat:"Regional Movements", q:"Which hindquarter joint has the greatest range of motion, including circumduction?", a:"The hip (coxofemoral) joint — flexion, extension, abduction, adduction, internal/external rotation, AND circumduction."},
+{cat:"Regional Movements", q:"What is the role of the deep pelvic muscles?", a:"Prevent the joint from hyperflexion/hyperextension, and store much of the proprioceptive information for the hindquarters."},
+
+// --- Key Joints Chart ---
+{cat:"Key Joints Chart", q:"Cervical Vertebra (Occiput & C1) — joint name, type, movements?", a:"Atlanto-occipital · Condyloid\nFlexion (nose toward chest) / Extension (neck upward)"},
+{cat:"Key Joints Chart", q:"Cervical Vertebra (C1 Atlas & C2 Axis) — joint name, type, movements?", a:"Atlanto-axial · Pivot\nRotation (the \"no\" movement)"},
+{cat:"Key Joints Chart", q:"Cervical Vertebra (C2–C7) — joint name, type, movements?", a:"Intervertebral · Modified hinge\nFlexion / Extension / Lateral flexion"},
+{cat:"Key Joints Chart", q:"Thoracic Vertebra — joint name, type, movements?", a:"Intervertebral · Modified hinge\nFlexion (curled) / Extension (play bow) / Lateral flexion (chasing tail) / Rotation (rolling over)"},
+{cat:"Key Joints Chart", q:"Lumbar Vertebra — joint name, type, movements?", a:"Intervertebral · Modified hinge\nFlexion / Extension / Lateral flexion / Rotation"},
+{cat:"Key Joints Chart", q:"Sacral Vertebra (Fused) — joint name, type, movements?", a:"Not applicable · Not applicable\n(Fused — not relevant to kinesiology, though significant to cranio-sacral therapy)"},
+{cat:"Key Joints Chart", q:"Coccygeal Vertebra — joint name, type, movements?", a:"Intervertebral · Modified hinge\nFlexion (tucked tail) / Extension (tail over back) / Lateral flexion (wagging) / Rotation (minimal)"},
+{cat:"Key Joints Chart", q:"Ribs and Thoracic Vertebra — joint name, type, movements?", a:"Costovertebral · Modified ball and socket\nCircumduction (all movements combined during respiration, to expand/compress the ribs)"},
+{cat:"Key Joints Chart", q:"Sacrum and Ilium — joint name, type, movements?", a:"Sacroiliac · Gliding\nFlexion / Extension (in an undefined plane)"},
+{cat:"Key Joints Chart", q:"Shoulder (Scapula & Humerus) — joint name, type, movements?", a:"Scapulohumeral · Ball and socket\nFlexion / Extension / Abduction / Adduction / Rotation (internal & external)"},
+{cat:"Key Joints Chart", q:"Elbow (Humerus & Radius/Ulna) — joint name, type, movements?", a:"Humeroradial & Humeroulnar · Hinge\nFlexion / Extension"},
+{cat:"Key Joints Chart", q:"Wrist (Carpals & Radius/Ulna) — joint name, type, movements?", a:"Antebrachiocarpal (Carpus) · Hinge\nFlexion / Extension"},
+{cat:"Key Joints Chart", q:"Metacarpals and Digits — joint name, type, movements?", a:"Metacarpophalangeal · Gliding\nMovement in non-descript planes"},
+{cat:"Key Joints Chart", q:"Hip (Femur & Pelvis) — joint name, type, movements?", a:"Coxofemoral · Ball and socket\nFlexion / Extension / Abduction / Adduction / Rotation (internal & external)"},
+{cat:"Key Joints Chart", q:"Stifle (aka Knee) — joint name, type, movements?", a:"Femorotibial & Femoropatellar · Hinge\nFlexion / Extension (extension = stifle considered near-extended when standing, further extended when weight-bearing or reaching out behind)"},
+{cat:"Key Joints Chart", q:"Hock (aka Ankle) — joint name, type, movements?", a:"Tarsus · Hinge\nFlexion / Extension"},
+{cat:"Key Joints Chart", q:"Distal Hock and Digits — joint name, type, movements?", a:"Metatarsophalangeal · Gliding\nMovement in non-descript planes"},
+
+// --- Transition Zones ---
+{cat:"Transition Zones", q:"C7 and T1 — junction name and movements?", a:"Cervicothoracic junction\nFlexion, Extension, Minimal rotation, Diminishing lateral flexion"},
+{cat:"Transition Zones", q:"T10 and T11 — junction name and significance?", a:"Point of aclination\nThe least resistant joint to diagonal movement"},
+{cat:"Transition Zones", q:"T13 and L1 — junction name and movements?", a:"Thoracolumbar junction\nFlexion at its greatest, Extension at its greatest, Minimal rotation, Increased lateral flexion"},
+{cat:"Transition Zones", q:"L7 and S1 — junction name and movements?", a:"Lumbosacral junction\nFlexion at its greatest"},
+
+// --- Proprioception ---
+{cat:"Proprioception", q:"What is proprioception?", a:"The neurological method the body uses to learn and store patterns of movement (\"muscle memory\"). Proprioceptors relay the body's orientation in space to the brain."},
+{cat:"Proprioception", q:"What are the 3 proprioceptive components most useful in massage?", a:"Golgi Tendon Organ (GTO), Muscle Spindle Fiber (MSF), Connective Tissue Matrix."},
+{cat:"Proprioception", q:"Golgi Tendon Organ (GTO) — location and function?", a:"Located at the musculotendinous junction. Measures speed/load of contraction and triggers the muscle to shut down under overload (e.g., a marathoner collapsing near the finish)."},
+{cat:"Proprioception", q:"Muscle Spindle Fibers (MSF) — location and function?", a:"Located throughout the muscle belly, extending perpendicular into muscle fibers. Contract the muscle forcefully in response to a sudden/powerful stimulus — like a trigger wire."},
+{cat:"Proprioception", q:"Connective Tissue Matrix — what is it?", a:"The fluid between the cells of the body — a conductive mix of proteins/lipids in water and salts. Responds to pressure with an electromagnetic wave, helping carry signals between brain and body (largely via the fascial network)."},
+
+// --- Conformation & Angulation ---
+{cat:"Conformation", q:"What are the balance \"ideal\" reference ranges to know?", a:"~60% forequarter / 40% hindquarter weight distribution\nShoulder angulation: 30–45° (off vertical)\nPelvic angulation: 30–45° (off horizontal)\nBalanced, straight front & hind assembly"},
+{cat:"Conformation", q:"How is shoulder angulation measured?", a:"Line from the tip of T2 along the spine of the scapula, compared to a line from that same T2 point straight down to the ground."},
+{cat:"Conformation", q:"How is pelvic angulation measured?", a:"Line from the point of haunch through the point of buttock, compared to an imaginary line along the horizon of the back."},
+{cat:"Conformation", q:"Effect of excessive (too sloped) angulation?", a:"Negative effect on joint stability, less endurance (more energy spent per step), sloppy/loose movement, stresses the soft tissues."},
+{cat:"Conformation", q:"Effect of steep (too upright) angulation?", a:"Shorter steps that can be concussive and jarring to the bony structures."},
+{cat:"Conformation", q:"How to Assess Conformation: what's the \"soft eye\" step?", a:"Stand a fair distance away and use a slightly unfocused gaze to get a generalized picture of the whole dog — check for anything that stands out or seems out of sync (large head, protruding hip/shoulder)."},
+{cat:"Conformation", q:"What are the 3 sections used to break down the body?", a:"1) Head, neck, and shoulder\n2) Withers through the barrel to just in front of the stifle\n3) Stifle back"},
+{cat:"Conformation", q:"Forelimb straight-line check?", a:"From the side, the joints (shoulder–elbow–carpus–pastern) should fall into a line."},
+{cat:"Conformation", q:"Hind limb straight-line check?", a:"A line dropped from the point of the hip should bisect the paw, with a straight line from the hock to the pastern."},
+{cat:"Conformation", q:"What's ideal for pastern angle?", a:"A moderately sloping angle for shock absorption — not stiff/upright, and not sloppy/over-bent."},
+{cat:"Conformation", q:"Conformation vs. posture — what's the difference?", a:"Conformation: the structure the animal was born with — essentially unchangeable.\nPosture: a chosen stance or way of moving/standing/sitting/laying — can be shaped by conformation or environment."},
+{cat:"Conformation", q:"Front assembly — what should you see from the front?", a:"Legs support the width of the chest (not too far out or under), each leg divisible into equal left/right halves, elbows/carpals/pasterns level, legs not bowed in or out."},
+{cat:"Conformation", q:"Common front assembly faults?", a:"Easty-Westy (feet turn away from each other — common in Basset Hound), pasterns/carpals that knuckle over, elbows that stick out (common in Bulldog)."},
+{cat:"Conformation", q:"Rear assembly — what should you see from behind and from the side?", a:"From behind: limbs fall in a line from point of buttock to ground, divisible into equal halves, hocks not cow-hocked or bowed outward.\nFrom the side: hock shouldn't look sickle-shaped; pasterns shouldn't appear broken down or sunken."},
+{cat:"Conformation", q:"Foot shape — round vs. oval, and why?", a:"Round (cat-shaped): good for endurance.\nOval (elongated 3rd digit): contributes to speed and jumping while maintaining endurance.\n(Some breeds have webbed feet for water/snow terrain.)"},
+
+// --- Gait Analysis ---
+{cat:"Gait Analysis", q:"What are the 4 phases of the stride?", a:"Swing (leg flexes and swings forward)\nContact (leg touches the ground)\nSupport (leg is weight-bearing)\nThrust (leg pushes away from the ground)"},
+{cat:"Gait Analysis", q:"Besides the stride phases, what 3 factors determine gait quality?", a:"Rhythm (aka cadence — consistent, regular footfalls)\nImpulsion (thrust/energy in forward motion — not the same as speed)\nBalance (dynamic control of weight bearing)"},
+{cat:"Gait Analysis", q:"Single track vs. double track foot placement?", a:"Single track: all 4 feet contact the ground on one line (like a ropewalker) — benefits high-speed activity.\nDouble track (wider stance): allows greater agility and changes in direction/speed."},
+{cat:"Gait Analysis", q:"Reach vs. drive?", a:"Reach: the outward extension of the front legs at the trot.\nDrive: the backward extension of the rear legs at the trot."},
+{cat:"Gait Analysis", q:"The Walk — beat count and footfall pattern?", a:"4-beat gait. Footfall order: left hind → left fore → right hind → right fore."},
+{cat:"Gait Analysis", q:"The Amble — what is it?", a:"A fast walk where the dog rocks side to side; the 4 beats become irregular because same-side legs move nearly together. Often a transition between walk and trot."},
+{cat:"Gait Analysis", q:"The Pace — what is it, and what can cause it?", a:"A lateral gait (legs on ONE side move as a pair) — generally a fault except in breeds that select for it (e.g., Old English Sheepdog). Can indicate back stiffness/pain preventing normal weight shift."},
+{cat:"Gait Analysis", q:"The Trot — beat count, pattern, and notable variants?", a:"2-beat diagonal gait — a front leg and the opposite hind leg (a \"diagonal pair\") move together, with a brief moment of suspension.\nVariants: hackney trot (high front flexion), flying trot (fast, extended reach)."},
+{cat:"Gait Analysis", q:"The Canter — beat count and how leads work?", a:"3-beat gait. Two legs move independently, two move as a diagonal pair. Named by the leading (last-beat) leg — e.g., a \"left lead\" canter."},
+{cat:"Gait Analysis", q:"The Gallop — beat count and what distinguishes it from the canter?", a:"4-beat gait — similar footfall pattern to the canter, but the diagonal pair contacts the ground at slightly different times. Has a moment of suspension."},
+{cat:"Gait Analysis", q:"What do you watch for on a straight line?", a:"Fluidity/ease of movement, reach and drive, foot placement, straightness, symmetry, joint flexibility, free use of head and neck."},
+{cat:"Gait Analysis", q:"What do you watch for on a circle?", a:"Left/right symmetry, whether the back follows the bend of the circle, fluidity, and whether the inside hind leg steps forward underneath the dog."},
+{cat:"Gait Analysis", q:"What do you watch for on a figure eight?", a:"Fluid change of direction, body bending through the direction change, free use of head/neck, coordinated movement, and foot placement that does NOT cross over."},
+{cat:"Gait Analysis", q:"What are common faults seen in gaits?", a:"Moving stiffly (no back bend, poor tracking); rhythm changes; loss of power behind (cow-hocked); moving crookedly; crossing hind legs (hocks bow out); paddling/crossing in front (Easty-Westy/toed-out); joint laxity at pastern or hip (sloppy movement)."},
+
+// --- Common Disorders ---
+{cat:"Common Disorders", q:"Hip Dysplasia — what is it?", a:"Irregular formation of the coxofemoral joint — socket too shallow or excessive joint laxity — causing cartilage wear and degeneration. Inherited; most common in larger breeds but can affect any dog."},
+{cat:"Common Disorders", q:"Hip Dysplasia — key symptoms?", a:"Reluctance to engage in normal activity, difficulty getting up/down, running with both hind limbs together, attitude change from discomfort, difficulty/pain jumping or climbing, pain on backward hind-limb extension testing."},
+{cat:"Common Disorders", q:"Osteochondrosis (OCD) — what is it, and where is it most common?", a:"Articular cartilage/growth plate develops pocks or areas of decreased mineralization. Most often seen in the shoulder or stifle. Best treated surgically."},
+{cat:"Common Disorders", q:"Patellar Luxation — what is it?", a:"The patella tracks incorrectly (lateral or medial) out of the trochlear groove of the distal femur. Often linked with hip dysplasia; usually both hind limbs are affected even if only one is symptomatic."},
+{cat:"Common Disorders", q:"Anterior Cruciate Ligament (ACL) Injury — what is it, and what causes it?", a:"The ACL of the knee is torn or ruptured, causing instability, inflammation, and joint deterioration. Caused by trauma, repetitive stress, or poor conformation."},
+{cat:"Common Disorders", q:"General massage rule across Hip Dysplasia, Patellar Luxation, and ACL injury?", a:"Do NOT recommend massage while the dog is symptomatic until after a veterinary exam. Massage is valuable for post-operative rehab and ongoing flexibility/strength maintenance once cleared."},
+{cat:"Common Disorders", q:"Arthritis, strain, or sprain — massage rule?", a:"If pain, heat, and swelling are present, the injury must be vet-diagnosed first. Massage can help arthritic cases, but should follow a prescriptive plan."}
+];
+
+const STORAGE_KEY = "ch3-flashcards-v1";
+let againIds = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+
+let deck = [];
+let idx = 0;
+let flipped = false;
+let currentCat = "All";
+
+function uniqueCats(){
+  const cats = Array.from(new Set(CARDS.map(c => c.cat)));
+  return ["All", ...cats];
+}
+
+function buildDeck(){
+  const pool = currentCat === "All" ? CARDS : CARDS.filter(c => c.cat === currentCat);
+  deck = pool.map((c, i) => ({...c, id: currentCat + "::" + i}));
+}
+
+function shuffleDeck(){
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+  idx = 0; flipped = false;
+  render();
+}
+
+function saveAgain(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(againIds)));
+}
+
+function renderCatFilter(){
+  const sel = document.getElementById("catFilter");
+  sel.innerHTML = "";
+  uniqueCats().forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat; opt.textContent = cat === "All" ? "All categories" : cat;
+    if (cat === currentCat) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  sel.onchange = () => {
+    currentCat = sel.value;
+    buildDeck();
+    idx = 0; flipped = false;
+    render();
+  };
+}
+
+function render(){
+  const stage = document.getElementById("stageArea");
+  document.getElementById("posLabel").textContent = deck.length ? (idx + 1) : 0;
+  document.getElementById("totalLabel").textContent = deck.length;
+  document.getElementById("againCount").textContent = againIds.size;
+
+  if (!deck.length || idx >= deck.length) {
+    stage.innerHTML = `
+      <div class="done-banner">
+        <h2>Deck complete 🎉</h2>
+        <p>${againIds.size ? againIds.size + " card(s) marked for review — shuffle to drill them again." : "Nice work — nothing flagged for review."}</p>
+        <button id="againBtn">Restart deck</button>
+      </div>`;
+    document.getElementById("againBtn").onclick = () => { idx = 0; flipped = false; render(); };
+    return;
+  }
+
+  const c = deck[idx];
+  stage.innerHTML = `
+    <div class="stage">
+      <div class="card ${flipped ? 'flipped' : ''}" id="cardEl">
+        <div class="face front">
+          <div class="cat">${c.cat}</div>
+          <div class="body">${c.q}</div>
+          <div class="hint">Tap card to flip</div>
+        </div>
+        <div class="face back">
+          <div class="cat">Answer</div>
+          <div class="body">${c.a}</div>
+        </div>
+      </div>
+    </div>
+    <div class="rate-row" style="visibility:${flipped ? 'visible' : 'hidden'}">
+      <button class="again">✗ Review again</button>
+      <button class="knew">✓ Got it</button>
+    </div>
+    <div class="nav-row">
+      <button id="prevBtn">‹ Previous</button>
+      <button id="skipBtn">Skip ›</button>
+    </div>
+  `;
+
+  document.getElementById("cardEl").onclick = () => {
+    flipped = !flipped;
+    render();
+  };
+  const again = document.querySelector(".rate-row .again");
+  const knew = document.querySelector(".rate-row .knew");
+  if (again) again.onclick = (e) => { e.stopPropagation(); againIds.add(c.id); saveAgain(); advance(); };
+  if (knew) knew.onclick = (e) => { e.stopPropagation(); againIds.delete(c.id); saveAgain(); advance(); };
+  document.getElementById("prevBtn").onclick = () => { if (idx > 0) { idx--; flipped = false; render(); } };
+  document.getElementById("skipBtn").onclick = () => advance();
+}
+
+function advance(){
+  idx++; flipped = false; render();
+}
+
+document.getElementById("shuffleBtn").onclick = shuffleDeck;
+document.getElementById("resetBtn").onclick = () => {
+  if (confirm("Clear all 'review again' flags and restart?")) {
+    againIds = new Set(); saveAgain();
+    buildDeck(); idx = 0; flipped = false; render();
+  }
+};
+
+renderCatFilter();
+buildDeck();
+render();
+</script>
+</body>
+</html>
