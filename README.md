@@ -1,4 +1,4 @@
-# jilano88.github.io
+
 [🐕 Open Canine Muscle Flashcards](./Muscle_Flashcards.html)  <br>
 [Ch 1 Study Guide](./Chapter1_Ultimate_Study_Guide.html)  <br>
 [Ch 2 Study Guide](./Chapter2_Ultimate_Study_Guide.html)  <br>
