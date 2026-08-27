@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Study Guide Links</title>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        background: #0d1117;
+        color: #c9d1d9;
+        margin: 0;
+        padding: 40px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 36px;
+        color: #58a6ff;
+        font-weight: 600;
+    }
+
+    h2 {
+        margin-top: 40px;
+        font-size: 24px;
+        color: #8b949e;
+        border-bottom: 1px solid #21262d;
+        padding-bottom: 6px;
+        font-weight: 500;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        background: #161b22;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        margin: 10px 0;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: 20px;
+        color: #58a6ff;
+        padding: 8px 12px;
+        display: inline-block;
+        border-radius: 6px;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    a:hover {
+        background: #238636;
+        color: white;
+    }
+
+    .loading {
+        color: #8b949e;
+        font-style: italic;
+        margin-top: 20px;
+    }
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Study Guide Links</h1>
+
+        <h2>Chapters</h2>
+        <ul id="chapters"></ul>
+
+        <h2>Non‑Chapter Study Guides</h2>
+        <ul id="nonchapters"></ul>
+
+        <h2>Flashcards</h2>
+        <ul id="flashcards"></ul>
+
+        <h2>Reading List</h2>
+        <ul id="reading"></ul>
+
+        <div class="loading" id="loading">Loading files…</div>
+    </div>
+
+<script>
+async function loadFiles() {
+    const apiUrl = "https://api.github.com/repos/jilano88/jilano88.github.io/contents/";
+
+    const response = await fetch(apiUrl);
+    const files = await response.json();
+
+    const chapters = document.getElementById("chapters");
+    const nonchapters = document.getElementById("nonchapters");
+    const flashcards = document.getElementById("flashcards");
+    const reading = document.getElementById("reading");
+
+    const htmlFiles = files.filter(f => f.name.endsWith(".html"));
+
+    const chapterOrder = [
+        "Chapter1_Ultimate_Study_Guide.html",
+        "Chapter2_Ultimate_Study_Guide.html",
+        "Chapter2_Ultimate_Study_Guide_with_Flashcards.html",
+        "Chapter3_Ultimate_Study_Guide.html",
+        "Chapter4_Ultimate_Study_Guide.html",
+        "Chapter5_Ultimate_Study_Guide.html"
+    ];
+
+    htmlFiles.forEach(file => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = file.name;
+        a.textContent = file.name.replace(/_/g, " ").replace(".html", "");
+        li.appendChild(a);
+
+        if (chapterOrder.includes(file.name)) {
+            chapters.appendChild(li);
+        } else if (file.name.includes("Flashcards")) {
+            flashcards.appendChild(li);
+        } else if (file.name.includes("Reading")) {
+            reading.appendChild(li);
+        } else {
+            nonchapters.appendChild(li);
+        }
+    });
+
+    document.getElementById("loading").style.display = "none";
+}
+
+loadFiles();
+</script>
+
+</body>
+</html>
