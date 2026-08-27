@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chapter Two — Anatomy &amp; Physiology | NWSAM</title>
+<title>Chapter Two Field Guide + Flashcards</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
   --page:#f9f9f7; --surface:#fcfcfb; --surface-2:#f3f2ee;
   --ink:#0b0b0b; --ink-2:#52514e; --ink-muted:#898781;
   --border:rgba(11,11,11,0.10); --grid:#e1e0d9;
-  --accent:#2a7a5c; --accent-soft:#e4f0ea;
+  --accent:#2a78d6; --accent-soft:#e8f0fb;
   --good:#0ca30c; --warn:#c98500; --crit:#d03b3b;
   --font-display:'Fraunces',Georgia,serif;
   --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
@@ -25,7 +25,7 @@
     --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
     --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
     --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
-    --accent:#3fa87a; --accent-soft:#0e2e20;
+    --accent:#3987e5; --accent-soft:#122840;
     --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
   }
 }
@@ -34,7 +34,7 @@
   --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222220;
   --ink:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
   --border:rgba(255,255,255,0.12); --grid:#2c2c2a;
-  --accent:#3fa87a; --accent-soft:#0e2e20;
+  --accent:#3987e5; --accent-soft:#122840;
   --good:#1fae1f; --warn:#e0a531; --crit:#e66767;
 }
 *{box-sizing:border-box;}
@@ -161,9 +161,18 @@ table.ref tr:last-child td{border-bottom:none;}
 .tag-TR{background:#f3e8fd;color:#6a1fa3;}
 .tag-HL{background:#fde8e8;color:#a03030;}
 ::selection{background:var(--accent);color:#fff;}
+
+@media (max-width:860px){
+  .rail{flex-direction:row; align-items:center; gap:2px; padding:8px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; border-right:none; border-bottom:1px solid var(--border);}
+  .rail::-webkit-scrollbar{display:none;}
+  .rail-brand{display:none;}
+  .rail-foot{display:none;}
+  .rail-btn{flex:0 0 auto; flex-direction:column; gap:3px; width:auto; min-width:58px; padding:7px 8px; text-align:center; font-size:.64rem; white-space:nowrap; border-radius:10px;}
+  .rail-ico{font-size:1.2rem;}
+}
 </style></head>
 <body><div class="app"><nav class="rail" id="rail">
-  <div class="rail-brand">Chapter Two<small>Anatomy &amp; Physiology</small></div>
+  <div class="rail-brand">Chapter Two<small>Field Guide + Flashcards</small></div>
   <button class="rail-btn" data-view="home"><span class="rail-ico">🏠</span>Home</button>
   <button class="rail-btn" data-view="dir"><span class="rail-ico">📐</span>Directional Terms</button>
   <button class="rail-btn" data-view="ext"><span class="rail-ico">🐾</span>External Points</button>
@@ -318,7 +327,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 if(!state.comp)state.comp={};
 let currentView="home";
 let drillIdx=0,drillFlipped=false,drillOrder=[];
-let revIdx=0,revOrder=[],revAnswered=false,revRight=0,revWrong=0;
+let revIdx=0,revOrder=[],revAnswered=false,revRight=0,revWrong=0,revPick=null,revPassComplete=false,revMissed=[];
 
 /* ============================= HELPERS ============================= */
 function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
@@ -516,52 +525,84 @@ function renderFlashcards(){
   </div>`;
 }
 
+function startNewRevPass(indices){
+  revOrder=shuffle(indices);revIdx=0;revAnswered=false;revPick=null;revPassComplete=false;
+  revRight=0;revWrong=0;revMissed=[];
+}
+
 function renderReview(){
-  if(!revOrder.length){revOrder=shuffle(REVIEW_QS.map((_,i)=>i));revIdx=0;revRight=0;revWrong=0;revAnswered=false;}
-  const pct=REVIEW_QS.length?Math.round((revIdx)/REVIEW_QS.length*100):0;
+  if(!revOrder.length) startNewRevPass(REVIEW_QS.map((_,i)=>i));
+  if(revPassComplete) return renderReviewSummary();
+  const qi=revOrder[revIdx];
+  const q=REVIEW_QS[qi];
   return`<div class="view-head">
-    <p class="eyebrow">Mixed questions — all topics</p>
+    <p class="eyebrow">One pass through the deck, then a results screen</p>
     <h1 class="title">Full Review</h1>
     <p class="dek">${REVIEW_QS.length} questions drawn from all Chapter 2 sections.</p>
   </div>
   <div class="card" style="margin-bottom:20px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <span style="font-size:.85rem;color:var(--ink-2);">${revIdx} of ${REVIEW_QS.length} answered</span>
+      <span style="font-size:.85rem;color:var(--ink-2);">Question ${revIdx+1} of ${revOrder.length}</span>
       <div class="drill-score"><span>✓ <b>${revRight}</b></span><span>✗ <b>${revWrong}</b></span></div>
     </div>
-    <div class="pbar-outer"><div class="pbar-inner" style="width:${pct}%"></div></div>
+    <div class="pbar-outer"><div class="pbar-inner" style="width:${(revIdx/revOrder.length)*100}%"></div></div>
   </div>
-  <div id="rev-area">${renderRevQ()}</div>`;
+  <div class="card">
+    <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);margin-bottom:8px;">Question ${revIdx+1} of ${revOrder.length}</p>
+    <p style="font-size:1rem;font-weight:600;margin-bottom:14px;">${esc(q.q)}</p>
+    <div class="mc-opts" id="rev-opts">
+      ${q.opts.map((opt,i)=>{let cls="mc-opt";if(revAnswered){if(i===q.a)cls+=" correct";else if(i===revPick)cls+=" wrong";}return `<button class="${cls}" ${revAnswered?'disabled':''} onclick="answerRev(${i},${q.a})">${esc(opt)}</button>`;}).join('')}
+    </div>
+    <div class="mc-fb${revAnswered?' show':''}">${revAnswered?esc(q.fb||''):''}</div>
+  </div>
+  ${revAnswered ? `<div style="margin-top:14px;text-align:center;"><button class="btn primary" onclick="nextRev()">${revIdx+1>=revOrder.length?'See results →':'Next question →'}</button></div>` : ""}`;
 }
 
-function renderRevQ(){
-  if(revIdx>=REVIEW_QS.length) return`<div class="card" style="text-align:center;padding:30px;"><div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;margin-bottom:8px;">Review complete!</div><p style="color:var(--ink-2);">Score: ${revRight}/${REVIEW_QS.length} (${Math.round(revRight/REVIEW_QS.length*100)}%)</p><button class="btn primary" onclick="resetReview()" style="margin-top:14px;">Start over</button></div>`;
-  const qi=revOrder[revIdx];
-  const q=REVIEW_QS[qi];
-  const shuffledOpts=shuffle(q.opts.map((o,i)=>({text:o,orig:i})));
-  return`<div class="card">
-    <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);margin-bottom:8px;">Question ${revIdx+1} of ${REVIEW_QS.length}</p>
-    <p style="font-size:1rem;font-weight:600;margin-bottom:14px;">${esc(q.q)}</p>
-    <div style="display:flex;flex-direction:column;gap:8px;" id="rev-opts">
-      ${shuffledOpts.map(o=>`<button class="mc-opt" onclick="answerRev(${o.orig},${q.a},this)">${esc(o.text)}</button>`).join('')}
+function renderReviewSummary(){
+  const total=revRight+revWrong;
+  const pct=total?Math.round((revRight/total)*100):0;
+  state.revScore=state.revScore||{right:0,wrong:0};
+  const lifetimeTotal=state.revScore.right+state.revScore.wrong;
+  return`<div class="view-head">
+    <p class="eyebrow">Round complete</p>
+    <h1 class="title">Results</h1>
+    <p class="dek">Here's how this round went. Missed ones are worth another pass before the quiz.</p>
+  </div>
+  <div class="card" style="text-align:center;padding:32px 26px;margin-bottom:22px;">
+    <div style="font-family:var(--font-display);font-size:2.6rem;font-weight:700;color:var(--accent);line-height:1;">${pct}%</div>
+    <p class="muted" style="margin-top:8px;">${revRight} correct / ${revWrong} missed out of ${total}</p>
+    ${lifetimeTotal ? `<p class="muted" style="margin-top:6px;font-size:.78rem;">Lifetime: ${state.revScore.right} right / ${state.revScore.wrong} wrong across all rounds</p>` : ""}
+  </div>
+  ${revMissed.length ? `
+    <h2 class="sec">Questions you missed this round</h2>
+    <div class="grid" style="gap:10px;margin-bottom:6px;">
+      ${revMissed.map(m=>`<div class="card" style="padding:14px 18px;"><p style="margin:0 0 4px;"><b>${esc(m.q)}</b></p><p class="muted" style="margin:0;">Correct answer: ${esc(m.correct)}</p></div>`).join('')}
     </div>
-    <div id="rev-fb" class="mc-fb"></div>
+  ` : `<div class="callout info">Perfect round — no misses.</div>`}
+  <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+    ${revMissed.length ? `<button class="btn primary" onclick="startNewRevPass(revMissed.map(m=>m.qi));renderView();">Practice missed questions (${revMissed.length}) →</button>` : ""}
+    <button class="btn ${revMissed.length?'':'primary'}" onclick="startNewRevPass(REVIEW_QS.map((_,i)=>i));renderView();">Start a new full round →</button>
   </div>`;
 }
 
-function answerRev(chosen,correct,btn){
+function answerRev(picked,correct){
   if(revAnswered)return;
-  revAnswered=true;
-  document.querySelectorAll('#rev-opts .mc-opt').forEach(b=>b.disabled=true);
-  if(chosen===correct){btn.classList.add('correct');revRight++;}
-  else{btn.classList.add('wrong');revWrong++;document.querySelectorAll('#rev-opts .mc-opt').forEach(b=>{if(parseInt(b.onclick?.toString().match(/answerRev\((\d+)/)?.[1])===correct)b.classList.add('correct');});}
-  const fb=document.getElementById('rev-fb');
+  revPick=picked;revAnswered=true;
   const qi=revOrder[revIdx];
-  fb.textContent=REVIEW_QS[qi].fb;fb.classList.add('show');
-  setTimeout(()=>{revIdx++;revAnswered=false;const area=document.getElementById('rev-area');if(area)area.innerHTML=renderRevQ();},1800);
+  state.revScore=state.revScore||{right:0,wrong:0};
+  if(picked===correct){revRight++;state.revScore.right++;}
+  else{revWrong++;state.revScore.wrong++;revMissed.push({qi,q:REVIEW_QS[qi].q,correct:REVIEW_QS[qi].opts[correct]});}
+  save();
+  renderView();
 }
 
-function resetReview(){revOrder=shuffle(REVIEW_QS.map((_,i)=>i));revIdx=0;revRight=0;revWrong=0;revAnswered=false;renderView();}
+function nextRev(){
+  revAnswered=false;revPick=null;
+  if(revIdx+1>=revOrder.length){revPassComplete=true;}else{revIdx++;}
+  renderView();
+}
+
+function resetReview(){startNewRevPass(REVIEW_QS.map((_,i)=>i));renderView();}
 
 /* ============================= MCQ INLINE ============================= */
 const mcState={};

@@ -231,6 +231,15 @@ table.strokes tr:last-child td{border-bottom:none;}
 .footnote{font-size:.76rem; color:var(--ink-muted); margin-top:6px;}
 ::selection{background:var(--accent); color:#fff;}
 @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+
+@media (max-width:860px){
+  .rail{flex-direction:row; align-items:center; gap:2px; padding:8px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; border-right:none; border-bottom:1px solid var(--border);}
+  .rail::-webkit-scrollbar{display:none;}
+  .rail-brand{display:none;}
+  .rail-foot{display:none;}
+  .rail-btn{flex:0 0 auto; flex-direction:column; gap:3px; width:auto; min-width:58px; padding:7px 8px; text-align:center; font-size:.64rem; white-space:nowrap; border-radius:10px;}
+  .rail-ico{font-size:1.2rem;}
+}
 </style>
 </head>
 <body>
